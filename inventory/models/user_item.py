@@ -1,16 +1,16 @@
 from django.db import models
-from .user import User
-from .item import Item
-from .category_image import CategoryImage
-from .user_fridge import UserFridge
+from .user import user
+from .item import item
+from .category_image import category_image
+from .user_fridge import user_fridge
 
 # Between User and Item
-class UserItem(models.Model):
+class user_item(models.Model):
     UserItemID = models.AutoField(primary_key=True)
-    UserID = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
-    ItemID = models.ForeignKey(Item, on_delete=models.CASCADE, null=False, blank=False)
-    CategoryImageID = models.OneToOneField(CategoryImage,on_delete=models.CASCADE, null=True, blank=True)
-    UserFridgeID = models.ForeignKey(UserFridge, on_delete=models.CASCADE, null=False, blank=False)
+    UserID = models.ForeignKey(user, on_delete=models.CASCADE, null=False, blank=False)
+    ItemID = models.ForeignKey(item, on_delete=models.CASCADE, null=False, blank=False)
+    CategoryImageID = models.OneToOneField(category_image,on_delete=models.CASCADE, null=True, blank=True)
+    UserFridgeID = models.ForeignKey(user_fridge, on_delete=models.CASCADE, null=False, blank=False)
     
     def __str__(self):
         return str(self.UserItemID)

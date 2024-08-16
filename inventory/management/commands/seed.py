@@ -1,6 +1,6 @@
 # Data seed
 from django.core.management.base import BaseCommand
-from inventory.models import User, UserFridge, UserItem, UserQuestions, Questions, Pro, Item, Fridge, FridgeImage, Category, CategoryImage
+from inventory.models import user, user_fridge, user_item, user_question, question, pro, item, fridge, fridge_image, category, category_image
 from django.utils import timezone
 '''
 Questions:
@@ -11,137 +11,136 @@ What is your favorite hobby?
 Which city were you born in?
 '''
 
-
 class Command(BaseCommand):
     help ="seed database for testing and development."
 
     def handle(self, *args, **kwargs):
         
         ###### Add User ######
-        user, created = User.objects.get_or_create(Email = 'eykim9296@gmail.com', UserName='Ella Kim', Password='password0000',  Pro=True, Role=False, Block =False)
+        varUser, created = user.objects.get_or_create(Email = 'eykim9296@gmail.com', UserName='Ella Kim', Password='password0000',  Pro=True, Role=False, Block =False)
         #Add pro
         if created:
-            Pro.objects.create( UserID = user, StartDate = timezone.now(), ExpireDate = timezone.now(), SubscriptionType = True)
+            pro.objects.create( UserID = varUser, StartDate = timezone.now(), ExpireDate = timezone.now(), SubscriptionType = True)
         
         
         ###### Add Questions --read only ######
-        question, created = Questions.objects.get_or_create(Question = 'What was your mother''s maiden name?')
-        question, created = Questions.objects.get_or_create(Question = 'What is the name of your first pet?')
-        question, created = Questions.objects.get_or_create(Question = 'What is your favorite color?')
+        varQuestion, created = question.objects.get_or_create(Question = 'What was your mother''s maiden name?')
+        varQuestion, created = question.objects.get_or_create(Question = 'What is the name of your first pet?')
+        varQuestion, created = question.objects.get_or_create(Question = 'What is your favorite color?')
         # Add user_questions01
         if created: 
-            UserQuestions.objects.create( UserID = user, QuestionID = question, Answer = 'Purple')
-        question, created = Questions.objects.get_or_create(Question = 'What is your favorite hobby?')
-        question, created = Questions.objects.get_or_create(Question = 'Which city were you born in?')
+            user_question.objects.create( UserID = varUser, QuestionID = varQuestion, Answer = 'Purple')
+        varQuestion, created = question.objects.get_or_create(Question = 'What is your favorite hobby?')
+        varQuestion, created = question.objects.get_or_create(Question = 'Which city were you born in?')
         # Add user_questions02
         if created: 
-            UserQuestions.objects.create( UserID = user, QuestionID = question, Answer = 'Ansan')
+            user_question.objects.create( UserID = varUser, QuestionID = varQuestion, Answer = 'Ansan')
 
 
         ###### Add fridge Image --read only ######
         # Firdge
-        fridge_image, created = FridgeImage.objects.get_or_create(FridgeImage='https://img.icons8.com/?size=100&id=0kSEUjCIt3dp&format=png&color=ff9500')
+        varFridgeImage, created = fridge_image.objects.get_or_create(FridgeImage='https://img.icons8.com/?size=100&id=0kSEUjCIt3dp&format=png&color=ff9500')
         if created:
-            fridge = Fridge.objects.create(FridgeImageID = fridge_image, FridgeName='Refrigerator')
+            varFridge = fridge.objects.create(FridgeImageID = varFridgeImage, FridgeName='Refrigerator')
         if created:
-            UserFridge.objects.create( UserID = user, FridgeID = fridge, FridgeImageID = fridge_image)
+            user_fridge.objects.create( UserID = varUser, FridgeID = varFridge, FridgeImageID = varFridgeImage)
 
         # Freezers
-        fridge_image, created = FridgeImage.objects.get_or_create(FridgeImage='https://img.icons8.com/?size=100&id=9yPQBPvn2hoR&format=png&color=ff9500')
+        varFridgeImage, created = fridge_image.objects.get_or_create(FridgeImage='https://img.icons8.com/?size=100&id=9yPQBPvn2hoR&format=png&color=ff9500')
         if created:
-            fridge = Fridge.objects.create(FridgeImageID = fridge_image, FridgeName='Freezers')
+            varFridge = fridge.objects.create(FridgeImageID = varFridgeImage, FridgeName='Freezers')
         if created:
-            UserFridge.objects.create( UserID = user, FridgeID = fridge, FridgeImageID = fridge_image)
+            user_fridge.objects.create( UserID = varUser, FridgeID = varFridge, FridgeImageID = varFridgeImage)
 
         # Pantries
-        fridge_image, created = FridgeImage.objects.get_or_create(FridgeImage='https://img.icons8.com/?size=100&id=YqWcfL1YXTCn&format=png&color=ff9500')
+        varFridgeImage, created = fridge_image.objects.get_or_create(FridgeImage='https://img.icons8.com/?size=100&id=YqWcfL1YXTCn&format=png&color=ff9500')
         if created:
-            fridge = Fridge.objects.create(FridgeImageID = fridge_image, FridgeName='Pantries')
+            varFridge = fridge.objects.create(FridgeImageID = varFridgeImage, FridgeName='Pantries')
         if created:
-            UserFridge.objects.create( UserID = user, FridgeID = fridge, FridgeImageID = fridge_image)
+            user_fridge.objects.create( UserID = varUser, FridgeID = varFridge, FridgeImageID = varFridgeImage)
 
         # Fruit Bag
-        fridge_image, created = FridgeImage.objects.get_or_create(FridgeImage='https://img.icons8.com/?size=100&id=5qiaaJMLcmrJ&format=png&color=ff9500')
+        varFridgeImage, created = fridge_image.objects.get_or_create(FridgeImage='https://img.icons8.com/?size=100&id=5qiaaJMLcmrJ&format=png&color=ff9500')
         
         # Department Shop
-        fridge_image, created = FridgeImage.objects.get_or_create(FridgeImage='https://img.icons8.com/?size=100&id=92257&format=png&color=ff9500')
+        varFridgeImage, created = fridge_image.objects.get_or_create(FridgeImage='https://img.icons8.com/?size=100&id=92257&format=png&color=ff9500')
         if created:
-            fridge = Fridge.objects.create(FridgeImageID = fridge_image, FridgeName='My Box')
+            varFridge = fridge.objects.create(FridgeImageID = varFridgeImage, FridgeName='My Box')
         if created:
-            user_fridge = UserFridge.objects.create( UserID = user, FridgeID = fridge, FridgeImageID = fridge_image)
+            varUserFridge = user_fridge.objects.create( UserID = varUser, FridgeID = varFridge, FridgeImageID = varFridgeImage)
 
         # Ingredients
-        fridge_image, created = FridgeImage.objects.get_or_create(FridgeImage='https://img.icons8.com/?size=100&id=95456&format=png&color=ff9500')
+        varFridgeImage, created = fridge_image.objects.get_or_create(FridgeImage='https://img.icons8.com/?size=100&id=95456&format=png&color=ff9500')
 
         
         ###### Add Category Image --read only ######
-        category_image, created = CategoryImage.objects.get_or_create(CategoryImage='🍎')
+        varCategoryImage, created = category_image.objects.get_or_create(CategoryImage='🍎')
         if created:
-            category = Category.objects.create(CategoryImageID = category_image, CategoryName='Fruits')
+            varCategory = category.objects.create(CategoryImageID = varCategoryImage, CategoryName='Fruits')
         if created:
-            item = Item.objects.create(CategoryID= category, ExpiryDate= timezone.now(), ItemName='Banana', Quantity='3')
+            varItem = item.objects.create(CategoryID= varCategory, ExpiryDate= timezone.now(), ItemName='Banana', Quantity='3')
         if created:
-            UserItem.objects.create(UserID = user, ItemID = item, CategoryImageID= category_image, UserFridgeID= user_fridge)
+            user_item.objects.create(UserID = varUser, ItemID = varItem, CategoryImageID= varCategoryImage, UserFridgeID= varUserFridge)
 
-        category_image, created = CategoryImage.objects.get_or_create(CategoryImage='🍖')
+        varCategoryImage, created = category_image.objects.get_or_create(CategoryImage='🍖')
         if created:
-            Category.objects.create(CategoryImageID = category_image, CategoryName='Meat')
+            category.objects.create(CategoryImageID = varCategoryImage, CategoryName='Meat')
         
-        category_image, created = CategoryImage.objects.get_or_create(CategoryImage='🥦')
+        varCategoryImage, created = category_image.objects.get_or_create(CategoryImage='🥦')
         if created:
-            Category.objects.create(CategoryImageID = category_image, CategoryName='Vegetables')
+            category.objects.create(CategoryImageID = varCategoryImage, CategoryName='Vegetables')
         
-        category_image, created = CategoryImage.objects.get_or_create(CategoryImage='🐟')
+        varCategoryImage, created = category_image.objects.get_or_create(CategoryImage='🐟')
         if created:
-            Category.objects.create(CategoryImageID = category_image, CategoryName='Seafood')
+            category.objects.create(CategoryImageID = varCategoryImage, CategoryName='Seafood')
         
-        category_image, created = CategoryImage.objects.get_or_create(CategoryImage='🥛')
+        varCategoryImage, created = category_image.objects.get_or_create(CategoryImage='🥛')
         if created:
-            Category.objects.create(CategoryImageID = category_image, CategoryName='Dairy')
+            category.objects.create(CategoryImageID = varCategoryImage, CategoryName='Dairy')
         
-        category_image, created = CategoryImage.objects.get_or_create(CategoryImage='🍰')
+        varCategoryImage, created = category_image.objects.get_or_create(CategoryImage='🍰')
         if created:
-            Category.objects.create(CategoryImageID = category_image, CategoryName='Desert')
+            category.objects.create(CategoryImageID = varCategoryImage, CategoryName='Desert')
         
-        category_image, created = CategoryImage.objects.get_or_create(CategoryImage='🍷')
+        varCategoryImage, created = category_image.objects.get_or_create(CategoryImage='🍷')
         if created:
-            Category.objects.create(CategoryImageID = category_image, CategoryName='Alcoholic beverages')
+            category.objects.create(CategoryImageID = varCategoryImage, CategoryName='Alcoholic beverages')
         
-        category_image, created = CategoryImage.objects.get_or_create(CategoryImage='🍹')
+        varCategoryImage, created = category_image.objects.get_or_create(CategoryImage='🍹')
         if created:
-            Category.objects.create(CategoryImageID = category_image, CategoryName='Beverages')
+            category.objects.create(CategoryImageID = varCategoryImage, CategoryName='Beverages')
         
-        category_image, created = CategoryImage.objects.get_or_create(CategoryImage='☕')
+        varCategoryImage, created = category_image.objects.get_or_create(CategoryImage='☕')
         if created:
-            Category.objects.create(CategoryImageID = category_image, CategoryName='Coffee & tea')
+            category.objects.create(CategoryImageID = varCategoryImage, CategoryName='Coffee & tea')
         
-        category_image, created = CategoryImage.objects.get_or_create(CategoryImage='🧂')
+        varCategoryImage, created = category_image.objects.get_or_create(CategoryImage='🧂')
         if created:
-            Category.objects.create(CategoryImageID = category_image, CategoryName='Spices')
+            category.objects.create(CategoryImageID = varCategoryImage, CategoryName='Spices')
         
-        category_image, created = CategoryImage.objects.get_or_create(CategoryImage='🌾')
+        varCategoryImage, created = category_image.objects.get_or_create(CategoryImage='🌾')
         if created:
-            Category.objects.create(CategoryImageID = category_image, CategoryName='Grain')
+            category.objects.create(CategoryImageID = varCategoryImage, CategoryName='Grain')
 
-        category_image, created = CategoryImage.objects.get_or_create(CategoryImage='🍝')
+        varCategoryImage, created = category_image.objects.get_or_create(CategoryImage='🍝')
         if created:
-            Category.objects.create(CategoryImageID = category_image, CategoryName='Noodles')
+            category.objects.create(CategoryImageID = varCategoryImage, CategoryName='Noodles')
 
-        category_image, created = CategoryImage.objects.get_or_create(CategoryImage='🧊')
+        varCategoryImage, created = category_image.objects.get_or_create(CategoryImage='🧊')
         if created:
-            Category.objects.create(CategoryImageID = category_image, CategoryName='Frozen food')
+            category.objects.create(CategoryImageID = varCategoryImage, CategoryName='Frozen food')
 
-        category_image, created = CategoryImage.objects.get_or_create(CategoryImage='🍞')
+        varCategoryImage, created = category_image.objects.get_or_create(CategoryImage='🍞')
         if created:
-            Category.objects.create(CategoryImageID = category_image, CategoryName='Bread')
+            category.objects.create(CategoryImageID = varCategoryImage, CategoryName='Bread')
 
-        category_image, created = CategoryImage.objects.get_or_create(CategoryImage='🥘')
+        varCategoryImage, created = category_image.objects.get_or_create(CategoryImage='🥘')
         if created:
-            Category.objects.create(CategoryImageID = category_image, CategoryName='Leftovers')
+            category.objects.create(CategoryImageID = varCategoryImage, CategoryName='Leftovers')
 
-        category_image, created = CategoryImage.objects.get_or_create(CategoryImage='🍽️')
+        varCategoryImage, created = category_image.objects.get_or_create(CategoryImage='🍽️')
         if created:
-            Category.objects.create(CategoryImageID = category_image, CategoryName='Others')
+            category.objects.create(CategoryImageID = varCategoryImage, CategoryName='Others')
         
 
         self.stdout.write(self.style.SUCCESS('Database seeded sucessfully!'))

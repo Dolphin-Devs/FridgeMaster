@@ -1,7 +1,7 @@
 from django.db import models
 
 # The user security questions
-class Questions(models.Model):
+class question(models.Model):
     QuestionID = models.AutoField(primary_key=True)
     Question = models.CharField(max_length=100)
 
@@ -9,4 +9,4 @@ class Questions(models.Model):
         return str(self.QuestionID)
     
     class Meta:
-        db_table = 'questions'
+        db_table = 'question'

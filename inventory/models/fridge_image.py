@@ -1,7 +1,7 @@
 from django.db import models
 
 # The fridge image list
-class FridgeImage(models.Model):
+class fridge_image(models.Model):
     FridgeImageID = models.AutoField(primary_key=True)
     FridgeImage = models.CharField(max_length=255)
 

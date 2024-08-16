@@ -1,7 +1,7 @@
 from django.db import models
 
 # This is category images
-class CategoryImage(models.Model):
+class category_image(models.Model):
     CategoryImageID = models.AutoField(primary_key=True)
     CategoryImage = models.CharField(max_length=255)
 
