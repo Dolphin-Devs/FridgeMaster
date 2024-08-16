@@ -11,7 +11,7 @@ class UserFridge(models.Model):
     FridgeImageID = models.OneToOneField(FridgeImage,on_delete=models.CASCADE, null=True, blank=True)
     
     def __str__(self):
-        return str(self.FridgeID)
+        return str(self.UserFridgeID)
     
     class Meta:
         db_table = 'user_fridge'

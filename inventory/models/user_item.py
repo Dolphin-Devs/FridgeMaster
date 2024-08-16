@@ -13,6 +13,6 @@ class UserItem(models.Model):
     UserFridgeID = models.ForeignKey(UserFridge, on_delete=models.CASCADE, null=False, blank=False)
     
     def __str__(self):
-        return str(self.FridgeID)
+        return str(self.UserItemID)
     class Meta:
         db_table = 'user_item'

@@ -9,5 +9,6 @@ class Category(models.Model):
 
     def __str__(self):
         return str(self.CategoryID)
+    
     class Meta:
         db_table = 'category'
