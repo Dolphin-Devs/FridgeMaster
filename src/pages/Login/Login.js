@@ -3,18 +3,40 @@ import {useForm} from "react-hook-form"
 import { useNavigate } from 'react-router-dom';
 import { Container, Box, Avatar, TextField, Checkbox, Button, Link, Grid, FormControlLabel, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Copyright from '../components/Copyright';
+import Copyright from '../../components/Copyright';
+import axios from 'axios';
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
 
+  async function login(userEmail, userPassword){
+    try{
+      axios.post('https://qxy7nvgd2k.execute-api.ca-central-1.amazonaws.com/FridgeMaster/user/signin',{
+        email: userEmail,
+        password: userPassword
+      })
+      .then(function(response){
+        console.log(response);
+        alert("Login Success");
+        navigate('../test');
+      })
+      .catch(function(error){
+        console.error("Error Response: ", error.response.data);
+        alert("Error: "+ error.response.data);
+      })
 
+    }catch(error){
+      console.log(error);
+      console.log("Faild of login function")
+    }
+
+  }
 
   const onSubmit = (data) =>{
-    console.log("email:", data.email);
-    console.log("password:", data.password);
-    navigate('./test');
+
+    login(data.email, data.password);
+
 
   }
     return (
@@ -35,6 +57,7 @@ const Login = () => {
             Sign In
           </Typography>
           <TextField 
+          sx={{ mt: 3, mb: 2 }}
             label="Email Address" 
             name="email" 
             autoComplete='email' 
@@ -72,14 +95,18 @@ const Login = () => {
             error={!!errors.password}
             helperText={errors.password ? errors.password?.message : ''}
             />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button type="submit" variant='contained' fullWidth sx={{ mt: 3, mb: 2 }}>Sign In</Button>
+            <Grid container sx={{ mt: 1, mb: 1 }}>
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+
+            </Grid>
+
+          <Button type="submit" variant='contained' fullWidth sx={{ mt: 1, mb: 2 }}>Sign In</Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#">Forgot password?</Link>
+              <Link href="./forgotPassword">Forgot password?</Link>
             </Grid>
             <Grid item>
               <Link href="./signup">Sign up</Link>

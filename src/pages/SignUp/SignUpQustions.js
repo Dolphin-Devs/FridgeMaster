@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { useState,useEffect } from 'react';
 import { useForm, Controller } from "react-hook-form"
-import { useLocation } from 'react-router-dom';
-import { Avatar, Button, CssBaseline, TextField,FormHelperText, FormControlLabel, Checkbox, Link, Grid, Box, Typography, Container,Select,FormControl,MenuItem,InputLabel,OutlinedInput, Menu } from '@mui/material';
-
+import { useLocation,Link } from 'react-router-dom';
+import { Avatar, Button, CssBaseline, TextField,FormHelperText, FormControlLabel, Checkbox, Grid, Box, Typography, Container,Select,FormControl,MenuItem,InputLabel,OutlinedInput, Menu } from '@mui/material';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Copyright from '../components/Copyright';
+import Copyright from '../../components/Copyright';
 import axios from 'axios';
 
 
@@ -52,7 +51,7 @@ const SignUpQustions = () =>{
         }catch(error){
             /**If the request is failed, check the error in the console */
             console.log(error);
-            console.log("Failed to getQuestion function");
+            console.log("Failed to get questions using getQuestion function");
         }
     }
 
@@ -240,7 +239,7 @@ const SignUpQustions = () =>{
                     </Typography>
                     </div>
 
-                    <p>I have read and agreed to the Fridge Master's <a href="../termsConditions">Terms and Conditions</a> </p>
+                    <p>I have read and agreed to the Fridge Master's <Link to="../termsConditions">Terms and Conditions</Link> </p>
                     
                 </Grid>
             </Grid>
@@ -256,7 +255,7 @@ const SignUpQustions = () =>{
 
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="../login" variant="body2">
+                <Link to="../login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
