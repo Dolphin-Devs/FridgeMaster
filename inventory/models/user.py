@@ -5,7 +5,7 @@ class user(models.Model):
     UserID = models.AutoField(primary_key=True)
     Email = models.CharField(max_length=50, null=False, blank=False)
     UserName = models.CharField(max_length=50, null=False, blank=False)
-    Password = models.CharField(max_length=20, null=False, blank=False)
+    Password = models.CharField(max_length=150, null=False, blank=False)
     Pro = models.BooleanField(default=False) # True: Paid, False: Unpaid
     Role = models.BooleanField(default=False) # True: Admin, False: User
     Block = models.BooleanField(default=False) # True: Blocked, False: Unblocked

@@ -8,7 +8,7 @@ class user_fridge(models.Model):
     UserFridgeID = models.AutoField(primary_key=True)
     UserID = models.ForeignKey(user, on_delete=models.CASCADE, null=False, blank=False)
     FridgeID = models.ForeignKey(fridge, on_delete=models.CASCADE, null=False, blank=False)
-    FridgeImageID = models.OneToOneField(fridge_image,on_delete=models.CASCADE, null=True, blank=True)
+    FridgeImageID = models.ForeignKey(fridge_image,on_delete=models.CASCADE, null=True, blank=True)
     
     def __str__(self):
         return str(self.UserFridgeID)

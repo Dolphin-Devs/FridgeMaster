@@ -17,7 +17,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         
         ###### Add User ######
-        varUser, created = user.objects.get_or_create(Email = 'eykim9296@gmail.com', UserName='Ella Kim', Password='password0000',  Pro=True, Role=False, Block =False)
+        varUser, created = user.objects.get_or_create(Email = 'eykim9296@gmail.com', UserName='Eunyoung Kim', Password='Password000!',  Pro=True, Role=False, Block =False)
         #Add pro
         if created:
             pro.objects.create( UserID = varUser, StartDate = timezone.now(), ExpireDate = timezone.now(), SubscriptionType = True)
@@ -78,9 +78,9 @@ class Command(BaseCommand):
         if created:
             varCategory = category.objects.create(CategoryImageID = varCategoryImage, CategoryName='Fruits')
         if created:
-            varItem = item.objects.create(CategoryID= varCategory, ExpiryDate= timezone.now(), ItemName='Banana', Quantity='3')
+            varItem = item.objects.create(CategoryID= varCategory, ItemName='Banana')
         if created:
-            user_item.objects.create(UserID = varUser, ItemID = varItem, CategoryImageID= varCategoryImage, UserFridgeID= varUserFridge)
+            user_item.objects.create(UserID = varUser, ItemID = varItem, CategoryImageID= varCategoryImage, UserFridgeID= varUserFridge, ExpiryDate= timezone.now(), Quantity = '3')
 
         varCategoryImage, created = category_image.objects.get_or_create(CategoryImage='🍖')
         if created:
