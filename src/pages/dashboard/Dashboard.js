@@ -20,6 +20,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { mainListItems} from './listItems';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
+import KitchenIcon from '@mui/icons-material/Kitchen';
 import { useLocation, useNavigate} from 'react-router-dom';
 /**Components in the Dashboard */
 import UserItem from '../../components/UserItem';
@@ -215,11 +216,14 @@ export default function Dashboard() {
                 inputProps={{ 'aria-label': 'search' }}
               />
           </Search>
-            <IconButton color="inherit">
+          {/**
+           * Edit Please:: Add the AccountCircleIcon   
+           * <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <AccountCircleIcon />
               </Badge>
-            </IconButton>
+            </IconButton>*/}
+
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open} >
