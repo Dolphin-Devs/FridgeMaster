@@ -9,7 +9,7 @@ class user_item(models.Model):
     UserItemID = models.AutoField(primary_key=True)
     UserID = models.ForeignKey(user, on_delete=models.CASCADE, null=False, blank=False)
     ItemID = models.ForeignKey(item, on_delete=models.CASCADE, null=False, blank=False)
-    CategoryImageID = models.OneToOneField(category_image,on_delete=models.CASCADE, null=True, blank=True)
+    CategoryImageID = models.ForeignKey(category_image,on_delete=models.CASCADE, null=True, blank=True)
     UserFridgeID = models.ForeignKey(user_fridge, on_delete=models.CASCADE, null=False, blank=False)
     ExpiryDate = models.DateTimeField(blank=True, null=True)
     Quantity = models.IntegerField(null=False, blank=False)
