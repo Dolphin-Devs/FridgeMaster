@@ -17,7 +17,7 @@ const ForgotPassword = () => {
     */
     async function checkEmail(inputEmail){
         try{
-            axios.post('https://qxy7nvgd2k.execute-api.ca-central-1.amazonaws.com/FridgeMaster/user/forgot_password_email',{
+            axios.post('https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/user/forgotPasswordEmail',{
                 email: inputEmail
             })
             .then (function(response){

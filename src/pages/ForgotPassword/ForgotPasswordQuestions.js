@@ -18,7 +18,7 @@ const ForgotPasswordQuestions = () => {
 
     async function checkAnswer(userAnswer){
         try{
-            axios.post('https://qxy7nvgd2k.execute-api.ca-central-1.amazonaws.com/FridgeMaster/user/forgot_password_question',{
+            axios.post('https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/user/forgotPasswordQuestion',{
                 userId: userID,
                 questionId: questionID,
                 answer: userAnswer

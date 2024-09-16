@@ -58,7 +58,7 @@ const ResetPassword = () => {
 
     async function updatePassword(userPassword){
         try{
-            axios.post('https://qxy7nvgd2k.execute-api.ca-central-1.amazonaws.com/FridgeMaster/user/reset_password',{
+            axios.post('https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/user/resetPassword',{
                 userId: userID,
                 password: userPassword
             })

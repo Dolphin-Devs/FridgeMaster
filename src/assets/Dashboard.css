@@ -1,0 +1,22 @@
+@font-face {
+    font-family: 'BagelFatOne';
+    src: url('BagelFatOne-Regular.woff2');
+}
+
+.font-orange{
+    font-family: 'BagelFatOne';
+
+
+}
+.font-white{
+    font-family: 'BagelFatOne';
+    color:white;
+    text-shadow: -1px 0px orange, 0px 1px orange, 1px 0px orange, 0px -1px orange;
+}
+
+.actionBtn-wrap{
+    position: sticky;
+    bottom: 20px;
+    float: right;
+}
+

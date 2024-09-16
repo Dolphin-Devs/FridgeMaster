@@ -1,4 +1,4 @@
-import './App.css';
+import '../src/assets/App.css';
 import { BrowserRouter, Routes,Route } from 'react-router-dom';
 import Login from './pages/Login/Login'; 
 import SignUp from './pages/SignUp/SignUp';
@@ -6,8 +6,10 @@ import SignUpQustions from './pages/SignUp/SignUpQustions';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import ForgotPasswordQuestions from './pages/ForgotPassword/ForgotPasswordQuestions';
 import ResetPassword from './pages/ForgotPassword/ResetPassword';
-import Test from './pages/test';
 import TermsConditions from './pages/Settings/termsConditions';
+import Dashboard from './pages/dashboard/Dashboard'
+
+
 
 function App() {
 
@@ -15,9 +17,8 @@ function App() {
     <div>
       <BrowserRouter> 
         <Routes>
-          {/*첫 화면과 /login 추가 시 Login 화면*/}
+          {/*First page is the login page*/}
           <Route path="/" element={<Login />} />
-          <Route path="/test" element={<Test />} />
           <Route path="/termsConditions" element={<TermsConditions />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
@@ -25,6 +26,8 @@ function App() {
           <Route path="/forgotPassword" element={<ForgotPassword/>} />
           <Route path="/forgotPasswordQuestions" element={<ForgotPasswordQuestions/>} />
           <Route path="/resetPassword" element={<ResetPassword/>} />
+          <Route path="/dashboard" element={<Dashboard/>} />
+
         </Routes>
       </BrowserRouter>
     </div>

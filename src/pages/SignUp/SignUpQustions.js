@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState,useEffect } from 'react';
 import { useForm, Controller } from "react-hook-form"
-import { useLocation,Link } from 'react-router-dom';
+import { useLocation,Link,useNavigate } from 'react-router-dom';
 import { Avatar, Button, CssBaseline, TextField,FormHelperText, FormControlLabel, Checkbox, Grid, Box, Typography, Container,Select,FormControl,MenuItem,InputLabel,OutlinedInput, Menu } from '@mui/material';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -25,6 +25,7 @@ const defaultTheme = createTheme();
 const SignUpQustions = () =>{
     const { register,handleSubmit, formState: { errors }, control} = useForm();
     const location = useLocation();//For bring the data from signup page.
+    const navigate = useNavigate();
     const {email,userName,password} = location.state || {}; /**Store the data from signup page */
 
 
@@ -44,7 +45,7 @@ const SignUpQustions = () =>{
     async function getQuestion(){
         try{
             
-            const response = await axios.get('https://qxy7nvgd2k.execute-api.ca-central-1.amazonaws.com/FridgeMaster/getAllQuestions');
+            const response = await axios.get('https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/getAllQuestions');
             const parsedData = JSON.parse(response.data); // Parse a JSON string into an array.
             setQuestion(parsedData);
 
@@ -90,10 +91,17 @@ const SignUpQustions = () =>{
         }
 
         /**Post the data to API server */
-        axios.post("https://qxy7nvgd2k.execute-api.ca-central-1.amazonaws.com/FridgeMaster/user/signup",userData)
+        axios.post("https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/user/signup",userData)
         .then((response) => {
             console.log(response.data);
             alert("Sign up Success");
+            navigate('../../login',{
+                state:{
+                  email: data.email,
+                  userName: data.username,
+                  password: data.password
+                }
+              });
         })
         .catch(error =>{
             alert("Error:" + error);

@@ -12,17 +12,23 @@ const Login = () => {
 
   async function login(userEmail, userPassword){
     try{
-      axios.post('https://qxy7nvgd2k.execute-api.ca-central-1.amazonaws.com/FridgeMaster/user/signin',{
+      axios.post('https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/user/signin',{
         email: userEmail,
         password: userPassword
       })
       .then(function(response){
         console.log(response);
         alert("Login Success");
-        navigate('../test');
+        navigate('../dashboard',{
+          state:{
+            userId: response.data.userId,
+            username: response.data.username,
+            email: userEmail,
+          }
+        });
       })
       .catch(function(error){
-        console.error("Error Response: ", error.response.data);
+        console.error("Error Response: ", error);
         alert("Error: "+ error.response.data);
       })
 
@@ -96,11 +102,11 @@ const Login = () => {
             helperText={errors.password ? errors.password?.message : ''}
             />
             <Grid container sx={{ mt: 1, mb: 1 }}>
-              <FormControlLabel
+              {/*Please Add the Remember me feature*/ }
+            {/**<FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
-              />
-
+              />*/}
             </Grid>
 
           <Button type="submit" variant='contained' fullWidth sx={{ mt: 1, mb: 2 }}>Sign In</Button>
