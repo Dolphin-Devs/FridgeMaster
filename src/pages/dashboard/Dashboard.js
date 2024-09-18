@@ -352,26 +352,49 @@ export default function Dashboard() {
                     maxHeight: '85vh',
                   }}
                 >
-                  {/**Conditonal Rendering */}
+                {/**Conditonal Rendering  
+                   * If the user click the List(selectedListItem = 1), Display the <Empty/> or <ItemDetail/>
+                   * If the user click the Setting(selectedListItem = 3), Display the components
+                  */}
+            
                   {
-                    /**If the user didn't click the add item button and didn't click the specific item on the list, Show Empty component */
-                    (!isAddItem && !isSelectUserItem)?(
-                      <Empty/>
-                    ): (
-                      /**If the suer click the add item button without click the item on the list, 
-                       * User can add the information about item directley
-                       */
-                      isAddItem && !isSelectUserItem ?(<ItemDetail userId={userId} />
+                    selectedListItem === 1 ? (
+                      <>
+                        <h6>You click the 1</h6>
+                        {
+                          /**If the user didn't click the add item button and didn't click the specific item on the list, Show Empty component */
+                          (!isAddItem && !isSelectUserItem)?(
+                            <Empty/>
+                          ): (
+                            /**If the suer click the add item button without click the item on the list, 
+                             * User can add the information about item directley
+                             */
+                            isAddItem && !isSelectUserItem ?(<ItemDetail userId={userId} />
 
+                            ):(
+
+                            /**If a specific item is selected, show item detail page including that item information
+                             * User can check the item's info and update that info 
+                             */
+                              <ItemDetail userId={userId} />
+                            )
+                          )
+                        }
+                      </>
+
+
+                    ):(
+                      selectedListItem === 2 ? (
+                        <h6>You click 2</h6>
+  
                       ):(
-
-                      /**If a specific item is selected, show item detail page including that item information
-                       * User can check the item's info and update that info 
-                       */
-                        <ItemDetail userId={userId} />
+                        <h6>You click 3</h6>
+                        //Setting Components
                       )
-                    )
-                  }
+
+                    )}
+                  {/**Conditonal Rendering */}
+
 
                 </Paper>
               </Grid>
