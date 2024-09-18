@@ -140,6 +140,7 @@ export default function Dashboard() {
   const[userSelectItem,setUserSelectItem] =useState(); //State for saving the user selected item id. 
   const[isAddItem,setIsAddItem] = useState(false);//State for check whether click the add item button or not
   const[isSelectUserItem,setIsSelectUserItem] = useState(false);//State for check whether click the user item on the list or not
+  const[selectedListItem,setSelectedListItem] = useState(1);//State for check whether click the user item on the list or not
   const{email,username,userId} = location.state || {};
   const toggleDrawer = () => {
     setOpen(!open);
@@ -171,6 +172,11 @@ export default function Dashboard() {
 
     }
   }
+
+  /**Function for check which list item is selected by user */
+  const getSelectListItem = (UserSelectedList) =>{
+    setSelectedListItem(UserSelectedList);
+  } 
 
   /**Function for get the user selected item id */
   const getSelectUserID = (selectedID) =>{
@@ -251,8 +257,8 @@ export default function Dashboard() {
             </IconButton>
           </Toolbar>
 
-          <List component="nav" sx={{ bgcolor: "orange", color:"white" }}>
-            {mainListItems}
+          <List  component="nav" sx={{ bgcolor: "orange", color:"white" }}>
+            {mainListItems({getSelectListItemFunction: getSelectListItem })}
           </List>
         </Drawer>
         <Box
@@ -271,8 +277,9 @@ export default function Dashboard() {
           <Container maxWidth="" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={2}>
               {/* User Item List  */}
+
               <Grid item xs={6} md={6} lg={5}>
-                <Paper
+              <Paper
                   sx={{
                     p: 2,
                     display: 'block',/**  Get the space whether the size of the child components  */
@@ -284,31 +291,53 @@ export default function Dashboard() {
                  
                   }}
                 >
+
+                  {/**Conditonal Rendering  
+                   * If the user click the List(selectedListItem = 1), Display the <UserItem></UserItem> and <ActionButton></ActionButton>
+                   * If the user click the Setting(selectedListItem = 3), Display the components
+                  */}
+            
+                  {
+                    selectedListItem === 1 ? (
+                      <>
+                        <h6>You click 1</h6>                    
+                        {userItemList.map((el) =>(
+                          <UserItem 
+                          /**Pass the data for user item  */
+                            UserItemID={el.UserItemID} 
+                            ItemID={el.ItemID}
+                            UserFridgeID={el.UserFridgeID} 
+                            CategoryImageID={el.CategoryImageID} 
+                            ItemName={el.ItemName} 
+                            Quantity={el.Quantity} 
+                            ExpiryDate={el.ExpiryDate}
+                            /*Pass the function for setting the selected user item id*/ 
+                            getSelectUserIDFunction={getSelectUserID}
+                            /**Pass the userId for connecting API  */
+                            userId = {userId}
+                            /> 
+                        ))
+                      }
+
+                      {/*Button about Main Action such as add,save and delete*/}   
+                      <div className='actionBtn-wrap' onClick={handleAddItemClick}>
+                        <ActionButton className='actionBtn' ActionName = "Add Item" />
+                      </div>   
+                      </>
+
+
+                    ):(
+                      selectedListItem === 2 ? (
+                        <h6>You click 2</h6>
+  
+                      ):(
+                        <h6>You click 3</h6>
+                        //Setting Components
+                      )
+
+                    )}
                   
-                  {/*Call the UserItem Component based on the userItemList array elements.*/ }
-                   {userItemList.map((el) =>(
-                    <UserItem 
-                    /**Pass the data for user item  */
-                      UserItemID={el.UserItemID} 
-                      ItemID={el.ItemID}
-                      UserFridgeID={el.UserFridgeID} 
-                      CategoryImageID={el.CategoryImageID} 
-                      ItemName={el.ItemName} 
-                      Quantity={el.Quantity} 
-                      ExpiryDate={el.ExpiryDate}
-                      /*Pass the function for setting the selected user item id*/ 
-                      getSelectUserIDFunction={getSelectUserID}
-                      /**Pass the userId for connecting API  */
-                      userId = {userId}
-                      /> 
-                  ))} 
-                                    
-
-
-                  {/*Button about Main Action such as add,save and delete*/}   
-                  <div className='actionBtn-wrap' onClick={handleAddItemClick}>
-                    <ActionButton className='actionBtn' ActionName = "Add Item" />
-                  </div>            
+  
    
                 </Paper>
               </Grid>
