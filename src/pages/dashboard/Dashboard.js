@@ -22,8 +22,9 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { useLocation, useNavigate} from 'react-router-dom';
 /**Components in the Dashboard */
-import UserItem from '../../components/UserItem';
-import ItemDetail from '../../components/ItemDetail';
+import UserItem from '../../components/list-components/UserItem';
+import ItemDetail from '../../components/list-components/ItemDetail';
+import Empty from '../../components/Empty';
 import ActionButton from '../../components/ActionButton';
 
 import Copyright from '../../components/Copyright';
@@ -137,6 +138,9 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const[userItemList,setUserItemList] = useState([]);
   const[userSelectItem,setUserSelectItem] =useState(); //State for saving the user selected item id. 
+  const[isAddItem,setIsAddItem] = useState(false);//State for check whether click the add item button or not
+  const[isSelectUserItem,setIsSelectUserItem] = useState(false);//State for check whether click the user item on the list or not
+  const[selectedListItem,setSelectedListItem] = useState(1);//State for check whether click the user item on the list or not
   const{email,username,userId} = location.state || {};
   const toggleDrawer = () => {
     setOpen(!open);
@@ -169,10 +173,24 @@ export default function Dashboard() {
     }
   }
 
+  /**Function for check which list item is selected by user */
+  const getSelectListItem = (UserSelectedList) =>{
+    setSelectedListItem(UserSelectedList);
+  } 
+
   /**Function for get the user selected item id */
   const getSelectUserID = (selectedID) =>{
     setUserSelectItem(selectedID);
+    setIsSelectUserItem(true);
+    setIsAddItem(false);
   } 
+  /**Method that update the IsAddItem when user click the add item button */
+  const handleAddItemClick=()=>{
+    setIsAddItem(true);
+    setIsSelectUserItem(false);
+
+  }
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -215,11 +233,12 @@ export default function Dashboard() {
                 inputProps={{ 'aria-label': 'search' }}
               />
           </Search>
-            <IconButton color="inherit">
+          {/**Edit Please:: Please add the accountCircleIcon and implement the setting pages */}
+            {/* <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <AccountCircleIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open} >
@@ -238,8 +257,8 @@ export default function Dashboard() {
             </IconButton>
           </Toolbar>
 
-          <List component="nav" sx={{ bgcolor: "orange", color:"white" }}>
-            {mainListItems}
+          <List  component="nav" sx={{ bgcolor: "orange", color:"white" }}>
+            {mainListItems({getSelectListItemFunction: getSelectListItem })}
           </List>
         </Drawer>
         <Box
@@ -258,11 +277,12 @@ export default function Dashboard() {
           <Container maxWidth="" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={2}>
               {/* User Item List  */}
+
               <Grid item xs={6} md={6} lg={5}>
-                <Paper
+              <Paper
                   sx={{
                     p: 2,
-                    display: 'block',/**자식 컴포넌트의 크기와 상관 없이 공간 확보  */
+                    display: 'block',/**  Get the space whether the size of the child components  */
                     flexDirection: 'column',
                     minHeight: '85vh',
                     maxHeight: '85vh',
@@ -271,28 +291,52 @@ export default function Dashboard() {
                  
                   }}
                 >
-                  
-                  {/*Call the UserItem Component based on the userItemList array elements.*/ }
-                   {userItemList.map((el) =>(
-                    <UserItem 
-                    /**Pass the data for user item  */
-                      UserItemID={el.UserItemID} 
-                      ItemID={el.ItemID}
-                      UserFridgeID={el.UserFridgeID} 
-                      CategoryImageID={el.CategoryImageID} 
-                      ItemName={el.ItemName} 
-                      Quantity={el.Quantity} 
-                      ExpiryDate={el.ExpiryDate}
-                      /*Pass the function for setting the selected user item id*/ 
-                      getSelectUserIDFunction={getSelectUserID}
-                      /> 
-                  ))} 
+                  {/**Conditonal Rendering  
+                   * If the user click the List(selectedListItem = 1), Display the <UserItem></UserItem> and <ActionButton></ActionButton>
+                   * If the user click the Setting(selectedListItem = 3), Display the components
+                  */}
+            
+                  {
+                    selectedListItem === 1 ? (
+                      <>
+                        <h6>You click 1</h6>                    
+                        {userItemList.map((el) =>(
+                          <UserItem 
+                          /**Pass the data for user item  */
+                            UserItemID={el.UserItemID} 
+                            ItemID={el.ItemID}
+                            UserFridgeID={el.UserFridgeID} 
+                            CategoryImageID={el.CategoryImageID} 
+                            ItemName={el.ItemName} 
+                            Quantity={el.Quantity} 
+                            ExpiryDate={el.ExpiryDate}
+                            /*Pass the function for setting the selected user item id*/ 
+                            getSelectUserIDFunction={getSelectUserID}
+                            /**Pass the userId for connecting API  */
+                            userId = {userId}
+                            /> 
+                        ))
+                      }
 
-                      
-                  <div className='actionBtn-wrap'>
-                    {/*Button about Main Action such as add,save and delete*/}
-                    <ActionButton className='actionBtn' ActionName = "Add Item"/>
-                  </div>            
+                      {/*Button about Main Action such as add,save and delete*/}   
+                      <div className='actionBtn-wrap' onClick={handleAddItemClick}>
+                        <ActionButton className='actionBtn' ActionName = "Add Item" />
+                      </div>   
+                      </>
+
+
+                    ):(
+                      selectedListItem === 2 ? (
+                        <h6>You click 2</h6>
+  
+                      ):(
+                        <h6>You click 3</h6>
+                        //Setting Components
+                      )
+
+                    )}
+                  
+         
    
                 </Paper>
               </Grid>
@@ -307,7 +351,27 @@ export default function Dashboard() {
                     maxHeight: '85vh',
                   }}
                 >
-                 {/**  <ItemDetail />   */} 
+                  {/**Conditonal Rendering */}
+                  {
+                    /**If the user didn't click the add item button and didn't click the specific item on the list, Show Empty component */
+                    (!isAddItem && !isSelectUserItem)?(
+                      <Empty/>
+                    ): (
+                      /**If the suer click the add item button without click the item on the list, 
+                       * User can add the information about item directley
+                       */
+                      isAddItem && !isSelectUserItem ?(<ItemDetail userId={userId} />
+
+                      ):(
+
+                      /**If a specific item is selected, show item detail page including that item information
+                       * User can check the item's info and update that info 
+                       */
+                        <ItemDetail userId={userId} />
+                      )
+                    )
+                  }
+
                 </Paper>
               </Grid>
 
