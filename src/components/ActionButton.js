@@ -19,6 +19,7 @@ export default function ActionButton({ActionName}) {
       setStartIcon(<DeleteIcon sx={{color: 'white', fontSize:'5px'}} />)
     }else{
       setBtnBg("orange");
+      setStartIcon(<AddCircleIcon sx={{color:yellow[500], fontSize:'5px'}} />)
     }
   }, [ActionName]); 
 

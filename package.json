@@ -12,6 +12,7 @@
     "@mui/x-charts": "^7.16.0",
     "@mui/x-data-grid": "^7.16.0",
     "@mui/x-date-pickers": "^7.16.0",
+    "@mui/x-date-pickers-pro": "^7.17.0",
     "@mui/x-tree-view": "^7.16.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
