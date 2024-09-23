@@ -25,9 +25,6 @@ jobs:
       run: npm install
 
     - name: Build project
-      run: npm run build
-    
-    - name: Build project
       run: CI=false npm run build
 
     - name: Deploy to S3
