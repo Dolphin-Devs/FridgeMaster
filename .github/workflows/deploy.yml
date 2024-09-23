@@ -26,6 +26,9 @@ jobs:
 
     - name: Build project
       run: npm run build
+    
+    - name: Build project
+      run: CI=false npm run build
 
     - name: Deploy to S3
       run: aws s3 sync build/ s3://fridge-master-server --delete
