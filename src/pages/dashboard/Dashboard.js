@@ -10,32 +10,26 @@ import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { mainListItems} from './listItems';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { useLocation, useNavigate} from 'react-router-dom';
+import axios from 'axios';
 /**Components in the Dashboard */
 import UserItem from '../../components/list-components/UserItem';
 import ItemDetail from '../../components/list-components/ItemDetail';
 import Empty from '../../components/Empty';
 import ActionButton from '../../components/ActionButton';
-
 import Copyright from '../../components/Copyright';
-import axios from 'axios';
-
 
 
 
 const drawerWidth = 240;
-
-
 
 /**About the Search Bar */
 const Search = styled('div')(({ theme }) => ({
@@ -137,10 +131,16 @@ export default function Dashboard() {
   const location = useLocation();
   const navigate = useNavigate();
   const[userItemList,setUserItemList] = useState([]);
-  const[userSelectItem,setUserSelectItem] =useState(); //State for saving the user selected item id. 
+  //State about user select item on the UserItem Component, and Display it to Item Detail Component.
+  const[selectUserItemID,setSelectUserItemID] =useState(); //State for saving the user selected item id. 
+  const[selectFridgeID,setSelecFridgeID] =useState(); //State for saving the user selected FridgeID. 
+  const[selectItemID,setSelecItemID] =useState(); //State for saving the user selecte itemID
+  const[selectedItemInfo, setSelectedItemInfo] = useState();//State for saving and sending the user selected item information 
+
   const[isAddItem,setIsAddItem] = useState(false);//State for check whether click the add item button or not
   const[isSelectUserItem,setIsSelectUserItem] = useState(false);//State for check whether click the user item on the list or not
-  const[selectedListItem,setSelectedListItem] = useState(1);//State for check whether click the user item on the list or not
+
+  const[selectedListItemNavMenu,setSelectedListItemNavMenu] = useState(1);//State for check whether click the user item on the nAV menu
   const{email,username,userId} = location.state || {};
   const toggleDrawer = () => {
     setOpen(!open);
@@ -165,7 +165,6 @@ export default function Dashboard() {
         }
       );
       setUserItemList(response.data); //update the userItemList variable
-
     } 
     catch (error) {
       console.log(error);
@@ -173,17 +172,69 @@ export default function Dashboard() {
     }
   }
 
-  /**Function for check which list item is selected by user */
+  /**When user click the specific item(get a new value in selectUserItemID), Call the getItemInfo API */
+  useEffect(()=>{
+    try{
+      getItemInfoUserItemID(userId,selectUserItemID);
+
+    }catch(error){
+      console.log("useEffect based on selectUserItemID is error :" + error);
+    }
+  },[selectUserItemID])
+
+
+  /**Function for get the item information(item name, expiredate,storage,category,quantity) based on the UserItemID */
+  async function getItemInfoUserItemID(inputID, inputUserItemID){
+    try{
+      const response = await axios.get(
+        'https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/item/getItemInfo',
+        {
+          params: {id:inputID, UserItemID:inputUserItemID}
+        }
+      )
+      setSelectedItemInfo(response.data);//Update state with new item info
+
+    }catch(error){
+      console.log("getItemInfo api Error: " + error);
+    }
+  }
+
+  /**Function for check which list item is selected by user on the Nav Menu*/
   const getSelectListItem = (UserSelectedList) =>{
-    setSelectedListItem(UserSelectedList);
+    setSelectedListItemNavMenu(UserSelectedList);
   } 
 
-  /**Function for get the user selected item id */
-  const getSelectUserID = (selectedID) =>{
-    setUserSelectItem(selectedID);
+  /**Function for get the user selected  user item id */
+  const getSelectUserItemID = (selectedID) =>{
+    setSelectUserItemID(selectedID);
     setIsSelectUserItem(true);
     setIsAddItem(false);
   } 
+
+  /**Function for get the user selected item id */
+  const getSelectUserFridgeID = (selected) =>{
+    setSelecFridgeID(selected);
+    setIsSelectUserItem(true);
+    setIsAddItem(false);
+  } 
+
+//Function for get the selected item id
+const getSelectItemID = (selected) =>{
+  setSelecItemID(selected);
+  setIsSelectUserItem(true);
+  setIsAddItem(false);
+}
+
+/**Method that update isSelectUserItem and isAddItem after delete the item */
+const handleAfterAddDeleteItem=(input)=>{
+
+  if(input === true){
+    setIsAddItem(false);
+    setIsSelectUserItem(false);
+  }
+
+}
+
   /**Method that update the IsAddItem when user click the add item button */
   const handleAddItemClick=()=>{
     setIsAddItem(true);
@@ -223,6 +274,7 @@ export default function Dashboard() {
               sx={{ flexGrow: 1 }}
             >
               <p class="font-orange">FRIDGE <a class="font-white">MASTER</a></p>
+             
             </Typography>
             <Search>
               <SearchIconWrapper>
@@ -297,24 +349,29 @@ export default function Dashboard() {
                    * If the user click the Setting(selectedListItem = 3), Display the components
                   */}
             
-                  {
-                    selectedListItem === 1 ? (
+                  {selectedListItemNavMenu === 1 ? (
                       <>
-                        <h6>You click 1</h6>                    
+                                    
                         {userItemList.map((el) =>(
                           <UserItem 
                           /**Pass the data for user item  */
                             UserItemID={el.UserItemID} 
                             ItemID={el.ItemID}
+                            FridgeID={el.FridgeID}
                             UserFridgeID={el.UserFridgeID} 
                             CategoryImageID={el.CategoryImageID} 
                             ItemName={el.ItemName} 
                             Quantity={el.Quantity} 
                             ExpiryDate={el.ExpiryDate}
-                            /*Pass the function for setting the selected user item id*/ 
-                            getSelectUserIDFunction={getSelectUserID}
+                          
+                            /*Pass the function for setting the selected user item id and fridge id*/ 
+                            getSelectUserItemIDFunction={getSelectUserItemID}
+                            getSelectUserFridgeIDFunction={getSelectUserFridgeID}
+                            getSelectItemIDFunction={getSelectItemID}
+                           
                             /**Pass the userId for connecting API  */
                             userId = {userId}
+                            
                             /> 
                         ))
                       }
@@ -327,7 +384,7 @@ export default function Dashboard() {
 
 
                     ):(
-                      selectedListItem === 2 ? (
+                      selectedListItemNavMenu === 2 ? (
                         <h6>You click 2</h6>
   
                       ):(
@@ -358,9 +415,8 @@ export default function Dashboard() {
                   */}
             
                   {
-                    selectedListItem === 1 ? (
+                    selectedListItemNavMenu === 1 ? (
                       <>
-                        <h6>You click the 1</h6>
                         {
                           /**If the user didn't click the add item button and didn't click the specific item on the list, Show Empty component */
                           (!isAddItem && !isSelectUserItem)?(
@@ -369,14 +425,34 @@ export default function Dashboard() {
                             /**If the suer click the add item button without click the item on the list, 
                              * User can add the information about item directley
                              */
-                            isAddItem && !isSelectUserItem ?(<ItemDetail userId={userId} />
+                            isAddItem && !isSelectUserItem ?(
+                              <ItemDetail 
+                                userId={userId} 
+                                selectFridgeIDFromUser={selectFridgeID}
+                                selectItemID={selectItemID} 
+                                selectUserItemID={selectUserItemID}
+                                handleAfterAddDeleteItemFunction ={handleAfterAddDeleteItem}
+                                />
 
                             ):(
 
                             /**If a specific item is selected, show item detail page including that item information
                              * User can check the item's info and update that info 
                              */
-                              <ItemDetail userId={userId} />
+                            
+                                  <>
+                                      <ItemDetail 
+                                        userId={userId} 
+                                        selectFridgeIDFromUser={selectFridgeID} 
+                                        selectItemID={selectItemID} 
+                                        selectUserItemID={selectUserItemID}
+                                        selectedItemInfo={selectedItemInfo} 
+                                        handleAfterAddDeleteItemFunction ={handleAfterAddDeleteItem}
+                                        /> {/**Pass the userid and userSelectItem from useritem */}
+
+                                  
+                                  </>
+                              
                             )
                           )
                         }
@@ -384,7 +460,7 @@ export default function Dashboard() {
 
 
                     ):(
-                      selectedListItem === 2 ? (
+                      selectedListItemNavMenu === 2 ? (
                         <h6>You click 2</h6>
   
                       ):(

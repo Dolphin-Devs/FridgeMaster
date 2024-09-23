@@ -6,7 +6,7 @@ import { Avatar, Button, CssBaseline, TextField,Link, Grid, Box, Typography, Con
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Copyright from '../../components/Copyright';
-import '../../styles/signup.css';/** css file*/
+import '../../assets/signup.css';/** css file*/
 /**Icon */
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';

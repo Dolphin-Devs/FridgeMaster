@@ -14,9 +14,10 @@ import Grid from '@mui/material/Grid';
 import axios from 'axios';
 import { Alert } from '@mui/material';
 
-export default function MediaControlCard({UserItemID, ItemID, UserFridgeID, CategoryImageID, ItemName, Quantity,ExpiryDate,getSelectUserIDFunction,userId}) {
+export default function MediaControlCard({UserItemID, ItemID,FridgeID, UserFridgeID, CategoryImageID, ItemName, Quantity,ExpiryDate,getSelectItemIDFunction,getSelectUserItemIDFunction,getSelectUserFridgeIDFunction,userId}) {
   const [responseCategoryImage,setResponseCategoryImage] = useState();
   const [responseFridgeName,setResponseFridgeName] = useState();
+  const[expiredColorBGChange,setExpiredColorBGChange] = useState('orange');
   const today = new Date();//The variable for calculatin the duration from today until the expiration date
   const expirationDate = new Date(ExpiryDate);
   const [dDay, setDDay] = useState();
@@ -29,8 +30,12 @@ export default function MediaControlCard({UserItemID, ItemID, UserFridgeID, Cate
   // Set the dDay to round the diffTime value  
   if(diffTime>=0){
     setDDay("D - " + Math.ceil(diffTime));
-  }else{
-    setDDay("D + " + -(Math.ceil(diffTime)));
+  }else if (diffTime === 0) {
+    setDDay("D - 0"); // D-Day
+  } else {
+    setDDay("D + " + Math.abs(Math.ceil(diffTime))); // After d-0. continue to (D + n)
+    setExpiredColorBGChange("#B8B8B8");
+
   }
 
 };
@@ -70,9 +75,13 @@ async function getFridgeName(inputFridgeID, inputUserID){
 
 
 /**Function for sending selected user item id to dashboard.js(Parent Component) */
-function sendUserID(selectedID){
-  getSelectUserIDFunction(selectedID);  
+function sendSelectedUserItemIDandFridgeID(inputItemID, inputFridgeID,inputID){
+  getSelectUserItemIDFunction(inputItemID);  
+  getSelectUserFridgeIDFunction(inputFridgeID);
+  getSelectItemIDFunction(inputID);
+
 }
+
 
 /**Function for Connecting the API can bring the Storage name used UserFridgeID  */
 
@@ -86,15 +95,15 @@ function sendUserID(selectedID){
   },[]);
 
   return (
-    <Card onClick={()=>sendUserID(ItemID)} sx={{ flexGrow:1, borderRadius: 5, mb:2  }}>
+    <Card onClick={()=>sendSelectedUserItemIDandFridgeID(UserItemID,FridgeID,ItemID)} sx={{ flexGrow:1, borderRadius: 5, mb:2  }}>
       <CardActionArea>
-      <Grid container spacing={6}>
+      <Grid container spacing={6} >
 
         <Grid  item xs ={3} sx={{ alignItems: 'top', mt:1, ml:1 }}>
-            <Chip label = {dDay} variant="outlined" sx={{ color: 'orange', borderColor: 'orange', border: 1.5,  fontWeight: 'bold'}} />
+            <Chip label = {dDay} variant="outlined" sx={{ color: expiredColorBGChange,  border: 1.5,  fontWeight: 'bold'}} />
         </Grid>
         <Grid item xs ={5}>
-            <CardContent sx={{ flex: '1 0 auto',   mt:0, ml:1 }}>
+            <CardContent sx={{  flex: '1 0 auto',   mt:0, ml:1 }}>
               <Typography  variant="subtitle1" sx={{}}>
                       {ItemName}
               </Typography>     

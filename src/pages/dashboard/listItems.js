@@ -19,12 +19,12 @@ export const mainListItems =({getSelectListItemFunction})=>(
       </ListItemIcon >
       <ListItemText primary="Lists" />
     </ListItemButton>
-    <ListItemButton onClick={()=>getSelectListItemFunction(2)}>
+    {/* <ListItemButton onClick={()=>getSelectListItemFunction(2)}>
       <ListItemIcon>
         <KitchenIcon style={{ color: "white" }} />
       </ListItemIcon>
       <ListItemText primary="Storage" />
-    </ListItemButton>
+    </ListItemButton> */}
     <ListItemButton onClick={()=>getSelectListItemFunction(3)}>
       <ListItemIcon>
         <SettingsIcon style={{ color: "white" }} />

@@ -1,78 +1,57 @@
 import * as React from 'react';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import Dialog from '@mui/material/Dialog';
-import RadioGroup from '@mui/material/RadioGroup';
-import Radio from '@mui/material/Radio';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import {
+  Box,
+  Button,
+  List,
+  ListItemButton,
+  ListItemText,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Dialog,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+} from '@mui/material';
+import { ArrowDropDown as ArrowDropDownIcon } from '@mui/icons-material';
 import axios from 'axios';
-import { Typography } from '@mui/material';
 
 
 
 function ConfirmationDialogRaw(props) {
-  const { onClose, value: valueProp, open, ...other } = props;
+  const { onClose, value: valueProp, open,storageInfo=[],userSelectFridgeIDFunction,selectedItemInfo, ...other } = props;
   const [value, setValue] = React.useState(valueProp); //Save the categoryName from the Dialog
   const radioGroupRef = React.useRef(null);
-//Handling data for category 
-const [category,setCategory] = useState([]);//State for category data
-const [categoryImageId,setCategoryImageId] = useState();//State for category image id data
-const [responseCategoryImage,setResponseCategoryImage] = useState("");//State for category image data
+  const [selectedFridgeID, setSelectedFridgeID] = useState("");// Track the selected user_fridge_id
 
-/**Function for Connecting getAllCategory API getting category name and emoji */
-async function getAllCategory(){
-    try{
-        const response = await axios.get('https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/category/getAllCategories');
-        const parseData = JSON.parse(response.data);
-        setCategory(parseData);
-        //Set the value of the categoryImageId
-        const imageIds = parseData.map(c => c.CategoryImageID_id);
-        setCategoryImageId(imageIds);
-      // CategoryImageID로 각 이모지를 가져옴
-      fetchCategoryEmojis(imageIds);  // 이 함수가 모든 이모지를 불러옴
-        
-    }catch(error){
-        console.log("Failed to get the data from getAllCategory API: " + error);
+
   
-    }
+
+  //절대 건들이지 마
+//UseEffect can start rendering when the value in the Dialog be changed.
+//Track the fridge_id depends on value(fridge_name) 
+useEffect((()=>{
+  const selectedFridge = storageInfo.find(s=>s.fridge_name === value); //Find the selected object compare with value.
+  if(selectedFridge){
+    setSelectedFridgeID(selectedFridge.user_fridge_id);//Update the selectedFridgeID state to selectedFridge.user_fridge_id
+  }else{
+    setSelectedFridgeID(null);//Case that user didn't select the storage yet
   }
-
-  /**Function for Connecting the API can bring the CategoryImage used CategoryImageID */
-async function getCategoryImage(input){
-    try{
-        const response = await axios.get(
-          'https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/category/getCategoryImage',
-        {
-          params: { CategoryImageID: input }  // Using key "params" and sending parameter to API.  
-        });
-        // 이모지 데이터를 상태에 업데이트 (동적으로 추가)
-        setResponseCategoryImage(prevEmojis => ({
-            ...prevEmojis,
-            [input]: response.data.CategoryImage  // 입력된 ID에 맞는 이모지 저장
-        }));
-
-    }catch(error){
-        console.log("Failed to get the data from getCategory API: " + error);
-
-    }
 }
-  /** CategoryImageId 배열을 순회하여 각각의 이모지를 가져옴 */
-  async function fetchCategoryEmojis(imageIds) {
-    const emojiPromises = imageIds.map(id => getCategoryImage(id));  // 각 ID로 API 호출
-    await Promise.all(emojiPromises);  // 모든 이모지 가져오는 API 호출이 완료될 때까지 기다림
+),[value,storageInfo])
 
+
+
+  //절대 건들이지 마
+//Send the updated selectedFridgeID value to ItemDetail Component(Parent component).
+useEffect(() => {
+  // if selectedFridgeID is existed, call the userSelectFridgeIDFunction
+  if (selectedFridgeID) {
+    userSelectFridgeIDFunction(selectedFridgeID);
   }
-
-
+}, [selectedFridgeID]);
 
 
 //Handling the dialog action
@@ -94,6 +73,7 @@ async function getCategoryImage(input){
 
   const handleOk = () => {
     onClose(value);
+
   };
 
   const handleChange = (event) => {
@@ -109,21 +89,22 @@ async function getCategoryImage(input){
       open={open}
       {...other}
     >
-      <DialogTitle>Choose a category</DialogTitle>
+      <DialogTitle>Choose a storage</DialogTitle>
       <DialogContent dividers>
         <RadioGroup 
           ref={radioGroupRef}
-          aria-label="ringtone"
-          name="ringtone"
+          aria-label="storage"
+          name="storage"
           value={value}
           onChange={handleChange}
         >
-          {category.map((c) => (
+          {storageInfo.map((s) => (
             <FormControlLabel
-              value= {c.CategoryName}
-              key={c.CategoryID}
+              value= {s.fridge_name}
+              key={s.user_fridge_id}
               control={<Radio />}
-              label={responseCategoryImage[c.CategoryID] + "  "+ c.CategoryName}
+              label={s.fridge_name}
+              
             />
           ))}
         </RadioGroup>
@@ -144,21 +125,23 @@ ConfirmationDialogRaw.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-export default function ConfirmationDialog(userRealId) {
+export default function ConfirmationDialog({userRealId, userSelectFridgeIDFunction,selectedItemInfo}) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('none');
+  const [userId,setUserId] = useState("");
+  const [storageInfo, setStorageInfo] = useState([]);
+  const [selectedFridgeID, setSelectedFridgeID] = useState(null);
 
   const handleClickListItem = () => {
     setOpen(true);
   };
+ 
+  useEffect(()=>{
 
-  const handleClose = (newValue) => {
-    setOpen(false);
-
-    if (newValue) {
-      setValue(newValue);
-    }
-  };
+    setUserId(userRealId);
+    getAllFridge(userId);//Call the getAllFridge 
+  
+  },[userId]);//Set rendering this component after userId was changed.
 
 /**Function for Connecting the API can bring the All fridgeName based on the user id */
 async function getAllFridge(input){
@@ -168,28 +151,55 @@ async function getAllFridge(input){
         {
           params: { id: input }  // Using key "params" and sending parameter to API.  
         });
-        console.log(response.data);
+      
+        //Store the value of "response.data" to "storageInfo"
+        setStorageInfo( response.data);
+        
   
   
     }catch(error){
-        console.log("Failed to get the data from getFridgeImage API: " + error);
+        console.log("Failed to get the data from getAllFridge API: " + error);
   
     }
   }
-  
-  
-  /**Connecting the API that bring the All FridgeName and All Category Name  */
-  
-    useEffect(()=>{
-  
-     getAllFridge(userRealId[0]);
-    },[]);
+  // selectedItemInfo 또는 storageInfo가 변경될 때 value와 selectedFridgeID 설정
+  useEffect(() => {
+    if (selectedItemInfo && storageInfo.length > 0) {
+      const selectedStorage = storageInfo.find(
+        (s) => s.user_fridge_id === selectedItemInfo.UserFridgeID
+      );
+      if (selectedStorage) {
+        setValue(selectedStorage.fridge_name); // UserFridgeID에 해당하는 fridge_name을 value로 설정
+        setSelectedFridgeID(selectedStorage.user_fridge_id); // user_fridge_id를 selectedFridgeID로 설정
+      }
+    }
+  }, [selectedItemInfo, storageInfo]);
+
+    // selectedFridgeID가 변경될 때마다 부모 컴포넌트로 값 전달
+    useEffect(() => {
+      if (selectedFridgeID) {
+        userSelectFridgeIDFunction(selectedFridgeID);
+      }
+    }, [selectedFridgeID]);
+
+      // 다이얼로그 닫기 및 값 설정
+  const handleClose = (newValue) => {
+    setOpen(false);
+    if (newValue) {
+      setValue(newValue); // 선택된 fridge_name 설정
+      // 선택한 fridge_name에 해당하는 user_fridge_id 찾기
+      const selectedFridge = storageInfo.find(
+        (s) => s.fridge_name === newValue
+      );
+      if (selectedFridge) {
+        setSelectedFridgeID(selectedFridge.user_fridge_id); // 선택한 user_fridge_id 설정
+      }
+    }
+  };
 
   return (
     <Box  sx={{ bgcolor: 'background.paper' }}>
-
       <List component="div" role="group">
-
         <ListItemButton
           sx={{
             width: '100%', 
@@ -216,6 +226,9 @@ async function getAllFridge(input){
           open={open}
           onClose={handleClose}
           value={value}
+          storageInfo={storageInfo} 
+          userSelectFridgeIDFunction={userSelectFridgeIDFunction}
+          selectedItemInfo={selectedItemInfo}
         />
       </List>
     </Box>

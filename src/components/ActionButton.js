@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 import { yellow } from '@mui/material/colors';
 import { Typography } from '@mui/material';
 
-export default function ActionButton({ActionName}) {
+export default function ActionButton({ActionName,onClick}) {
   const[btnBg,setBtnBg] = useState("orange");
   const[startIcon,setStartIcon] = useState(<AddCircleIcon sx={{color:yellow[500], fontSize:'5px'}} />);
 
@@ -30,6 +30,7 @@ export default function ActionButton({ActionName}) {
         variant="outlined" 
         size="large" 
         startIcon={startIcon} 
+        onClick={onClick}
         sx={{ minWidth:"50px", color:"white", bgcolor: btnBg,border: 2, fontWeight:"regular", borderRadius: 4,fontSize: '12px' }}>
          {ActionName}
       </Button>
