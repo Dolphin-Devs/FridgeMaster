@@ -8,7 +8,7 @@
             "s3transfer",
             "concurrent"
         ],
-        "profile_name": "UserElla",
+
         "project_name": "fridgemaster",
         "runtime": "python3.12",
         "s3_bucket": "fridge-master-server"
