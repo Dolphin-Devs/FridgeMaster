@@ -11,6 +11,7 @@
 
         "project_name": "fridgemaster",
         "runtime": "python3.12",
-        "s3_bucket": "fridge-master-server"
+        "s3_bucket": "fridge-master-server",
+        "aws_region": "ca-central-1" 
     }
 }
