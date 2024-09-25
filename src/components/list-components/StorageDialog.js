@@ -26,10 +26,6 @@ function ConfirmationDialogRaw(props) {
   const radioGroupRef = React.useRef(null);
   const [selectedFridgeID, setSelectedFridgeID] = useState("");// Track the selected user_fridge_id
 
-
-  
-
-  //절대 건들이지 마
 //UseEffect can start rendering when the value in the Dialog be changed.
 //Track the fridge_id depends on value(fridge_name) 
 useEffect((()=>{
@@ -42,9 +38,6 @@ useEffect((()=>{
 }
 ),[value,storageInfo])
 
-
-
-  //절대 건들이지 마
 //Send the updated selectedFridgeID value to ItemDetail Component(Parent component).
 useEffect(() => {
   // if selectedFridgeID is existed, call the userSelectFridgeIDFunction

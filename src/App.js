@@ -9,7 +9,7 @@ import ForgotPasswordQuestions from './pages/ForgotPassword/ForgotPasswordQuesti
 import ResetPassword from './pages/ForgotPassword/ResetPassword';
 import TermsConditions from './pages/Settings/termsConditions';
 import Dashboard from './pages/dashboard/Dashboard'
-
+import TermsAndConditions from './components/TermsAndConditions'
 
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
           <Route path="/forgotPasswordQuestions" element={<ForgotPasswordQuestions/>} />
           <Route path="/resetPassword" element={<ResetPassword/>} />
           <Route path="/dashboard" element={<Dashboard/>} />
-
+         <Route path="/termsAndConditions" element={<TermsAndConditions/>} /> 
         </Routes>
       </BrowserRouter>
     </div>
