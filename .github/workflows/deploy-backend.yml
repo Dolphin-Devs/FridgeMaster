@@ -22,11 +22,12 @@ jobs:
       run: |
         python -m venv handler_venv
         source handler_venv/bin/activate
-        pip install --upgrade setuptools==56.0.0  
         pip install -r requirements.txt
 
-    - name: Install distutils
-      run: sudo apt-get install python3.8-distutils
+    - name: Install setuptools and distutils
+      run: |
+        pip install --upgrade setuptools==58.0.4
+        pip install distlib
 
     - name: Deploy to AWS Lambda
       run: |
