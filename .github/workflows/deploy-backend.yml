@@ -23,6 +23,11 @@ jobs:
         python -m venv handler_venv
         source handler_venv/bin/activate
 
+    - name: Install setuptools
+      run: |
+        source handler_venv/bin/activate
+        pip install --upgrade setuptools
+
     - name: Install dependencies
       run: |
         source handler_venv/bin/activate
