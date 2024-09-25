@@ -22,7 +22,7 @@ jobs:
       run: |
         python -m venv handler_venv
         source handler_venv/bin/activate
-        pip install --upgrade setuptools==58.0.0  # setuptools를 안정적인 버전으로 다운그레이드
+        pip install --upgrade setuptools==56.0.0  
         pip install -r requirements.txt
 
     - name: Deploy to AWS Lambda
