@@ -25,6 +25,9 @@ jobs:
         pip install --upgrade setuptools==56.0.0  
         pip install -r requirements.txt
 
+    - name: Install distutils
+      run: sudo apt-get install python3-distutils
+
     - name: Deploy to AWS Lambda
       run: |
         source handler_venv/bin/activate
