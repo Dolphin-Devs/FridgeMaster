@@ -23,9 +23,10 @@ jobs:
         python -m venv handler_venv
         source handler_venv/bin/activate
 
-    - name: Install setuptools
+    - name: Install distutils and setuptools
       run: |
-        source handler_venv/bin/activate
+        sudo apt-get update
+        sudo apt-get install python3-distutils
         pip install --upgrade setuptools
 
     - name: Install dependencies
