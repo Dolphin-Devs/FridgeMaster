@@ -58,7 +58,7 @@ useEffect(()=>{
   if(selectFridgeIDFromUser){
     //alert(selectFridgeIDFromUser); 
   }else{
-    alert("You don't have selectFridgeIDFromUser");
+    //alert("You don't have selectFridgeIDFromUser");
   }
 
 },[selectFridgeIDFromUser])
@@ -263,7 +263,7 @@ const getSelectCategoryImageID = (UserSelectedCategoryImageID) =>{
 
 
   return (
-    <Box sx={{ width: '60%', ml:20,mt:1 }}>
+    <Box sx={{ width: '60%', ml:12,mr:12,mt:1 }}>
         <Grid container direction="row" spacing={4} >
             <Grid item lg={12}>
                 <Paper

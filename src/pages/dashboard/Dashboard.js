@@ -23,13 +23,16 @@ import axios from 'axios';
 /**Components in the Dashboard */
 import UserItem from '../../components/list-components/UserItem';
 import ItemDetail from '../../components/list-components/ItemDetail';
+import GeneralSetting from '../../components/setting-components/GeneralSetting';
+import OtherSetting from '../../components/setting-components/OtherSetting';
+import AboutUs from '../../components/setting-components/AboutUs';
 import Empty from '../../components/Empty';
 import ActionButton from '../../components/ActionButton';
 import Copyright from '../../components/Copyright';
 
 
 
-const drawerWidth = 240;
+const drawerWidth = 160;
 
 /**About the Search Bar */
 const Search = styled('div')(({ theme }) => ({
@@ -140,8 +143,73 @@ export default function Dashboard() {
   const[isAddItem,setIsAddItem] = useState(false);//State for check whether click the add item button or not
   const[isSelectUserItem,setIsSelectUserItem] = useState(false);//State for check whether click the user item on the list or not
 
+
   const[selectedListItemNavMenu,setSelectedListItemNavMenu] = useState(1);//State for check whether click the user item on the nAV menu
+
+  const [shouldUpdate, setShouldUpdate] = useState(false); //State for handling update or not 
+
+  //About Setting Page
+  const[isAboutUs, setIsAboutUs] = useState(false);//State for handling about user selects about us
+
   const{email,username,userId} = location.state || {};
+
+
+/**Function for Sign out and go to the Login Page */
+const signOut = (input) =>{
+  if(input === true){
+      // Initialize all the state from the User
+      setUserItemList([]);
+      setSelectUserItemID(null);
+      setSelecFridgeID(null);
+      setSelecItemID(null);
+      setSelectedItemInfo(null);
+      setIsAddItem(false);
+      setIsSelectUserItem(false);
+      setSelectedListItemNavMenu(1); 
+    alert("Sign-out Success");
+    navigate('/login',{
+      replace: true,
+      state: null, // Initialize state 
+    });
+  }
+
+}
+
+/**Function if user click the logo, go back to the first page */
+const handleLogoClick = () =>{
+  setSelectedListItemNavMenu(1);
+  setIsAddItem(false);
+  setIsSelectUserItem(false);
+  setIsAboutUs(false);
+
+}
+
+/**Function for check that user click the about us in the General Setting component */
+const handleAboutUs = (input) =>{
+  if(input === true){
+    setIsAboutUs(!isAboutUs)
+  }
+}
+/**Function when user check the terms and conditioins, 
+ * After click the back button in the terms and condition page, maintain ex page
+ */
+const handleTermsandConditions = (input) => {
+  if (input === true) {
+    setSelectedListItemNavMenu(3);
+    setIsAboutUs(true);
+    navigate('/termsAndConditions', {
+      state: { isAboutUs: true }, // Convey the current state in "isAboutUs" page
+    });
+  }
+};
+
+useEffect(() => {
+  if (location.state && location.state.isAboutUs) {
+    setIsAboutUs(location.state.isAboutUs);
+    setSelectedListItemNavMenu(3);
+  }
+}, [location.state]);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -151,7 +219,7 @@ export default function Dashboard() {
     try {
         getItems(userId);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   }, [userId]); 
   
@@ -167,7 +235,7 @@ export default function Dashboard() {
       setUserItemList(response.data); //update the userItemList variable
     } 
     catch (error) {
-      console.log(error);
+      //console.log(error);
 
     }
   }
@@ -178,7 +246,7 @@ export default function Dashboard() {
       getItemInfoUserItemID(userId,selectUserItemID);
 
     }catch(error){
-      console.log("useEffect based on selectUserItemID is error :" + error);
+      //console.log("useEffect based on selectUserItemID is error :" + error);
     }
   },[selectUserItemID])
 
@@ -195,7 +263,7 @@ export default function Dashboard() {
       setSelectedItemInfo(response.data);//Update state with new item info
 
     }catch(error){
-      console.log("getItemInfo api Error: " + error);
+      //console.log("getItemInfo api Error: " + error);
     }
   }
 
@@ -223,7 +291,21 @@ const getSelectItemID = (selected) =>{
   setSelecItemID(selected);
   setIsSelectUserItem(true);
   setIsAddItem(false);
+  setIsAboutUs(false);
 }
+
+
+
+/**Update the userItemList when hadnleAfterAddDeleteItem got a true parameter from Item Detail(Chiled Component) */
+
+  /**Method that update the IsAddItem when user click the add item button */
+  const handleAddItemClick=()=>{
+    setIsAddItem(true);
+    setIsSelectUserItem(false);
+    setIsAboutUs(false);
+
+  }
+
 
 /**Method that update isSelectUserItem and isAddItem after delete the item */
 const handleAfterAddDeleteItem=(input)=>{
@@ -231,16 +313,18 @@ const handleAfterAddDeleteItem=(input)=>{
   if(input === true){
     setIsAddItem(false);
     setIsSelectUserItem(false);
+    setShouldUpdate(true);//Set the true that update userItemList
   }
 
 }
 
-  /**Method that update the IsAddItem when user click the add item button */
-  const handleAddItemClick=()=>{
-    setIsAddItem(true);
-    setIsSelectUserItem(false);
-
+/** Update userItemList when shouldUpdate changes */
+useEffect(() => {
+  if (shouldUpdate) {
+    getItems(userId);
+    setShouldUpdate(false); // After update set the shouldupdate state to false
   }
+}, [shouldUpdate, userId]);
 
 
   return (
@@ -271,11 +355,14 @@ const handleAfterAddDeleteItem=(input)=>{
               variant="h6"
               color="inherit"
               noWrap
-              sx={{ flexGrow: 1 }}
+              sx={{ flexGrow: 1, cursor: 'pointer' }}
+              onClick={handleLogoClick}
             >
-              <p class="font-orange">FRIDGE <a class="font-white">MASTER</a></p>
+              <p  class="font-orange">FRIDGE <a class="font-white">MASTER</a></p>
              
             </Typography>
+            {/**Edit Please::: Please add the search bar and search feature */}
+            {/** 
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />
@@ -284,7 +371,7 @@ const handleAfterAddDeleteItem=(input)=>{
                 placeholder="Search…"
                 inputProps={{ 'aria-label': 'search' }}
               />
-          </Search>
+            </Search>*/}
           {/**Edit Please:: Please add the accountCircleIcon and implement the setting pages */}
             {/* <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -301,6 +388,7 @@ const handleAfterAddDeleteItem=(input)=>{
               justifyContent: 'flex-end',
               px: [1],
               bgcolor: "orange",
+             
 
             }}
           >
@@ -309,7 +397,7 @@ const handleAfterAddDeleteItem=(input)=>{
             </IconButton>
           </Toolbar>
 
-          <List  component="nav" sx={{ bgcolor: "orange", color:"white" }}>
+          <List  component="nav" sx={{ bgcolor: "orange", color:"white"}}>
             {mainListItems({getSelectListItemFunction: getSelectListItem })}
           </List>
         </Drawer>
@@ -352,29 +440,26 @@ const handleAfterAddDeleteItem=(input)=>{
                   {selectedListItemNavMenu === 1 ? (
                       <>
                                     
-                        {userItemList.map((el) =>(
-                          <UserItem 
-                          /**Pass the data for user item  */
-                            UserItemID={el.UserItemID} 
-                            ItemID={el.ItemID}
-                            FridgeID={el.FridgeID}
-                            UserFridgeID={el.UserFridgeID} 
-                            CategoryImageID={el.CategoryImageID} 
-                            ItemName={el.ItemName} 
-                            Quantity={el.Quantity} 
-                            ExpiryDate={el.ExpiryDate}
-                          
-                            /*Pass the function for setting the selected user item id and fridge id*/ 
-                            getSelectUserItemIDFunction={getSelectUserItemID}
-                            getSelectUserFridgeIDFunction={getSelectUserFridgeID}
-                            getSelectItemIDFunction={getSelectItemID}
-                           
-                            /**Pass the userId for connecting API  */
-                            userId = {userId}
-                            
-                            /> 
-                        ))
-                      }
+                    {userItemList
+                      .slice()
+                      .sort((a, b) => new Date(a.ExpiryDate) - new Date(b.ExpiryDate))
+                      .map((el) => (
+                        <UserItem
+                          key={el.UserItemID}
+                          UserItemID={el.UserItemID}
+                          ItemID={el.ItemID}
+                          FridgeID={el.FridgeID}
+                          UserFridgeID={el.UserFridgeID}
+                          CategoryImageID={el.CategoryImageID}
+                          ItemName={el.ItemName}
+                          Quantity={el.Quantity}
+                          ExpiryDate={el.ExpiryDate}
+                          getSelectUserItemIDFunction={getSelectUserItemID}
+                          getSelectUserFridgeIDFunction={getSelectUserFridgeID}
+                          getSelectItemIDFunction={getSelectItemID}
+                          userId={userId}
+                        />
+                      ))}
 
                       {/*Button about Main Action such as add,save and delete*/}   
                       <div className='actionBtn-wrap' onClick={handleAddItemClick}>
@@ -388,8 +473,20 @@ const handleAfterAddDeleteItem=(input)=>{
                         <h6>You click 2</h6>
   
                       ):(
-                        <h6>You click 3</h6>
-                        //Setting Components
+                        <>
+                        
+                          <h3>&nbsp;&nbsp;&nbsp;Hi, {username}</h3> 
+
+                          <GeneralSetting                                         
+                            signOutFunction={signOut}  
+                        
+                          />
+                          <OtherSetting                                         
+                            handleAboutUsFunction={handleAboutUs}
+
+                        
+                          />
+                        </>
                       )
 
                     )}
@@ -464,7 +561,12 @@ const handleAfterAddDeleteItem=(input)=>{
                         <h6>You click 2</h6>
   
                       ):(
-                        <h6>You click 3</h6>
+                        isAboutUs === true?(
+                          <AboutUs
+                            handleTermsandConditionsFunction={handleTermsandConditions}
+                          /> ):(<></>
+                        
+                        )
                         //Setting Components
                       )
 
