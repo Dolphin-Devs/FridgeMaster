@@ -1,4 +1,4 @@
-name: Update Django Backend on AWS Lambda
+name: Deploy Django Backend to AWS Lambda
 
 on:
   push:
@@ -6,29 +6,17 @@ on:
       - main
 
 jobs:
-  update:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.8'
-
-    - name: Set up Python and install dependencies
+    - name: Build and Deploy with Docker
       run: |
-        python -m venv handler_venv
-        source handler_venv/bin/activate
-        pip install setuptools==56.0.0  
-        pip install -r requirements.txt
-
-    - name: Update Lambda
-      run: |
-        source handler_venv/bin/activate
-        zappa update dev
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        docker build -t fridgemaster-app .
+        docker run \
+          -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
+          -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
+          fridgemaster-app
