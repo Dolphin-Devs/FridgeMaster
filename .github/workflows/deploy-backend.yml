@@ -1,4 +1,4 @@
-name: Deploy Django Backend to AWS Lambda
+name: Update Django Backend on AWS Lambda
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
       - main
 
 jobs:
-  deploy:
-    runs-on: ubuntu-20.04 
+  update:
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
@@ -22,13 +22,9 @@ jobs:
       run: |
         python -m venv handler_venv
         source handler_venv/bin/activate
-        pip install --upgrade setuptools==56.0.0  
         pip install -r requirements.txt
 
-    - name: Install distutils
-      run: sudo apt-get install python3-distutils
-
-    - name: Deploy to AWS Lambda
+    - name: Update Lambda
       run: |
         source handler_venv/bin/activate
         zappa update dev
