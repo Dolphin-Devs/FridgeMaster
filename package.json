@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@fontsource/roboto": "^5.0.14",
@@ -19,6 +20,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.7",
     "dayjs": "^1.11.13",
+    "emailjs-com": "^3.2.0",
     "react": "^17.0.0 || ^18.0.0",
     "react-dom": "^17.0.0 || ^18.0.0",
     "react-hook-form": "^7.53.0",

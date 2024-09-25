@@ -9,15 +9,6 @@ import Copyright from '../../components/Copyright';
 import axios from 'axios';
 
 
-/**
- * 해야할거. 
- * signup 페이지에서 보낸 데이터 받기
- * User가 고른 question 의 key값 저장, 
- * User가 Input한 Answer저장. 
- * 그 signup페이지에서 보낸 데이터와 User가 고른 Question, Answer 모두 합해서 JSON형태의 Object로 통합해서 API로 보내주기 
- */
-
-
 const defaultTheme = createTheme();
 
 /*Selection */
@@ -57,7 +48,10 @@ const SignUpQustions = () =>{
     }
 
 
-
+    const handleTermsAndCondition = () => {
+        
+        navigate('/termsAndConditions');
+      };
 
 
 
@@ -247,7 +241,7 @@ const SignUpQustions = () =>{
                     </Typography>
                     </div>
 
-                    <p>I have read and agreed to the Fridge Master's <Link to="../termsConditions">Terms and Conditions</Link> </p>
+                    <p>I have read and agreed to the Fridge Master's <Link to="/termsAndConditions">Terms and Conditions</Link> </p>
                     
                 </Grid>
             </Grid>
