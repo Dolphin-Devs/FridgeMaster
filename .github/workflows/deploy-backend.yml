@@ -23,10 +23,11 @@ jobs:
         python -m venv handler_venv
         source handler_venv/bin/activate
 
-    - name: Downgrade setuptools to a stable version
+    - name: Downgrade setuptools and install distutils
       run: |
         source handler_venv/bin/activate
         pip install setuptools==58.0.0
+        pip install distlib==0.3.1
 
     - name: Install dependencies
       run: |
