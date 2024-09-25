@@ -6,7 +6,11 @@
             "dateutil",
             "botocore",
             "s3transfer",
-            "concurrent"
+            "concurrent",
+            "node_modules",
+            "handler_venv",
+            "__pycache__",
+            "*.pyc"
         ],
         "slim_handler": false,
         "project_name": "fridgemaster",
