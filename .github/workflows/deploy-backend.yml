@@ -23,11 +23,10 @@ jobs:
         python -m venv handler_venv
         source handler_venv/bin/activate
 
-    - name: Install distutils and setuptools
+    - name: Downgrade setuptools to a stable version
       run: |
-        sudo apt-get update
-        sudo apt-get install python3-distutils
-        pip install --upgrade setuptools
+        source handler_venv/bin/activate
+        pip install setuptools==58.0.0
 
     - name: Install dependencies
       run: |
