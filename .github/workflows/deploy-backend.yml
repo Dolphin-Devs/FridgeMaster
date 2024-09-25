@@ -18,20 +18,12 @@ jobs:
       with:
         python-version: '3.8'
 
-    - name: Set up virtual environment
+    - name: Install dependencies
       run: |
         python -m venv handler_venv
         source handler_venv/bin/activate
-
-    - name: Downgrade setuptools and install distutils
-      run: |
-        source handler_venv/bin/activate
-        pip install setuptools==58.0.0
-        pip install distlib==0.3.1
-
-    - name: Install dependencies
-      run: |
-        source handler_venv/bin/activate
+        pip install --upgrade setuptools==58.0.0  
+        pip install distutils  
         pip install -r requirements.txt
 
     - name: Deploy to AWS Lambda
