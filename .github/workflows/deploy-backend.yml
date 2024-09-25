@@ -18,10 +18,11 @@ jobs:
       with:
         python-version: '3.8'
 
-    - name: Install dependencies
+    - name: Set up Python and install dependencies
       run: |
         python -m venv handler_venv
         source handler_venv/bin/activate
+        pip install setuptools==56.0.0  
         pip install -r requirements.txt
 
     - name: Update Lambda
