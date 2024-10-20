@@ -26,13 +26,16 @@ jobs:
 
     - name: Build project
       run: CI=false npm run build
-      
+
     - name: Configure AWS credentials  
       uses: aws-actions/configure-aws-credentials@v2
       with:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: 'ca-central-1'
-        
-    - name: Deploy to S3  
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: 'ca-central-1'
+
+    - name: Deploy to S3  # S3에 배포
       run: aws s3 sync build/ s3://fridge-master-server --delete
+
+    - name: Invalidate CloudFront Cache (Optional)  
+      run: aws cloudfront create-invalidation --distribution-id E3H0XCEPNHXRN --paths "/*"
