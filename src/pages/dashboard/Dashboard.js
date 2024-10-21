@@ -224,6 +224,7 @@ useEffect(() => {
   }, [userId]); 
   
   /**Function for get the item list based on the userId */
+  //Save the value from the getAllItemList API and call the sendItemToRecipe function to calculate nearest exire date item to the sortedItem 
   async function getItems(input) {
     try {
       const response = await axios.get(
@@ -239,6 +240,35 @@ useEffect(() => {
 
     }
   }
+  // useEffect to detect changes in userItemList and then call sendItemsToRecipe
+    useEffect(() => {
+      if (userItemList.length > 0) {
+        postRecipe(userItemList);
+      }
+    }, [userItemList]);
+  
+  //Function for post the userItemList data to the recipe.py, Call the sendItemsToRecipe
+  async function postRecipe(userItemList){
+    //Filtering 5 items with the nearest expiry date
+    const today = new Date();
+    // Filter out items where ExpiryDate is before today
+    const validItems = userItemList.filter(item => new Date(item.ExpiryDate) >= today);
+    // Sort the valid items by ExpiryDate and take the top 5
+    const sortedItems = validItems.sort((a, b) => new Date(a.ExpiryDate) - new Date(b.ExpiryDate)).slice(0, 5);
+    try{
+      const response = await axios.post('https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/recipe/postRecipe',{
+        userItemList: sortedItems
+      })
+
+      const parsedBody = JSON.parse(response.data.body);
+      //console.log('Recipe received:', parsedBody.recipe);//Check the recipe data
+
+  }catch(error){
+      console.log(error);
+      console.log("Failed to get recipe ")
+  } 
+
+}
 
   /**When user click the specific item(get a new value in selectUserItemID), Call the getItemInfo API */
   useEffect(()=>{
@@ -472,6 +502,9 @@ useEffect(() => {
                       selectedListItemNavMenu === 2 ? (
                         <h6>You click 2</h6>
   
+                      ):selectedListItemNavMenu ===4  ? (
+                        <h6>You click 4</h6>
+  
                       ):(
                         <>
                         
@@ -559,6 +592,9 @@ useEffect(() => {
                     ):(
                       selectedListItemNavMenu === 2 ? (
                         <h6>You click 2</h6>
+  
+                      ):selectedListItemNavMenu ===4  ? (
+                        <h6>You click 4</h6>
   
                       ):(
                         isAboutUs === true?(
