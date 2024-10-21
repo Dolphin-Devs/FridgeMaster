@@ -261,7 +261,7 @@ useEffect(() => {
       })
 
       const parsedBody = JSON.parse(response.data.body);
-      console.log('Recipe received:', parsedBody.recipe);//Check the recipe data
+      //console.log('Recipe received:', parsedBody.recipe);//Check the recipe data
 
   }catch(error){
       console.log(error);
