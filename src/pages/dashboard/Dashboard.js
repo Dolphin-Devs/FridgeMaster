@@ -495,26 +495,20 @@ useEffect(() => {
 useEffect(() => {
   console.log("isAddFridge 상태 변경:", isAddFridge);
 }, [isAddFridge]);
+
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open} sx={{ bgcolor: "white", color:"orange" }}>
-          <Toolbar
-            sx={{
-              pr: '24px', // keep right padding when drawer closed
-            }}
-            
-          >
+        <AppBar position="absolute" open={open} sx={{ bgcolor: "white", color: "orange" }}>
+          <Toolbar sx={{ pr: '24px' }}>
             <IconButton
               edge="start"
               color="inherit"
               aria-label="open drawer"
               onClick={toggleDrawer}
-              sx={{
-                marginRight: '36px',
-                ...(open && { display: 'none' }),
-              }}
+              sx={{ marginRight: '36px', ...(open && { display: 'none' }) }}
             >
               <MenuIcon />
             </IconButton>
@@ -526,56 +520,27 @@ useEffect(() => {
               sx={{ flexGrow: 1, cursor: 'pointer' }}
               onClick={handleLogoClick}
             >
-              <p  class="font-orange">FRIDGE <a class="font-white">MASTER</a></p>
-             
+              <p class="font-orange">FRIDGE <a class="font-white">MASTER</a></p>
             </Typography>
-            {/**Edit Please::: Please add the search bar and search feature */}
-            {/** 
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </Search>*/}
-          {/**Edit Please:: Please add the accountCircleIcon and implement the setting pages */}
-            {/* <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <AccountCircleIcon />
-              </Badge>
-            </IconButton> */}
           </Toolbar>
         </AppBar>
-        <Drawer variant="permanent" open={open} >
-          <Toolbar
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              px: [1],
-              bgcolor: "orange",
-             
-
-            }}
-          >
-            <IconButton onClick={toggleDrawer}  sx={{ bgcolor: "orange", color:"white"}}>
+    
+        <Drawer variant="permanent" open={open}>
+          <Toolbar sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', px: [1], bgcolor: "orange" }}>
+            <IconButton onClick={toggleDrawer} sx={{ bgcolor: "orange", color: "white" }}>
               <ChevronLeftIcon />
             </IconButton>
           </Toolbar>
-
-          <List  component="nav" sx={{ bgcolor: "orange", color:"white"}}>
-            {mainListItems({getSelectListItemFunction: getSelectListItem })}
+          <List component="nav" sx={{ bgcolor: "orange", color: "white" }}>
+            {mainListItems({ getSelectListItemFunction: getSelectListItem })}
           </List>
         </Drawer>
+    
         <Box
           component="main"
           sx={{
             backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
+              theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
             flexGrow: 1,
             height: '100vh',
             overflow: 'auto',
@@ -584,34 +549,24 @@ useEffect(() => {
           <Toolbar />
           <Container maxWidth="" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={2}>
-              {/* User Item List  */}
-
               <Grid item xs={6} md={6} lg={5}>
-              <Paper
+                <Paper
                   sx={{
                     p: 2,
-                    display: 'block',/**  Get the space whether the size of the child components  */
+                    display: 'block',
                     flexDirection: 'column',
                     minHeight: '85vh',
                     maxHeight: '85vh',
-                    overflow: 'auto'
-                 
-                 
+                    overflow: 'auto',
                   }}
                 >
-
-                  {/**Conditonal Rendering  
-                   * If the user click the List(selectedListItem = 1), Display the <UserItem></UserItem> and <ActionButton></ActionButton>
-                   * If the user click the Setting(selectedListItem = 3), Display the components
-                  */}
-            
-                  {selectedListItemNavMenu === 1 ? 
-                  (
+                  
+                  {selectedListItemNavMenu === 1 ? (
                     <>
-                {userItemList.length === 0 ? (
-                        <>
-                          <Alert severity="info" color="warning" >Your fridge is empty. Add items from the List and fill up your fridge!</Alert>
-                        </>
+                      {userItemList.length === 0 ? (
+                        <Alert severity="info" color="warning">
+                          Your fridge is empty. Add items from the List and fill up your fridge!
+                        </Alert>
                       ) : (
                         <>
                           {userItemList
@@ -636,124 +591,67 @@ useEffect(() => {
                             ))}
                         </>
                       )}
-                      {/* Button for Add Item action */}
                       <div className="actionBtn-wrap" onClick={handleAddItemClick}>
                         <ActionButton className="actionBtn" ActionName="Add Item" />
                       </div>
-                     </>
-                    ) : selectedListItemNavMenu === 2 ? (
-                      <h6>You clicked option 2</h6>
-                    ) : selectedListItemNavMenu === 4 ? (
-                      <>
-                        {userItemList.length === 0 ? (
-                            <>
-                            <Alert severity="info" color="warning" >Your fridge is empty. Add items from the List and fill up your fridge!</Alert>
-                          </>
-                        ) : (
-                          <>
-                            <Typography variant="caption">
-                              &nbsp;Foods are nearing their expiration date – let’s use them up with this tasty recipe!
-                            </Typography>
-                            <Typography variant="h6">&nbsp;{itemNameList} 🍳</Typography>
-                            <Box mb={2} />
-                            {firstRecipe.map((el, index) => (
-                              <RecipeName
-                                key={index}
-                                recipeKey={index}
-                                firstRecipe={el}
-                                handleRecipeClickFunction={handleRecipeClick}
-                                sendIngreStepsFunction={sendIngreSteps}
-                              />
-                            ))}
-                          </>
-                        )}
-                      </>
-                    )                   
-
-                    ):(
-                      selectedListItemNavMenu === 2 ?(
-                        <>
-                                      
+                    </>
+                  ) : selectedListItemNavMenu === 2 ? (
+                    <>
                       {userFridgeList
                         .slice()
                         .sort((a, b) => a.user_fridge_id - b.user_fridge_id)
                         .map((el) => (
                           <UserFridge
-                          key={el.user_fridge_id}          
-                          UserFridgeID={el.user_fridge_id}
-                          FridgeID = {el.fridge_id} 
-                          FridgeName={el.fridge_name}       
-                          FridgeImageID={el.fridge_image_id}     
-                          ItemCount={el.item_count}
-                          userId={userId}
+                            key={el.user_fridge_id}
+                            UserFridgeID={el.user_fridge_id}
+                            FridgeID={el.fridge_id}
+                            FridgeName={el.fridge_name}
+                            FridgeImageID={el.fridge_image_id}
+                            ItemCount={el.item_count}
+                            userId={userId}
                           />
                         ))}
-                          
-                        {/*getSelectUserFridgeIDFunction={getSelectUserFridgeID}
-                          getSelectFridgeIDFunction={getSelectFridgeID}*/}   
-
-                        {/*Button about Main Action such as add,save and delete*/}   
-                        <div className='actionBtn-wrap' onClick={handleAddFridgeClick}>
-                          <ActionButton className='actionBtn' ActionName = "Add Fridge" />
-                        </div>   
-                        </>
-
-                      ):selectedListItemNavMenu ===4  ? (
+                      <div className="actionBtn-wrap" onClick={handleAddFridgeClick}>
+                        <ActionButton className="actionBtn" ActionName="Add Fridge" />
+                      </div>
+                    </>
+                  ) : selectedListItemNavMenu === 4 ? (
+                    <>
+                      {userItemList.length === 0 ? (
+                        <Alert severity="info" color="warning">
+                          Your fridge is empty. Add items from the List and fill up your fridge!
+                        </Alert>
+                      ) : (
                         <>
-                          {userItemList.length === 0 ? (
-                            <>
-                              <Typography variant="caption">
-                                &nbsp;Your fridge is empty.😓
-                              </Typography>
-                              <Typography variant="h6">-
-                                &nbsp;Add items from the List and fill up your fridge! 🥕🍅
-                              </Typography>
-                            </>
-                          ) : (
-                            <>
-                              <Typography variant="caption">
-                                &nbsp;Foods are nearing their expiration date – let’s use them up with this tasty recipe!
-                              </Typography>
-                              <Typography variant="h6">&nbsp;{itemNameList} 🍳</Typography>
-                              <Box mb={2} />
-                              {firstRecipe.map((el, index) => (
-                                <RecipeName
-                                  key={index}
-                                  recipeKey={index}
-                                  firstRecipe={el}
-                                  handleRecipeClickFunction={handleRecipeClick}
-                                  sendIngreStepsFunction={sendIngreSteps}
-                                />
-                              ))}
-                            </>
-                          )}
+                          <Typography variant="caption">
+                            &nbsp;Foods are nearing their expiration date – let’s use them up with this tasty recipe!
+                          </Typography>
+                          <Typography variant="h6">&nbsp;{itemNameList} 🍳</Typography>
+                          <Box mb={2} />
+                          {firstRecipe.map((el, index) => (
+                            <RecipeName
+                              key={index}
+                              recipeKey={index}
+                              firstRecipe={el}
+                              handleRecipeClickFunction={handleRecipeClick}
+                              sendIngreStepsFunction={sendIngreSteps}
+                            />
+                          ))}
                         </>
-
-  
-                      ):(
-                        <>
-                        
-                          <Typography variant="h6" mt={2} mb={2}>&nbsp;&nbsp;Hi, {username} 👋</Typography> 
-
-                          <GeneralSetting                                         
-                            signOutFunction={signOut}  
-                        
-                          />
-                          <OtherSetting                                         
-                            handleAboutUsFunction={handleAboutUs}
-
-                        
-                          />
-                        </>
-                      )
-
-                    )}
-                  
-  
-   
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <Typography variant="h6" mt={2} mb={2}>
+                        &nbsp;&nbsp;Hi, {username} 👋
+                      </Typography>
+                      <GeneralSetting signOutFunction={signOut} />
+                      <OtherSetting handleAboutUsFunction={handleAboutUs} />
+                    </>
+                  )}
                 </Paper>
               </Grid>
-              {/* Item Detail Page */}
+    
               <Grid item xs={6} md={6} lg={7}>
                 <Paper
                   sx={{
@@ -764,127 +662,73 @@ useEffect(() => {
                     maxHeight: '85vh',
                   }}
                 >
-                {/**Conditonal Rendering  
-                   * If the user click the List(selectedListItem = 1), Display the <Empty/> or <ItemDetail/>
-                   * If the user click the Setting(selectedListItem = 3), Display the components
-                  */}
-            
-                  {
-                    selectedListItemNavMenu === 1 ? (
-                      <>
-                        {
-                          /**If the user didn't click the add item button and didn't click the specific item on the list, Show Empty component */
-                          (!isAddItem && !isSelectUserItem)?(
-                            <Empty/>
-                          ): (
-                            /**If the suer click the add item button without click the item on the list, 
-                             * User can add the information about item directley
-                             */
-                            isAddItem && !isSelectUserItem ?(
-                              <ItemDetail 
-                                userId={userId} 
-                                selectFridgeIDFromUser={selectUserFridgeID}
-                                selectItemID={selectItemID} 
-                                selectUserItemID={selectUserItemID}
-                                handleAfterAddDeleteItemFunction ={handleAfterAddDeleteItem}
-                                />
-
-                            ):(
-                            /**If a specific item is selected, show item detail page including that item information
-                             * User can check the item's info and update that info 
-                             */
-                            
-                                  <>
-                                      <ItemDetail 
-                                        userId={userId} 
-                                        selectFridgeIDFromUser={selectUserFridgeID} 
-                                        selectItemID={selectItemID} 
-                                        selectUserItemID={selectUserItemID}
-                                        selectedItemInfo={selectedItemInfo} 
-                                        handleAfterAddDeleteItemFunction ={handleAfterAddDeleteItem}
-                                        /> {/**Pass the userid and userSelectItem from useritem */}
-
-                                  </>
-                              
-                            )
-                          )
-                        }
-                      </>
-
-
-                    ):(
-                      selectedListItemNavMenu === 2 ? (
-                        <>
-                        {
-                          /**If the user didn't click the add item button and didn't click the specific item on the list, Show Empty component */
-                          (!isAddFridge && !isSelectUserFridge)?(
-                            <Empty/>
-                          ): (
-                            /**If the suer click the add item button without click the item on the list, 
-                             * User can add the information about item directley
-                             */
-           
-                            isAddFridge && !isSelectUserFridge ?(
-                              <FridgeDetail 
-                                userId={userId} 
-                                selectFridgeIDFromUser={selectUserFridgeID} 
-                                selectFridgeID={selectFridgeID}
-                                selectedFridgeInfo={selectedFridgeInfo} 
-                              />
-/*                                handleAfterAddDeleteFridgeFunction={handleAfterAddDeleteFridge}
-*/ 
-                            ):(
-                            /**If a specific item is selected, show item detail page including that item information
-                             * User can check the item's info and update that info 
-                             */
-                                      <FridgeDetail 
-                                        userId={userId} 
-                                        selectFridgeIDFromUser={selectUserFridgeID} 
-                                        selectFridgeID={selectFridgeID}
-                                        selectedFridgeInfo={selectedFridgeInfo} 
-                                       
-                                      />
-
-                            )
-                          )
-                        }
-                      </>
-  
-                      ):selectedListItemNavMenu ===4  ? (
-                        selectedRecipeId !== null ? (
-                          <RecipeDetail
-                            recipeEmoji={recipeEmoji}
-                            recipeName={recipeName}
-                            recipeIngre={recipeIngre}
-                            recipeSteps={recipeSteps}
-                          />
-                        ) : (
-                          <Empty />
-                        )
-
-  
-                      ):(
-                        isAboutUs === true?(
-                          <AboutUs
-                            handleTermsandConditionsFunction={handleTermsandConditions}
-                          /> ): (
-                            <Empty />
-                          )
-                        
-                        
-                        //Setting Components
-                      )
-
-                    )}
-
+                  {selectedListItemNavMenu === 1 ? (
+                    <>
+                      {!isAddItem && !isSelectUserItem ? (
+                        <Empty />
+                      ) : isAddItem && !isSelectUserItem ? (
+                        <ItemDetail
+                          userId={userId}
+                          selectFridgeIDFromUser={selectUserFridgeID}
+                          selectItemID={selectItemID}
+                          selectUserItemID={selectUserItemID}
+                          handleAfterAddDeleteItemFunction={handleAfterAddDeleteItem}
+                        />
+                      ) : (
+                        <ItemDetail
+                          userId={userId}
+                          selectFridgeIDFromUser={selectUserFridgeID}
+                          selectItemID={selectItemID}
+                          selectUserItemID={selectUserItemID}
+                          selectedItemInfo={selectedItemInfo}
+                          handleAfterAddDeleteItemFunction={handleAfterAddDeleteItem}
+                        />
+                      )}
+                    </>
+                  ) : selectedListItemNavMenu === 2 ? (
+                    <>
+                      {!isAddFridge && !isSelectUserFridge ? (
+                        <Empty />
+                      ) : isAddFridge && !isSelectUserFridge ? (
+                        <FridgeDetail
+                          userId={userId}
+                          selectFridgeIDFromUser={selectUserFridgeID}
+                          selectFridgeID={selectFridgeID}
+                          selectedFridgeInfo={selectedFridgeInfo}
+                        />
+                      ) : (
+                        <FridgeDetail
+                          userId={userId}
+                          selectFridgeIDFromUser={selectUserFridgeID}
+                          selectFridgeID={selectFridgeID}
+                          selectedFridgeInfo={selectedFridgeInfo}
+                        />
+                      )}
+                    </>
+                  ) : selectedListItemNavMenu === 4 ? (
+                    selectedRecipeId !== null ? (
+                      <RecipeDetail
+                        recipeEmoji={recipeEmoji}
+                        recipeName={recipeName}
+                        recipeIngre={recipeIngre}
+                        recipeSteps={recipeSteps}
+                      />
+                    ) : (
+                      <Empty />
+                    )
+                  ) : isAboutUs ? (
+                    <AboutUs handleTermsandConditionsFunction={handleTermsandConditions} />
+                  ) : (
+                    <Empty />
+                  )}
                 </Paper>
               </Grid>
-
             </Grid>
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
       </Box>
     </ThemeProvider>
+    
   );
 }
