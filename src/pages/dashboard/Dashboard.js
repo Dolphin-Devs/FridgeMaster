@@ -17,19 +17,21 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { mainListItems} from './listItems';
 import InputBase from '@mui/material/InputBase';
-import SearchIcon from '@mui/icons-material/Search';
 import { useLocation, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 /**Components in the Dashboard */
 import UserItem from '../../components/list-components/UserItem';
 import ItemDetail from '../../components/list-components/ItemDetail';
 import GeneralSetting from '../../components/setting-components/GeneralSetting';
+import RecipeName from '../../components/recipe-components/RecipeName';
+import RecipeDetail from '../../components/recipe-components/RecipeDetail';
 import OtherSetting from '../../components/setting-components/OtherSetting';
 import AboutUs from '../../components/setting-components/AboutUs';
 import Empty from '../../components/Empty';
 import ActionButton from '../../components/ActionButton';
 import Copyright from '../../components/Copyright';
-
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 
 const drawerWidth = 160;
@@ -150,9 +152,20 @@ export default function Dashboard() {
 
   //About Setting Page
   const[isAboutUs, setIsAboutUs] = useState(false);//State for handling about user selects about us
-
+  //The information from ex page
   const{email,username,userId} = location.state || {};
 
+  //About Recipe Page
+  const[firstRecipe,setFirstRecipe] = useState([]);
+  const [selectedRecipeId, setSelectedRecipeId] = useState(null);//Send the information about selected recipe 
+  //For RecipeName Component
+  const[nearItems,setNearItems] = useState([]);
+  const[itemNameList,setItemNameList] = useState([]);
+  //For RecipeDetail Component
+  const[recipeEmoji,setRecipeEmoji] = useState(false);
+  const[recipeName,setRecipeName] = useState(false);
+  const[recipeIngre,setRecipeIngre] = useState(false);
+  const[recipeSteps,setRecipeSteps] = useState(false);
 
 /**Function for Sign out and go to the Login Page */
 const signOut = (input) =>{
@@ -176,11 +189,26 @@ const signOut = (input) =>{
 }
 
 /**Function if user click the logo, go back to the first page */
+//Initialize All click state
 const handleLogoClick = () =>{
   setSelectedListItemNavMenu(1);
   setIsAddItem(false);
   setIsSelectUserItem(false);
   setIsAboutUs(false);
+  setSelectedRecipeId(null);
+
+}
+
+//Function for check that user click the RecipeName component 
+const handleRecipeClick = (recipeKey) => {
+  setSelectedRecipeId(recipeKey);
+};
+
+const sendIngreSteps = (recipeName,ingredients, steps, emoji) =>{
+    setRecipeEmoji(emoji);
+    setRecipeName(recipeName);
+    setRecipeIngre(ingredients);
+    setRecipeSteps(steps);
 
 }
 
@@ -255,20 +283,41 @@ useEffect(() => {
     const validItems = userItemList.filter(item => new Date(item.ExpiryDate) >= today);
     // Sort the valid items by ExpiryDate and take the top 5
     const sortedItems = validItems.sort((a, b) => new Date(a.ExpiryDate) - new Date(b.ExpiryDate)).slice(0, 5);
-    try{
-      const response = await axios.post('https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/recipe/postRecipe',{
-        userItemList: sortedItems
-      })
 
-      const parsedBody = JSON.parse(response.data.body);
-      //console.log('Recipe received:', parsedBody.recipe);//Check the recipe data
+    if(userItemList.length>=1){
+      try{
+        const response = await axios.post('https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/recipe/postRecipe',{
+          userItemList: sortedItems
+        })
+  
+        const parsedBody = JSON.parse(response.data.body);
+        //Save the item name for creating recipe;
+        setNearItems(parsedBody.receivedItems);
+        //Parshing Each Recipe depends on the Delimiters
+        //Save Each Recipes to each state
+        const recipes = parsedBody.recipe.split("|").slice(1, 4);
+        setFirstRecipe(recipes)
+        //setThirdRecipe(parsedBody.recipe.split("|")[3]);
+        //console.log('Recipe received:', parsedBody.recipe);//Check the recipe data
+  
+      }catch(error){
+          
+      } 
+      
+    }else{
+      setFirstRecipe(false);//If the user have any item, set the first recipe is false.
+    }
 
-  }catch(error){
-      console.log(error);
-      console.log("Failed to get recipe ")
-  } 
 
 }
+
+
+
+//Setting the item name list from the nearItems from the api result
+useEffect(()=>{
+  setItemNameList(nearItems.map((item,index)=><a key={index}>{item} </a>))
+
+},[nearItems])
 
   /**When user click the specific item(get a new value in selectUserItemID), Call the getItemInfo API */
   useEffect(()=>{
@@ -467,48 +516,113 @@ useEffect(() => {
                    * If the user click the Setting(selectedListItem = 3), Display the components
                   */}
             
-                  {selectedListItemNavMenu === 1 ? (
+                  {selectedListItemNavMenu === 1 ? 
+                  (
+                    <>
+                {userItemList.length === 0 ? (
+                        <>
+                          <Alert severity="info" color="warning" >Your fridge is empty. Add items from the List and fill up your fridge!</Alert>
+                        </>
+                      ) : (
+                        <>
+                          {userItemList
+                            .slice()
+                            .sort((a, b) => new Date(a.ExpiryDate) - new Date(b.ExpiryDate))
+                            .map((el) => (
+                              <UserItem
+                                key={el.UserItemID}
+                                UserItemID={el.UserItemID}
+                                ItemID={el.ItemID}
+                                FridgeID={el.FridgeID}
+                                UserFridgeID={el.UserFridgeID}
+                                CategoryImageID={el.CategoryImageID}
+                                ItemName={el.ItemName}
+                                Quantity={el.Quantity}
+                                ExpiryDate={el.ExpiryDate}
+                                getSelectUserItemIDFunction={getSelectUserItemID}
+                                getSelectUserFridgeIDFunction={getSelectUserFridgeID}
+                                getSelectItemIDFunction={getSelectItemID}
+                                userId={userId}
+                              />
+                            ))}
+                        </>
+                      )}
+                      {/* Button for Add Item action */}
+                      <div className="actionBtn-wrap" onClick={handleAddItemClick}>
+                        <ActionButton className="actionBtn" ActionName="Add Item" />
+                      </div>
+                     </>
+                    ) : selectedListItemNavMenu === 2 ? (
+                      <h6>You clicked option 2</h6>
+                    ) : selectedListItemNavMenu === 4 ? (
                       <>
-                                    
-                    {userItemList
-                      .slice()
-                      .sort((a, b) => new Date(a.ExpiryDate) - new Date(b.ExpiryDate))
-                      .map((el) => (
-                        <UserItem
-                          key={el.UserItemID}
-                          UserItemID={el.UserItemID}
-                          ItemID={el.ItemID}
-                          FridgeID={el.FridgeID}
-                          UserFridgeID={el.UserFridgeID}
-                          CategoryImageID={el.CategoryImageID}
-                          ItemName={el.ItemName}
-                          Quantity={el.Quantity}
-                          ExpiryDate={el.ExpiryDate}
-                          getSelectUserItemIDFunction={getSelectUserItemID}
-                          getSelectUserFridgeIDFunction={getSelectUserFridgeID}
-                          getSelectItemIDFunction={getSelectItemID}
-                          userId={userId}
-                        />
-                      ))}
-
-                      {/*Button about Main Action such as add,save and delete*/}   
-                      <div className='actionBtn-wrap' onClick={handleAddItemClick}>
-                        <ActionButton className='actionBtn' ActionName = "Add Item" />
-                      </div>   
+                        {userItemList.length === 0 ? (
+                            <>
+                            <Alert severity="info" color="warning" >Your fridge is empty. Add items from the List and fill up your fridge!</Alert>
+                          </>
+                        ) : (
+                          <>
+                            <Typography variant="caption">
+                              &nbsp;Foods are nearing their expiration date – let’s use them up with this tasty recipe!
+                            </Typography>
+                            <Typography variant="h6">&nbsp;{itemNameList} 🍳</Typography>
+                            <Box mb={2} />
+                            {firstRecipe.map((el, index) => (
+                              <RecipeName
+                                key={index}
+                                recipeKey={index}
+                                firstRecipe={el}
+                                handleRecipeClickFunction={handleRecipeClick}
+                                sendIngreStepsFunction={sendIngreSteps}
+                              />
+                            ))}
+                          </>
+                        )}
                       </>
+                    )                   
 
 
-                    ):(
+
+                    :(
                       selectedListItemNavMenu === 2 ? (
                         <h6>You click 2</h6>
   
                       ):selectedListItemNavMenu ===4  ? (
-                        <h6>You click 4</h6>
+                        <>
+                          {userItemList.length === 0 ? (
+                            <>
+                              <Typography variant="caption">
+                                &nbsp;Your fridge is empty.😓
+                              </Typography>
+                              <Typography variant="h6">-
+                                &nbsp;Add items from the List and fill up your fridge! 🥕🍅
+                              </Typography>
+                            </>
+                          ) : (
+                            <>
+                              <Typography variant="caption">
+                                &nbsp;Foods are nearing their expiration date – let’s use them up with this tasty recipe!
+                              </Typography>
+                              <Typography variant="h6">&nbsp;{itemNameList} 🍳</Typography>
+                              <Box mb={2} />
+                              {firstRecipe.map((el, index) => (
+                                <RecipeName
+                                  key={index}
+                                  recipeKey={index}
+                                  firstRecipe={el}
+                                  handleRecipeClickFunction={handleRecipeClick}
+                                  sendIngreStepsFunction={sendIngreSteps}
+                                />
+                              ))}
+                            </>
+                          )}
+                        </>
+
   
                       ):(
                         <>
                         
-                          <h3>&nbsp;&nbsp;&nbsp;Hi, {username}</h3> 
+                          <Typography variant="h6" mt={2} mb={2}>&nbsp;&nbsp;Hi, {username} 👋</Typography> 
 
                           <GeneralSetting                                         
                             signOutFunction={signOut}  
@@ -594,21 +708,31 @@ useEffect(() => {
                         <h6>You click 2</h6>
   
                       ):selectedListItemNavMenu ===4  ? (
-                        <h6>You click 4</h6>
+                        selectedRecipeId !== null ? (
+                          <RecipeDetail
+                            recipeEmoji={recipeEmoji}
+                            recipeName={recipeName}
+                            recipeIngre={recipeIngre}
+                            recipeSteps={recipeSteps}
+                          />
+                        ) : (
+                          <Empty />
+                        )
+
   
                       ):(
                         isAboutUs === true?(
                           <AboutUs
                             handleTermsandConditionsFunction={handleTermsandConditions}
-                          /> ):(<></>
+                          /> ): (
+                            <Empty />
+                          )
                         
-                        )
+                        
                         //Setting Components
                       )
 
                     )}
-                  {/**Conditonal Rendering */}
-
 
                 </Paper>
               </Grid>

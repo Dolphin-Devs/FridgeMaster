@@ -48,7 +48,7 @@ export default function AboutUs({handleTermsandConditionsFunction}) {
       <CardContent>
         <Typography variant="body2" >
             <Typography variant='subtitle2'>Our Values</Typography>
-        <li>Innovation: We are committed to developing creative solutions that make life easier and more enjoyable.</li>
+        <li>Innovation: We are committed to developing creative solutions that make life easier and enjoyable.</li>
         <li>Efficiency: Our goal is to help you save time and reduce waste with intelligent, user-friendly technology.</li>
         <li>Community: We believe in the power of collaboration and are dedicated to creating tools that benefit everyone.</li>
         </Typography>

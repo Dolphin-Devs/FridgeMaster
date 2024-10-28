@@ -117,8 +117,6 @@ const handleInputChange = (e) =>{
 const deleteInput = () =>{
   setItemName("");
 }
-
-
 //When user click the delete item, Call the api about delete item 
 const handleDeleteButton = () =>{
   deleteItem(selectItemID);
@@ -270,8 +268,7 @@ const getSelectCategoryImageID = (UserSelectedCategoryImageID) =>{
                     sx={{ 
                       
                       display: 'flex', 
-                      alignItems: 'center',
-                      
+                      alignItems: 'center',              
                       width: '100%', 
                       border: '1px solid #ccc', 
                       borderRadius: '4px', 
@@ -309,69 +306,72 @@ const getSelectCategoryImageID = (UserSelectedCategoryImageID) =>{
                     </Typography>
                     {/**Date Range Picker */}
                     <Box sx={{ flexBasis: '50%' }}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs} lg={6} md={6}>
-                      <DemoContainer components={['DatePicker', 'DatePicker']}>
-                        <DatePicker
-                          label=""
-                          value={expireDate}
-                          onChange={(expireDate) => setExpireDate(expireDate)}
-                          sx={{borderRadius: '20px', width:'100%'}}
-                        />
-                      </DemoContainer>
-                    </LocalizationProvider>   
+                      <LocalizationProvider dateAdapter={AdapterDayjs} lg={6} md={6}>
+                        <DemoContainer components={['DatePicker', 'DatePicker']}>
+                          <DatePicker
+                            label=""
+                            value={expireDate}
+                            onChange={(expireDate) => setExpireDate(expireDate)}
+                            sx={{borderRadius: '20px', width:'100%'}}
+                          />
+                        </DemoContainer>
+                      </LocalizationProvider>   
                     </Box>             
               </Box>
             </Grid>
-            <Grid item  lg={12} md={12} sx={{justifyItems: 'center'}}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}> 
-                  <Typography lg={6} md={6} >
-                    Storage
-                  </Typography>
-                  <Box sx={{ flexBasis: '50%' }}>
-                    <StorageDialog 
-                      selectedItemInfo={selectedItemInfo} 
-                      userSelectFridgeIDFunction={getSelectFridgeID} 
-                      userRealId={userId} 
-                      lg={6} md={6}  
-                      sx={{ width: '100%' }}/>
-                    {
-                      errorSelectFridgeID&&(
-                        <Typography variant='caption' color="error" sx={{ mt: 1, ml: 1 }}>{errorSelectFridgeID}</Typography>
-                    )}
-                  </Box>
+            <Grid item  xs ={12} lg={12}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Typography  lg={6} md={6}>
+                        Storage
+                    </Typography>
+                    {/**Date Range Picker */}
+                    
+                        <Box sx={{ flexBasis: '50%' }}>
+                        <StorageDialog 
+                          selectedItemInfo={selectedItemInfo} 
+                          userSelectFridgeIDFunction={getSelectFridgeID} 
+                          userRealId={userId} 
+                          lg={6} md={6}
+                          sx={{ width: '100%' }}/>
+                        {
+                          errorSelectFridgeID&&(
+                            <Typography variant='caption' color="error" sx={{ mt: 1, ml: 1 }}>{errorSelectFridgeID}</Typography>
+                        )}
+                      
 
+                    </Box>             
               </Box>
             </Grid>
+            <Grid item  xs ={12} lg={12}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Typography  lg={6} md={6}>
+                    Category 
+                    </Typography>
+                    {/**Date Range Picker */}
+                    
+                        <Box sx={{ flexBasis: '50%' }}>
+                        <CategoryDialog 
+                          selectedItemInfo={selectedItemInfo} 
+                          userSelectCategoryIDFunction={getSelectCategoryID} 
+                          userSelectCategoryImageIDFunction={getSelectCategoryImageID} 
+                          lg={6} md={6}  
+                          sx={{ width: '100%' }}/>
+                        {
+                          errorSelectCategoryID&&(
+                            <Typography variant='caption' color="error" sx={{ mt: 1, ml: 1 }}>{errorSelectCategoryID}</Typography>
+                        )}
+                      
 
-
-            <Grid item  lg={12} md={12} sx={{justifyItems: 'center'}}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}> 
-                  <Typography lg={6} md={6} >
-                    Category
-                  </Typography>
-                  <Box sx={{ flexBasis: '50%' }}>
-                    <CategoryDialog 
-                      selectedItemInfo={selectedItemInfo} 
-                      userSelectCategoryIDFunction={getSelectCategoryID} 
-                      userSelectCategoryImageIDFunction={getSelectCategoryImageID} 
-                      lg={6} md={6}  
-                      sx={{ width: '100%' }}/>
-                    {
-                      errorSelectCategoryID&&(
-                        <Typography variant='caption' color="error" sx={{ mt: 1, ml: 1 }}>{errorSelectCategoryID}</Typography>
-                    )}
-                  
-                  </Box>
+                    </Box>             
               </Box>
             </Grid>
-
-
-            <Grid item  lg={12} md={12} sx={{justifyItems: 'center'}}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}> 
-                  <Typography lg={6} md={6} >
-                    Quantity 
-                  </Typography>
-                  <Box sx={{ flexBasis: '50%' }}>
+            <Grid item  xs ={12} lg={12}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Typography  lg={6} md={6}>
+                        Quantity
+                    </Typography>
+                    {/**Selector */}
+                    <Box sx={{ flexBasis: '50%' }}>
                     <TextField
                       lg={6} md={6}
                       sx={{ width: '100%' }}
@@ -390,13 +390,18 @@ const getSelectCategoryImageID = (UserSelectedCategoryImageID) =>{
                       }}
                     />
                     
-                  </Box>
+         
+                      
+
+                    </Box>             
               </Box>
             </Grid>
-            <Grid item  lg={12} md={12} sx={{justifyItems: 'center'}}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}> 
-                  <ActionButton  lg={6} md={6} onClick={handleDeleteButton} className='actionBtn' ActionName = "Delete Item"/>
 
+            <Grid item  lg={12} md={12} sx={{ display: 'flex'}}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between',width:'100%' }}> 
+                  <Box sx={{ flexBasis: '50%' }}>
+                    <ActionButton  lg={6} md={6} onClick={handleDeleteButton} className='actionBtn' ActionName = "Delete Item"/>
+                  </Box>
                   <Box sx={{ flexBasis: '50%' }}>
                     <ActionButton lg={6} md={6} onClick={handleSaveButton} className='actionBtn' ActionName = "Save Item"/>
                   </Box>
