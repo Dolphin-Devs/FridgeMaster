@@ -22,6 +22,7 @@ import axios from 'axios';
 /**Components in the Dashboard */
 import UserItem from '../../components/list-components/UserItem';
 import ItemDetail from '../../components/list-components/ItemDetail';
+
 import GeneralSetting from '../../components/setting-components/GeneralSetting';
 import RecipeName from '../../components/recipe-components/RecipeName';
 import RecipeDetail from '../../components/recipe-components/RecipeDetail';
@@ -30,9 +31,11 @@ import AboutUs from '../../components/setting-components/AboutUs';
 import Empty from '../../components/Empty';
 import ActionButton from '../../components/ActionButton';
 import Copyright from '../../components/Copyright';
+
+import UserFridge from '../../components/storage-components/UserFridge';
+import FridgeDetail from '../../components/storage-components/FridgeDetail';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
-
 
 const drawerWidth = 160;
 
@@ -138,12 +141,18 @@ export default function Dashboard() {
   const[userItemList,setUserItemList] = useState([]);
   //State about user select item on the UserItem Component, and Display it to Item Detail Component.
   const[selectUserItemID,setSelectUserItemID] =useState(); //State for saving the user selected item id. 
-  const[selectFridgeID,setSelecFridgeID] =useState(); //State for saving the user selected FridgeID. 
+  const[selectUserFridgeID,setSelecUserFridgeID] =useState(); //State for saving the user selected FridgeID. 
+  
+  const[selectedFridgeInfo, setSelectedFridgeInfo] = useState();//State for saving and sending the user selected item information 
+  const[selectFridgeID, setSelectFridgeID] = useState();
+
   const[selectItemID,setSelecItemID] =useState(); //State for saving the user selecte itemID
   const[selectedItemInfo, setSelectedItemInfo] = useState();//State for saving and sending the user selected item information 
 
   const[isAddItem,setIsAddItem] = useState(false);//State for check whether click the add item button or not
   const[isSelectUserItem,setIsSelectUserItem] = useState(false);//State for check whether click the user item on the list or not
+  const[isAddFridge,setIsAddFridge] = useState(false);//State for check whether click the add item button or not
+  const[isSelectUserFridge,setIsSelectUserFridge] = useState(false);//State for check whether click the user item on the list or not
 
 
   const[selectedListItemNavMenu,setSelectedListItemNavMenu] = useState(1);//State for check whether click the user item on the nAV menu
@@ -154,6 +163,10 @@ export default function Dashboard() {
   const[isAboutUs, setIsAboutUs] = useState(false);//State for handling about user selects about us
   //The information from ex page
   const{email,username,userId} = location.state || {};
+
+
+  const[userFridgeList,setUserFridgeList] = useState([]);
+
 
   //About Recipe Page
   const[firstRecipe,setFirstRecipe] = useState([]);
@@ -173,12 +186,18 @@ const signOut = (input) =>{
       // Initialize all the state from the User
       setUserItemList([]);
       setSelectUserItemID(null);
-      setSelecFridgeID(null);
+      setSelecUserFridgeID(null);
+      setSelectFridgeID(null);
       setSelecItemID(null);
       setSelectedItemInfo(null);
+      setSelectedFridgeInfo(null);
       setIsAddItem(false);
+      setIsAddFridge(false);
       setIsSelectUserItem(false);
-      setSelectedListItemNavMenu(1); 
+      setIsSelectUserFridge(false);
+      setSelectedListItemNavMenu(1);
+      setUserFridgeList([]); 
+      setSelectedFridgeInfo(null);
     alert("Sign-out Success");
     navigate('/login',{
       replace: true,
@@ -195,6 +214,7 @@ const handleLogoClick = () =>{
   setIsAddItem(false);
   setIsSelectUserItem(false);
   setIsAboutUs(false);
+  setIsAddFridge(false);
   setSelectedRecipeId(null);
 
 }
@@ -268,6 +288,33 @@ useEffect(() => {
 
     }
   }
+
+//******************************  Fridge List ****************************//
+useEffect(() => {
+  try {
+    getFridge(userId);
+  } catch (error) {
+    //console.log(error);
+  }
+}, [userId]); 
+
+async function getFridge(input) {
+  try {
+    const response = await axios.get(
+      'https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/fridge/getAllFridges',
+      {
+        params: { id: input }  // Using key "params" and sending parameter to API.  
+      }
+    );
+    setUserFridgeList(response.data); //update the userItemList variable
+  } 
+  catch (error) {
+    //console.log(error);
+
+  }
+}
+
+
   // useEffect to detect changes in userItemList and then call sendItemsToRecipe
     useEffect(() => {
       if (userItemList.length > 0) {
@@ -310,7 +357,6 @@ useEffect(() => {
 
 
 }
-
 
 
 //Setting the item name list from the nearItems from the api result
@@ -358,12 +404,15 @@ useEffect(()=>{
     setIsAddItem(false);
   } 
 
-  /**Function for get the user selected item id */
-  const getSelectUserFridgeID = (selected) =>{
-    setSelecFridgeID(selected);
+   const getSelectUserFridgeID = (selected) =>{
+    console.log("선택한 Fridge ID:", selected);
+    setSelecUserFridgeID(selected);  
+    setIsSelectUserFridge(true);
     setIsSelectUserItem(true);
+    //setIsAddFridge(false);
     setIsAddItem(false);
   } 
+
 
 //Function for get the selected item id
 const getSelectItemID = (selected) =>{
@@ -372,6 +421,17 @@ const getSelectItemID = (selected) =>{
   setIsAddItem(false);
   setIsAboutUs(false);
 }
+
+
+/**
+const getSelectFridgeID = (selected) =>{
+  setSelectFridgeID(selected);
+  setIsSelectUserFridge(true);
+  setIsAddFridge(false);
+  setIsAboutUs(false);
+}
+*/
+
 
 
 
@@ -385,6 +445,17 @@ const getSelectItemID = (selected) =>{
 
   }
 
+    /**Method that update the IsAddFridge when user click the add Fridge button */
+    const handleAddFridgeClick = () => {
+      console.log("Add Fridge 버튼 클릭됨");
+      
+      setIsAddFridge(!isAddFridge);
+      //setIsSelectUserFridge(false);
+      //setIsAboutUs(false);
+      console.log("isAddFridge 상태:", isAddFridge);
+    };
+
+
 
 /**Method that update isSelectUserItem and isAddItem after delete the item */
 const handleAfterAddDeleteItem=(input)=>{
@@ -397,15 +468,33 @@ const handleAfterAddDeleteItem=(input)=>{
 
 }
 
+
+/**const handleAfterAddDeleteFridge=(input)=>{
+
+  if(input === true){
+    setIsAddFridge(false);
+    setIsSelectUserFridge(false);
+    setShouldUpdate(true);//Set the true that update userItemList
+  }
+
+} */
+
+
 /** Update userItemList when shouldUpdate changes */
 useEffect(() => {
   if (shouldUpdate) {
     getItems(userId);
+    getFridge(userId);
+
     setShouldUpdate(false); // After update set the shouldupdate state to false
   }
 }, [shouldUpdate, userId]);
 
 
+
+useEffect(() => {
+  console.log("isAddFridge 상태 변경:", isAddFridge);
+}, [isAddFridge]);
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -581,12 +670,34 @@ useEffect(() => {
                       </>
                     )                   
 
+                    ):(
+                      selectedListItemNavMenu === 2 ?(
+                        <>
+                                      
+                      {userFridgeList
+                        .slice()
+                        .sort((a, b) => a.user_fridge_id - b.user_fridge_id)
+                        .map((el) => (
+                          <UserFridge
+                          key={el.user_fridge_id}          
+                          UserFridgeID={el.user_fridge_id}
+                          FridgeID = {el.fridge_id} 
+                          FridgeName={el.fridge_name}       
+                          FridgeImageID={el.fridge_image_id}     
+                          ItemCount={el.item_count}
+                          userId={userId}
+                          />
+                        ))}
+                          
+                        {/*getSelectUserFridgeIDFunction={getSelectUserFridgeID}
+                          getSelectFridgeIDFunction={getSelectFridgeID}*/}   
 
+                        {/*Button about Main Action such as add,save and delete*/}   
+                        <div className='actionBtn-wrap' onClick={handleAddFridgeClick}>
+                          <ActionButton className='actionBtn' ActionName = "Add Fridge" />
+                        </div>   
+                        </>
 
-                    :(
-                      selectedListItemNavMenu === 2 ? (
-                        <h6>You click 2</h6>
-  
                       ):selectedListItemNavMenu ===4  ? (
                         <>
                           {userItemList.length === 0 ? (
@@ -672,14 +783,13 @@ useEffect(() => {
                             isAddItem && !isSelectUserItem ?(
                               <ItemDetail 
                                 userId={userId} 
-                                selectFridgeIDFromUser={selectFridgeID}
+                                selectFridgeIDFromUser={selectUserFridgeID}
                                 selectItemID={selectItemID} 
                                 selectUserItemID={selectUserItemID}
                                 handleAfterAddDeleteItemFunction ={handleAfterAddDeleteItem}
                                 />
 
                             ):(
-
                             /**If a specific item is selected, show item detail page including that item information
                              * User can check the item's info and update that info 
                              */
@@ -687,14 +797,13 @@ useEffect(() => {
                                   <>
                                       <ItemDetail 
                                         userId={userId} 
-                                        selectFridgeIDFromUser={selectFridgeID} 
+                                        selectFridgeIDFromUser={selectUserFridgeID} 
                                         selectItemID={selectItemID} 
                                         selectUserItemID={selectUserItemID}
                                         selectedItemInfo={selectedItemInfo} 
                                         handleAfterAddDeleteItemFunction ={handleAfterAddDeleteItem}
                                         /> {/**Pass the userid and userSelectItem from useritem */}
 
-                                  
                                   </>
                               
                             )
@@ -705,7 +814,41 @@ useEffect(() => {
 
                     ):(
                       selectedListItemNavMenu === 2 ? (
-                        <h6>You click 2</h6>
+                        <>
+                        {
+                          /**If the user didn't click the add item button and didn't click the specific item on the list, Show Empty component */
+                          (!isAddFridge && !isSelectUserFridge)?(
+                            <Empty/>
+                          ): (
+                            /**If the suer click the add item button without click the item on the list, 
+                             * User can add the information about item directley
+                             */
+           
+                            isAddFridge && !isSelectUserFridge ?(
+                              <FridgeDetail 
+                                userId={userId} 
+                                selectFridgeIDFromUser={selectUserFridgeID} 
+                                selectFridgeID={selectFridgeID}
+                                selectedFridgeInfo={selectedFridgeInfo} 
+                              />
+/*                                handleAfterAddDeleteFridgeFunction={handleAfterAddDeleteFridge}
+*/ 
+                            ):(
+                            /**If a specific item is selected, show item detail page including that item information
+                             * User can check the item's info and update that info 
+                             */
+                                      <FridgeDetail 
+                                        userId={userId} 
+                                        selectFridgeIDFromUser={selectUserFridgeID} 
+                                        selectFridgeID={selectFridgeID}
+                                        selectedFridgeInfo={selectedFridgeInfo} 
+                                       
+                                      />
+
+                            )
+                          )
+                        }
+                      </>
   
                       ):selectedListItemNavMenu ===4  ? (
                         selectedRecipeId !== null ? (

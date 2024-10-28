@@ -14,7 +14,7 @@ export default function ActionButton({ActionName,onClick}) {
 
 /*Check the ActionName and set the background color of button  */
   useEffect(() => {
-    if(ActionName === "Delete Item"){
+    if(ActionName === "Delete Item" || ActionName ==="Delete Fridge"){
       setBtnBg("#B8B8B8");
       setStartIcon(<DeleteIcon sx={{color: 'white', fontSize:'5px'}} />)
     }else{
