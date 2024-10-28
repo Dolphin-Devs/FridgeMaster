@@ -11,7 +11,6 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CardActions from '@mui/material/CardActions';
 import Grid from '@mui/material/Grid';
 import axios from 'axios';
-import { Alert } from '@mui/material';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import CardHeader from '@mui/material/CardHeader';
@@ -61,7 +60,7 @@ const handleSignOutConfirm = () => {
 
       <CardContent>
         <CardActionArea>
-          <Typography  onClick={handleSignOut} component="div" >
+          <Typography  variant='body2' onClick={handleSignOut} component="div" >
             Sign Out
           </Typography>
         </CardActionArea>

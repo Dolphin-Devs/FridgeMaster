@@ -74,12 +74,12 @@ export default function OtherSetting({ handleAboutUsFunction }) {
       <Divider />
       <CardContent >
         <CardActionArea onClick={handleSignOut}>
-          <Typography component="div" sx={{ mb: 1 }}>
+          <Typography variant='body2'  component="div" sx={{ mb: 1 }}>
             Contact Us
           </Typography>
         </CardActionArea>
         <CardActionArea>
-          <Typography onClick={handleAboutUs} component="div" sx={{ mt: 1}}>
+          <Typography variant='body2'  onClick={handleAboutUs} component="div" sx={{ mt: 1}}>
             About Us
           </Typography>
         </CardActionArea>
