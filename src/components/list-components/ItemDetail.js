@@ -403,7 +403,7 @@ const getSelectCategoryImageID = (UserSelectedCategoryImageID) =>{
                     <ActionButton  lg={6} md={6} onClick={handleDeleteButton} className='actionBtn' ActionName = "Delete Item"/>
                   </Box>
                   <Box sx={{ flexBasis: '50%' }}>
-                    <ActionButton lg={6} md={6} onClick={handleSaveButton} className='actionBtn' ActionName = "Save Item"/>
+                    <ActionButton lg={6} md={6} onClick={handleSaveButton} className='actionBtn' ActionName = "Add Item"/>
                   </Box>
               </Box>
             </Grid>

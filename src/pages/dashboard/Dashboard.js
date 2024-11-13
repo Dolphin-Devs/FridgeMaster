@@ -36,6 +36,7 @@ import UserFridge from '../../components/storage-components/UserFridge';
 import FridgeDetail from '../../components/storage-components/FridgeDetail';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import UserItemInFridge from '../../components/storage-components/UserItemInFridge';
 
 const drawerWidth = 160;
 
@@ -138,26 +139,30 @@ export default function Dashboard() {
   const [open, setOpen] = React.useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-  const[userItemList,setUserItemList] = useState([]);
-  //State about user select item on the UserItem Component, and Display it to Item Detail Component.
-  const[selectUserItemID,setSelectUserItemID] =useState(); //State for saving the user selected item id. 
-  const[selectUserFridgeID,setSelecUserFridgeID] =useState(); //State for saving the user selected FridgeID. 
+  const [userItemList, setUserItemList] = useState([]);
+  // State about user select item on the UserItem Component, and Display it to Item Detail Component.
+  const [selectUserItemID, setSelectUserItemID] = useState(); // State for saving the user selected item id.
+  const [selectUserFridgeID, setSelecUserFridgeID] = useState(); // State for saving the user selected FridgeID.
   
-  const[selectedFridgeInfo, setSelectedFridgeInfo] = useState();//State for saving and sending the user selected item information 
-  const[selectFridgeID, setSelectFridgeID] = useState();
+  const [selectedFridgeInfo, setSelectedFridgeInfo] = useState(); // State for saving and sending the user selected item information
+  const [selectFridgeID, setSelecFridgeID] = useState();
 
-  const[selectItemID,setSelecItemID] =useState(); //State for saving the user selecte itemID
-  const[selectedItemInfo, setSelectedItemInfo] = useState();//State for saving and sending the user selected item information 
+  const [selectItemID, setSelecItemID] = useState(); // State for saving the user selected itemID
+  const [selectedItemInfo, setSelectedItemInfo] = useState(); // State for saving and sending the user selected item information
 
-  const[isAddItem,setIsAddItem] = useState(false);//State for check whether click the add item button or not
-  const[isSelectUserItem,setIsSelectUserItem] = useState(false);//State for check whether click the user item on the list or not
-  const[isAddFridge,setIsAddFridge] = useState(false);//State for check whether click the add item button or not
-  const[isSelectUserFridge,setIsSelectUserFridge] = useState(false);//State for check whether click the user item on the list or not
+  const [isAddItem, setIsAddItem] = useState(false); // State for check whether click the add item button or not
+  const [isSelectUserItem, setIsSelectUserItem] = useState(false); // State for check whether click the user item on the list or not
+  const [isAddFridge, setIsAddFridge] = useState(false); // State for check whether click the add fridge button or not
+  const [isSelectUserFridge, setIsSelectUserFridge] = useState(false); // State for check whether click the user fridge on the list or not
+
+  const [selectedListItemNavMenu, setSelectedListItemNavMenu] = useState(1); // State for check whether click the user item on the nav menu
+  const [shouldUpdate, setShouldUpdate] = useState(false); // State for handling update or not
+
+  const [userFridgeList, setUserFridgeList] = useState([]);
+  const [selectedFridgeID, setSelectedFridgeID] = useState(null);
 
 
-  const[selectedListItemNavMenu,setSelectedListItemNavMenu] = useState(1);//State for check whether click the user item on the nAV menu
 
-  const [shouldUpdate, setShouldUpdate] = useState(false); //State for handling update or not 
 
   //About Setting Page
   const[isAboutUs, setIsAboutUs] = useState(false);//State for handling about user selects about us
@@ -165,7 +170,6 @@ export default function Dashboard() {
   const{email,username,userId} = location.state || {};
 
 
-  const[userFridgeList,setUserFridgeList] = useState([]);
 
 
   //About Recipe Page
@@ -181,31 +185,30 @@ export default function Dashboard() {
   const[recipeSteps,setRecipeSteps] = useState(false);
 
 /**Function for Sign out and go to the Login Page */
-const signOut = (input) =>{
-  if(input === true){
-      // Initialize all the state from the User
-      setUserItemList([]);
-      setSelectUserItemID(null);
-      setSelecUserFridgeID(null);
-      setSelectFridgeID(null);
-      setSelecItemID(null);
-      setSelectedItemInfo(null);
-      setSelectedFridgeInfo(null);
-      setIsAddItem(false);
-      setIsAddFridge(false);
-      setIsSelectUserItem(false);
-      setIsSelectUserFridge(false);
-      setSelectedListItemNavMenu(1);
-      setUserFridgeList([]); 
-      setSelectedFridgeInfo(null);
+const signOut = (input) => {
+  if (input === true) {
+    // Initialize all the state from the User
+    setUserItemList([]);
+    setSelectUserItemID(null);
+    setSelecUserFridgeID(null);
+    setSelecFridgeID(null);
+    setSelecItemID(null);
+    setSelectedItemInfo(null);
+    setSelectedFridgeInfo(null);
+    setIsAddItem(false);
+    setIsAddFridge(false);
+    setIsSelectUserItem(false);
+    setIsSelectUserFridge(false);
+    setSelectedListItemNavMenu(1);
+    setUserFridgeList([]);
+    setSelectedFridgeInfo(null);
     alert("Sign-out Success");
-    navigate('/login',{
+    navigate('/login', {
       replace: true,
-      state: null, // Initialize state 
+      state: null, // Initialize state
     });
   }
-
-}
+};
 
 /**Function if user click the logo, go back to the first page */
 //Initialize All click state
@@ -314,6 +317,35 @@ async function getFridge(input) {
   }
 }
 
+/**Function for get the user selected user item id */
+const getSelectUserItemID = (selectedID) => {
+  setSelectUserItemID(selectedID);
+  setIsSelectUserItem(true);
+  setIsSelectUserFridge(true);
+  setIsAddFridge(false);
+  setIsAddItem(false);
+};
+
+const getSelectUserFridgeID = (selected) => {
+  console.log("Selected User Fridge ID:", selected);
+  setSelecUserFridgeID(selected);
+  setIsSelectUserFridge(true);
+  setIsSelectUserItem(true);
+  setIsAddFridge(false);
+  setIsAddItem(false);
+};
+
+const getSelectFridgeID = (selected) => {
+  console.log("Selected Fridge ID:", selected);
+  setSelecFridgeID(selected);
+  setIsSelectUserFridge(true);
+  setIsAddFridge(false);
+  setIsAddItem(false);
+  setIsAboutUs(false);
+};
+
+
+
 
   // useEffect to detect changes in userItemList and then call sendItemsToRecipe
     useEffect(() => {
@@ -397,21 +429,8 @@ useEffect(()=>{
     setSelectedListItemNavMenu(UserSelectedList);
   } 
 
-  /**Function for get the user selected  user item id */
-  const getSelectUserItemID = (selectedID) =>{
-    setSelectUserItemID(selectedID);
-    setIsSelectUserItem(true);
-    setIsAddItem(false);
-  } 
 
-   const getSelectUserFridgeID = (selected) =>{
-    console.log("선택한 Fridge ID:", selected);
-    setSelecUserFridgeID(selected);  
-    setIsSelectUserFridge(true);
-    setIsSelectUserItem(true);
-    //setIsAddFridge(false);
-    setIsAddItem(false);
-  } 
+
 
 
 //Function for get the selected item id
@@ -423,14 +442,8 @@ const getSelectItemID = (selected) =>{
 }
 
 
-/**
-const getSelectFridgeID = (selected) =>{
-  setSelectFridgeID(selected);
-  setIsSelectUserFridge(true);
-  setIsAddFridge(false);
-  setIsAboutUs(false);
-}
-*/
+
+
 
 
 
@@ -448,10 +461,9 @@ const getSelectFridgeID = (selected) =>{
     /**Method that update the IsAddFridge when user click the add Fridge button */
     const handleAddFridgeClick = () => {
       console.log("Add Fridge 버튼 클릭됨");
-      
-      setIsAddFridge(!isAddFridge);
-      //setIsSelectUserFridge(false);
-      //setIsAboutUs(false);
+      setIsAddFridge(true);
+      setIsSelectUserFridge(false);
+      setIsAboutUs(false);
       console.log("isAddFridge 상태:", isAddFridge);
     };
 
@@ -603,12 +615,16 @@ useEffect(() => {
                         .map((el) => (
                           <UserFridge
                             key={el.user_fridge_id}
+                            UserItemID={el.user_item_id}
                             UserFridgeID={el.user_fridge_id}
                             FridgeID={el.fridge_id}
                             FridgeName={el.fridge_name}
                             FridgeImageID={el.fridge_image_id}
                             ItemCount={el.item_count}
                             userId={userId}
+                            getSelectUserItemIDFunction={getSelectUserItemID}
+                            getSelectUserFridgeIDFunction={getSelectUserFridgeID}
+                            getSelectFridgeIDFunction={() => getSelectFridgeID(el.fridge_id)}
                           />
                         ))}
                       <div className="actionBtn-wrap" onClick={handleAddFridgeClick}>
@@ -687,23 +703,22 @@ useEffect(() => {
                     </>
                   ) : selectedListItemNavMenu === 2 ? (
                     <>
-                      {!isAddFridge && !isSelectUserFridge ? (
-                        <Empty />
-                      ) : isAddFridge && !isSelectUserFridge ? (
-                        <FridgeDetail
-                          userId={userId}
-                          selectFridgeIDFromUser={selectUserFridgeID}
-                          selectFridgeID={selectFridgeID}
-                          selectedFridgeInfo={selectedFridgeInfo}
-                        />
-                      ) : (
-                        <FridgeDetail
-                          userId={userId}
-                          selectFridgeIDFromUser={selectUserFridgeID}
-                          selectFridgeID={selectFridgeID}
-                          selectedFridgeInfo={selectedFridgeInfo}
-                        />
-                      )}
+                       {isAddFridge && !isSelectUserFridge ? (
+                          <FridgeDetail
+                            userId={userId}
+                            selectFridgeIDFromUser={selectUserFridgeID}
+                            selectFridgeID={selectFridgeID}
+                            selectedFridgeInfo={selectedFridgeInfo}
+                          />
+                        ) : !isAddFridge && isSelectUserFridge? (
+                          <UserItemInFridge
+                            userId={userId}
+                            UserFridgeID={selectUserFridgeID}
+                            FridgeID={selectFridgeID}
+                          />
+                        ) : (
+                          <Empty />
+                        )}
                     </>
                   ) : selectedListItemNavMenu === 4 ? (
                     selectedRecipeId !== null ? (

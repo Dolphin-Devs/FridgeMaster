@@ -325,13 +325,13 @@ useEffect(() => {
 
 
             <Grid item  lg={12} md={12} sx={{justifyItems: 'center'}}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}> 
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}> 
                   <ActionButton  lg={6} md={6} onClick={handleDeleteButton} className='actionBtn' ActionName = "Delete Fridge"/>
-
-                  <Box sx={{ flexBasis: '50%' }}>
-                    <ActionButton lg={6} md={6} onClick={handleSaveButton} className='actionBtn' ActionName = "Save Fridge"/>
                   </Box>
-              </Box>
+                  <Box sx={{ flexBasis: '50%' }}>
+                    <ActionButton lg={6} md={6} onClick={handleSaveButton} className='actionBtn' ActionName = "Add Fridge"/>
+                  </Box>
+              
             </Grid>
 
 
