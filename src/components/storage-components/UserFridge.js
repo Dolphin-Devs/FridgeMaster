@@ -80,7 +80,8 @@ function sendSelectedUserFridge(inputItemID, inputUserFridgeID, inputFridgeID) {
   getSelectFridgeIDFunction(inputFridgeID);
 }
 
-const handleArrowClick = () => {
+const handleArrowClick = (event) => {
+  event.stopPropagation(); // Prevent Card click event
   setArrowClick(!arrowClick);
 };
 
@@ -110,7 +111,9 @@ const handleEditButton = () => {
       });
   }
 };
-
+const handleCardClick = () => {
+  sendSelectedUserFridge(UserItemID, UserFridgeID, FridgeID);
+};
 /**Function for Connecting the API can bring the Storage name used UserFridgeID  */
 
   /** Calculate the D-day when the component starts rendering */
@@ -122,57 +125,61 @@ const handleEditButton = () => {
   },[FridgeImageID, UserFridgeID, userId]);
 
   return (
-    <Card onClick={()=>sendSelectedUserFridge(UserItemID, UserFridgeID, FridgeID)} sx={{ flexGrow:1, borderRadius: 5, mb:2  }}>
-      <CardActionArea>
-      <Grid container spacing={1} sx={{ height: 131 }} >
+    <Card sx={{ flexGrow:1, borderRadius: 5, mb:2 }}>
+      {/* CardActionArea for clickable card */}
+      <CardActionArea onClick={handleCardClick}>
+        <Grid container spacing={1} sx={{ height: 131 }}>
+          {/* Fridge Image */}
+          <Grid item xs={2} sx={{ alignItems: 'top', mt:4, ml:6 }}>
+            <CardMedia
+              component="img"
+              sx={{width: 40, height: 40, objectFit: 'contain' }}
+              image={responseFridgeImage}
+              alt="Fridge Image"
+            />
+          </Grid>
 
-        <Grid  item xs ={2} sx={{ alignItems: 'top', mt:4, ml:6}}>
-          {/*Fridge image*/} 
-          <CardMedia
-            component="img"
-            sx={{ width: 40, height: 40, objectFit: 'contain' }}
-            image={responseFridgeImage}
-            alt="Fridge Image"
-          />
-        </Grid>
-        <Grid item xs ={5}>
-            <CardContent sx={{  flex: '1 0 auto',   mt:0, ml: -5 }}>
-              <Typography  variant="subtitle1" sx={{}}>
-                <p>{responseFridgeName}</p>     
-              </Typography>     
-              <Typography
-                  variant="caption"
-                  sx={{ color: 'text.secondary' }}
-              >
-                  <p>Contains {ItemCount} items</p>        
-              </Typography>       
+          {/* Fridge Name and Item Count */}
+          <Grid item xs={5}>
+            <CardContent sx={{ flex: '1 0 auto',   mt:0, ml: -5 }}>
+              <Typography variant="subtitle1">{responseFridgeName}</Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                Contains {ItemCount} items
+              </Typography>
             </CardContent>
-        </Grid>
+          </Grid>
 
-        <Grid item xs={3} sx={{ display: 'flex',
+          {/* Arrow Button */}
+          <Grid item xs={3} sx={{ display: 'flex',
           justifyContent: 'center',
           alignItems: 'flex-end',
           height: '100%',
-          paddingBottom: '15px' }}>
-          <IconButton onClick={handleArrowClick} size="small" sx={{ padding: 0, margin: 0, width: 45, height: 45, transform: arrowClick ? 'rotate(180deg)' : 'rotate(0deg)', 
-              transition: 'transform 0.3s ease-in-out', }}>
-            <ExpandMoreIcon />
+          paddingBottom: '15px'  }}>
+            <IconButton
+              onClick={handleArrowClick}
+              size="small"
+              sx={{
+                padding: 0, margin: 0, width: 45, height: 45, transform: arrowClick ? 'rotate(180deg)' : 'rotate(0deg)', 
+                transition: 'transform 0.3s ease-in-out'
+              }}
+            >
+              <ExpandMoreIcon />
             </IconButton>
+          </Grid>
         </Grid>
-
-      </Grid>
-      <Collapse in={arrowClick} timeout="auto" unmountOnExit>
-      <Divider sx={{ width: '95%', mx: 'auto', mb: -4, mt: -1 }} />
-      <CardContent>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 25,   mt: -1, 
-        mb: -2}}>
-          <ActionButton  onClick={handleEditButton}  className="actionBtn" ActionName="Edit" />
-          <ActionButton  onClick={handleDeleteButton} className="actionBtn" ActionName="Delete" />
-        </Box>
-      </CardContent>
-      </Collapse>
       </CardActionArea>
-      
+
+      {/* Collapse section for Edit/Delete */}
+      <Collapse in={arrowClick} timeout="auto" unmountOnExit>
+        <Divider sx={{width: '95%', mx: 'auto', mb: -4, mt: -1 }} />
+        <CardContent>
+          <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 25,   mt: -1, 
+                    mb: -2}}>
+            <ActionButton onClick ={handleEditButton}  className="actionBtn" ActionName="Edit" />
+            <ActionButton  onClick={handleDeleteButton} className="actionBtn" ActionName="Delete" />
+          </Box>
+        </CardContent>
+      </Collapse>
     </Card>
   );
 }

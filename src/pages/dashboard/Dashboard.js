@@ -439,6 +439,7 @@ const getSelectItemID = (selected) =>{
   setIsSelectUserItem(true);
   setIsAddItem(false);
   setIsAboutUs(false);
+  setIsAddFridge(false);
 }
 
 
@@ -455,7 +456,7 @@ const getSelectItemID = (selected) =>{
     setIsAddItem(true);
     setIsSelectUserItem(false);
     setIsAboutUs(false);
-
+    setIsAddFridge(false);
   }
 
     /**Method that update the IsAddFridge when user click the add Fridge button */
@@ -464,6 +465,7 @@ const getSelectItemID = (selected) =>{
       setIsAddFridge(true);
       setIsSelectUserFridge(false);
       setIsAboutUs(false);
+      setIsAddItem(false);
       console.log("isAddFridge 상태:", isAddFridge);
     };
 

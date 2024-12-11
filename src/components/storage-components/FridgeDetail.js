@@ -230,7 +230,7 @@ const getSelectFridgeImageID = (UserSelectedFridgeImageID) =>{
 
 const handleImageClick = (imageUrl) => {
     setSelectedImage(imageUrl);
-    getSelectFridgeImageID(imageUrl); // 부모 컴포넌트에 선택된 이미지 URL 전달
+    getSelectFridgeImageID(imageUrl); 
   };
 
 useEffect(() => {
