@@ -160,6 +160,7 @@ export default function Dashboard() {
 
   const [userFridgeList, setUserFridgeList] = useState([]);
   const [selectedFridgeID, setSelectedFridgeID] = useState(null);
+  const [isEditFridge, setIsEditFridge] = useState(false); // Track if edit mode is active
 
 
 
@@ -197,6 +198,7 @@ const signOut = (input) => {
     setSelectedFridgeInfo(null);
     setIsAddItem(false);
     setIsAddFridge(false);
+    setIsEditFridge(false);
     setIsSelectUserItem(false);
     setIsSelectUserFridge(false);
     setSelectedListItemNavMenu(1);
@@ -218,6 +220,7 @@ const handleLogoClick = () =>{
   setIsSelectUserItem(false);
   setIsAboutUs(false);
   setIsAddFridge(false);
+  setIsEditFridge(false);
   setSelectedRecipeId(null);
 
 }
@@ -323,6 +326,7 @@ const getSelectUserItemID = (selectedID) => {
   setIsSelectUserItem(true);
   setIsSelectUserFridge(true);
   setIsAddFridge(false);
+  setIsEditFridge(false);
   setIsAddItem(false);
 };
 
@@ -332,6 +336,7 @@ const getSelectUserFridgeID = (selected) => {
   setIsSelectUserFridge(true);
   setIsSelectUserItem(true);
   setIsAddFridge(false);
+  setIsEditFridge(false);
   setIsAddItem(false);
 };
 
@@ -340,6 +345,7 @@ const getSelectFridgeID = (selected) => {
   setSelecFridgeID(selected);
   setIsSelectUserFridge(true);
   setIsAddFridge(false);
+  setIsEditFridge(false);
   setIsAddItem(false);
   setIsAboutUs(false);
 };
@@ -440,6 +446,7 @@ const getSelectItemID = (selected) =>{
   setIsAddItem(false);
   setIsAboutUs(false);
   setIsAddFridge(false);
+  setIsEditFridge(false);
 }
 
 
@@ -457,6 +464,7 @@ const getSelectItemID = (selected) =>{
     setIsSelectUserItem(false);
     setIsAboutUs(false);
     setIsAddFridge(false);
+    setIsEditFridge(false);
   }
 
     /**Method that update the IsAddFridge when user click the add Fridge button */
@@ -464,6 +472,7 @@ const getSelectItemID = (selected) =>{
       console.log("Add Fridge 버튼 클릭됨");
       setIsAddFridge(true);
       setIsSelectUserFridge(false);
+      setIsEditFridge(false);
       setIsAboutUs(false);
       setIsAddItem(false);
       console.log("isAddFridge 상태:", isAddFridge);
@@ -482,6 +491,29 @@ const handleAfterAddDeleteItem=(input)=>{
 
 }
 
+const handleEditFridgeFunction = (fridgeID, userFridgeID, fridgeName, fridgeImageID) => {
+  console.log("handleEditFridgeFunction triggered for fridge ID:", fridgeID);
+  setIsAddFridge(false);
+  setIsSelectUserFridge(false);
+  setIsEditFridge(false);
+  setIsAboutUs(false);
+  setIsAddItem(false);
+  setIsEditFridge(true); // Enable edit mode
+  setSelectedFridgeInfo({
+    fridgeID,
+    userFridgeID,
+    fridgeName,
+    fridgeImageID,
+  });
+
+  console.log("isEditFridge 상태:", true);
+  console.log("selectedFridgeInfo 설정 완료:", {
+    fridgeID,
+    userFridgeID,
+    fridgeName,
+    fridgeImageID,
+  });
+};
 
 /**const handleAfterAddDeleteFridge=(input)=>{
 
@@ -627,6 +659,9 @@ useEffect(() => {
                             getSelectUserItemIDFunction={getSelectUserItemID}
                             getSelectUserFridgeIDFunction={getSelectUserFridgeID}
                             getSelectFridgeIDFunction={() => getSelectFridgeID(el.fridge_id)}
+                            handleEditFridgeFunction={() => {
+                              handleEditFridgeFunction(el.fridge_id, el.user_fridge_id, el.fridge_name, el.fridge_image_id);
+                            }}
                           />
                         ))}
                       <div className="actionBtn-wrap" onClick={handleAddFridgeClick}>
@@ -717,6 +752,14 @@ useEffect(() => {
                             userId={userId}
                             UserFridgeID={selectUserFridgeID}
                             FridgeID={selectFridgeID}
+                          />
+                        ) : isEditFridge && !isAddFridge && !isSelectUserFridge?(
+                          <FridgeDetail
+                            userId={userId}
+                            selectFridgeIDFromUser={selectedFridgeInfo?.fridgeID}
+                            selectUserFridgeID={selectedFridgeInfo?.userFridgeID}
+                            selectedFridgeInfo={selectedFridgeInfo}
+                            handleAfterAddDeleteFridgeFunction={handleAfterAddDeleteItem}
                           />
                         ) : (
                           <Empty />

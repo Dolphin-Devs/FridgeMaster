@@ -29,7 +29,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 /**Components */
 import ActionButton from '../ActionButton';
 
-export default function FridgeDetail({userId,selectFridgeIDFromUser,selectUserFridgeID,selectedFridgeInfo, handleAfterAddDeleteFridgeFunction}) {
+export default function FridgeDetail({ FridgeName,
+  FridgeImageID,userId,selectFridgeIDFromUser,selectUserFridgeID,selectedFridgeInfo, handleAfterAddDeleteFridgeFunction}) {
   const [expanded, setExpanded] = React.useState(false);
 
   //*Final state for using AddUpdate api 
@@ -46,6 +47,7 @@ export default function FridgeDetail({userId,selectFridgeIDFromUser,selectUserFr
   const [value, setValue] = useState([]);
   const [isLoading, setIsLoading] = useState(false);//State for Checking api calling 
 
+ 
 
 /**Check the selectFridgeIDFromUser is working */
 useEffect(()=>{
@@ -85,7 +87,7 @@ const handleInputChange = (e) =>{
   const tempUserInputFridgeName = e.target.value;
   setFridgeName(tempUserInputFridgeName);//Update the FridgeName depennds on User's input
   if(tempUserInputFridgeName.trim() === ''){
-    setErrorUserInputFridgeName("Please enter the Fridge3 name")
+    setErrorUserInputFridgeName("Please enter the Fridge name")
   }else{
 
     setErrorUserInputFridgeName("")
@@ -233,6 +235,15 @@ const handleImageClick = (imageUrl) => {
     getSelectFridgeImageID(imageUrl); 
   };
 
+  useEffect(() => {
+    if (selectedFridgeInfo) {
+      setFridgeName(selectedFridgeInfo.fridgeName || ''); 
+      setSelectFridgeID(selectedFridgeInfo.fridgeID || null);
+      setSelectFridgeImageID(selectedFridgeInfo.fridgeImageID || null);
+      setSelectedImage(selectedFridgeInfo.fridgeImageID || ''); 
+    }
+  }, [selectedFridgeInfo]);
+
 useEffect(() => {
     fetchImages();
   }, []);
@@ -301,6 +312,7 @@ useEffect(() => {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
+                            backgroundColor: selectedImage === img.FridgeImageID ? 'lightgray' : 'transparent', // 선택된 이미지 배경 강조
                         }}
                         >
                         <IconButton

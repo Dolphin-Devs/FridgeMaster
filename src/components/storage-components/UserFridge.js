@@ -20,7 +20,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 /**Components */
 import ActionButton from '../ActionButton';
 
-export default function MediaControlCard({UserItemID,ItemID, UserFridgeID,FridgeID ,FridgeName,FridgeImageID, ItemCount ,userId, getSelectUserItemIDFunction, getSelectUserFridgeIDFunction, getSelectFridgeIDFunction, handleAfterAddDeleteFridgeFunction}) {
+export default function MediaControlCard({UserItemID,ItemID, UserFridgeID,FridgeID ,FridgeName,FridgeImageID, ItemCount ,userId, getSelectUserItemIDFunction, getSelectUserFridgeIDFunction, getSelectFridgeIDFunction, handleAfterAddDeleteFridgeFunction, handleEditFridgeFunction}) {
   const [responseFridgeImage,setResponseFridgeImage] = useState();   
   const [responseFridgeName,setResponseFridgeName] = useState();
   const [arrowClick, setArrowClick] = useState(false);
@@ -73,6 +73,8 @@ async function getFridgeName(inputFridgeID, inputUserID){
   }
 }
 
+
+
 /**Function for sending selected user item id to dashboard.js(Parent Component) */
 function sendSelectedUserFridge(inputItemID, inputUserFridgeID, inputFridgeID) {
   getSelectUserItemIDFunction(inputItemID);
@@ -100,17 +102,11 @@ const handleDeleteButton = () => {
 
 
 const handleEditButton = () => {
-  if (window.confirm("정말 Edit?")) {  // 사용자 확인 대화상자
-    deleteFridge(selectFridgeID)
-      .then(() => {
-        alert("Edit 성공!");  // 성공 시 알림 메시지
-      })
-      .catch((error) => {
-        console.error("편집 실패:", error);
-        alert("편집 실패!");
-      });
-  }
+  getSelectUserFridgeIDFunction(UserFridgeID); 
+  getSelectFridgeIDFunction(FridgeID);
+  handleEditFridgeFunction();
 };
+
 const handleCardClick = () => {
   sendSelectedUserFridge(UserItemID, UserFridgeID, FridgeID);
 };
