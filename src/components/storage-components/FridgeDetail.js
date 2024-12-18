@@ -39,7 +39,6 @@ export default function FridgeDetail({ FridgeName,
   const [selectedImage, setSelectedImage] = useState(''); // the user select fridge image
   const [selectFridgeID,setSelectFridgeID] = useState();//*Final state for saving fridge ID
   const [selectFridgeImageID,setSelectFridgeImageID]= useState();//*Final state for saving Fridge id
-  const [responseFridgeImage,setResponseFridgeImage] = useState("");//State for category image data
 
   //Error hadnling about input text filed
   const [errorUserInputFridgeName,setErrorUserInputFridgeName] = useState(''); 
@@ -47,17 +46,7 @@ export default function FridgeDetail({ FridgeName,
   const [value, setValue] = useState([]);
   const [isLoading, setIsLoading] = useState(false);//State for Checking api calling 
 
- 
 
-/**Check the selectFridgeIDFromUser is working */
-useEffect(()=>{
-  if(selectFridgeIDFromUser){
-    //alert(selectFridgeIDFromUser); 
-  }else{
-    //alert("You don't have selectFridgeIDFromUser");
-  }
-
-},[selectFridgeIDFromUser])
 useEffect(() => {
     if (selectedFridgeInfo && images.length > 0) {
       const selectedStorage = images.find(
@@ -101,12 +90,16 @@ const deleteInput = () =>{
 
 //When user click the delete item, Call the api about delete item 
 const handleDeleteButton = () =>{
-  deleteFridge(selectFridgeID);
+  deleteFridge(selectedFridgeInfo?.fridgeID);
 }
 
 /**When user click the save item, Call the api and update the item information */
 //Validation about input and selection
 const handleSaveButton = () =>{
+  const fridgeID = selectedFridgeInfo?.fridgeID;
+  const userFridgeID = selectUserFridgeID;
+  console.log("Fridge ID:", fridgeID);
+  console.log("UserFridgeID:", userFridgeID);
 
   let isError = false;
   //Validation aboout FridgeName
@@ -116,18 +109,18 @@ const handleSaveButton = () =>{
   }else{
     setErrorUserInputFridgeName("");
   }
-
-
   // If there are no errors, proceed to save/update item
   if (!isError && !isLoading) {
     setIsLoading(true); //Change the isLoading state to true that postpone api calling duplicataion 
     // API call 
     try{ 
       //If the selectFridgeID is undefiend(User didn't click specific item on the list and add ), Call the addNewFridge api 
-      if(!selectFridgeID){
+      if(!fridgeID){
         addNewStorage(userId,selectFridgeImageID,selectFridgeID,fridgeName);
       }else{
-        updateStorage(userId,selectFridgeImageID,selectFridgeID,fridgeName);
+        console.log('Call updateStorage method');
+        updateStorage(userId,fridgeID, selectFridgeImageID,selectUserFridgeID,fridgeName);
+
       }
 
 
@@ -140,15 +133,19 @@ const handleSaveButton = () =>{
 }
 
 /**Function for API that add new item */
-async function addNewStorage(inputUserID, inputFridgeID, inputFridgeImageID, inputUserFridgeID,inputFridgeName){
+async function addNewStorage(inputUserID, inputFridgeImageID,inputFridgeName){
+
   try{
-      axios.post('https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/item/addNewStorage',{
-          id: inputUserID,
-          FridgeID: inputFridgeID,
-          FridgeImageID: inputFridgeImageID,
-          UserFridgeID: inputUserFridgeID,
-          FridgeName:inputFridgeName,
+      axios.post('https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/fridge/addNewStorage',
+        {
+        id: inputUserID,
+        FridgeImageID: inputFridgeImageID,
+        FridgeName: inputFridgeName,
       })
+      .then(response => {
+        console.log('Success:', response.data);
+    })
+
 
     alert(`Add New Fridge Successfully`);
     handleAfterAddDeleteFridgeFunction(true);//Change the item detail component
@@ -164,16 +161,14 @@ async function addNewStorage(inputUserID, inputFridgeID, inputFridgeImageID, inp
 /**Function for API about add and update item */
 async function updateStorage(inputUserID,inputFridgeID,inputFridgeImageID, inputUserFridgeID, inputFridgeName){
   try{
-      const response = await axios.put('https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/item/updateStorage',{
+      await axios.put('https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/fridge/updateStorage',{
           id: inputUserID,
           FridgeID: inputFridgeID,
           FridgeImageID: inputFridgeImageID,
           UserFridgeID: inputUserFridgeID,
           FridgeName:inputFridgeName,
       })
-    // Check successful response data 
-    const tempData = response.data;
-    console.log('Success:', tempData);
+
     alert(`Update Fridge Successfully`);
     handleAfterAddDeleteFridgeFunction(true);//Change the Fridge detail component
 
@@ -186,12 +181,12 @@ async function updateStorage(inputUserID,inputFridgeID,inputFridgeImageID, input
 /**Function for API about delete item */
 async function deleteFridge(inputID){
   try{
-    await axios.delete('https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/item/deleteStorage',{
+    await axios.delete('https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/fridge/deleteStorage',{
       params: {
         FridgeID: inputID  // Query parameters should be passed in the 'params' field
       }
     });
-  alert("Success to delete item");
+  alert("Success to delete Fridge");
   handleAfterAddDeleteFridgeFunction(true);//Change the Fridge detail component
 
   }catch(error){
@@ -230,17 +225,22 @@ const getSelectFridgeImageID = (UserSelectedFridgeImageID) =>{
   setSelectFridgeImageID(UserSelectedFridgeImageID);
 }
 
-const handleImageClick = (imageUrl) => {
-    setSelectedImage(imageUrl);
-    getSelectFridgeImageID(imageUrl); 
+const handleImageClick = (imageId) => {
+    setSelectedImage(imageId);
+    getSelectFridgeImageID(imageId); 
+    console.log("Selected FridgeImageID:", imageId);
+
   };
 
   useEffect(() => {
+  
     if (selectedFridgeInfo) {
       setFridgeName(selectedFridgeInfo.fridgeName || ''); 
       setSelectFridgeID(selectedFridgeInfo.fridgeID || null);
       setSelectFridgeImageID(selectedFridgeInfo.fridgeImageID || null);
       setSelectedImage(selectedFridgeInfo.fridgeImageID || ''); 
+
+      console.log("selectedFridgeInfo의 id 확인:", selectedFridgeInfo.fridgeID);
     }
   }, [selectedFridgeInfo]);
 
@@ -303,7 +303,7 @@ useEffect(() => {
                     {images.map((img, index) => (
                         <Paper
                         key={index}
-                        elevation={selectedImage === img.FridgeImage ? 8 : 2}
+                        elevation={selectedImage === img.FridgeImageID ? 8 : 2}
                         sx={{
                             borderRadius: '50%',
                             overflow: 'hidden',
@@ -316,7 +316,7 @@ useEffect(() => {
                         }}
                         >
                         <IconButton
-                            onClick={() => handleImageClick(img.FridgeImage)}
+                            onClick={() => handleImageClick(img.FridgeImageID)} 
                             sx={{
                             width: '100%',
                             height: '100%',

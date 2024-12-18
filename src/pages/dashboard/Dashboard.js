@@ -158,6 +158,7 @@ export default function Dashboard() {
   const [selectedListItemNavMenu, setSelectedListItemNavMenu] = useState(1); // State for check whether click the user item on the nav menu
   const [shouldUpdate, setShouldUpdate] = useState(false); // State for handling update or not
 
+  const [shouldUpdateFridge, setShouldUpdateFridge] = useState(false); // State for handling update or not
   const [userFridgeList, setUserFridgeList] = useState([]);
   const [selectedFridgeID, setSelectedFridgeID] = useState(null);
   const [isEditFridge, setIsEditFridge] = useState(false); // Track if edit mode is active
@@ -486,6 +487,7 @@ const handleAfterAddDeleteItem=(input)=>{
   if(input === true){
     setIsAddItem(false);
     setIsSelectUserItem(false);
+    setShouldUpdateFridge(false);
     setShouldUpdate(true);//Set the true that update userItemList
   }
 
@@ -515,33 +517,36 @@ const handleEditFridgeFunction = (fridgeID, userFridgeID, fridgeName, fridgeImag
   });
 };
 
-/**const handleAfterAddDeleteFridge=(input)=>{
+const handleAfterAddDeleteFridge=(input)=>{
 
   if(input === true){
-    setIsAddFridge(false);
+
     setIsSelectUserFridge(false);
-    setShouldUpdate(true);//Set the true that update userItemList
+    setShouldUpdateFridge(true);
+    setShouldUpdate(false);
   }
 
-} */
+} 
 
 
 /** Update userItemList when shouldUpdate changes */
 useEffect(() => {
   if (shouldUpdate) {
     getItems(userId);
-    getFridge(userId);
-
+   
     setShouldUpdate(false); // After update set the shouldupdate state to false
   }
 }, [shouldUpdate, userId]);
 
 
-
+/** Update userItemList when shouldUpdate changes */
 useEffect(() => {
-  console.log("isAddFridge 상태 변경:", isAddFridge);
-}, [isAddFridge]);
+  if (shouldUpdateFridge) {
+    getFridge(userId);
+    setShouldUpdateFridge(false);
 
+  }
+}, [shouldUpdateFridge, userId]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -662,6 +667,7 @@ useEffect(() => {
                             handleEditFridgeFunction={() => {
                               handleEditFridgeFunction(el.fridge_id, el.user_fridge_id, el.fridge_name, el.fridge_image_id);
                             }}
+                            handleAfterAddDeleteFridgeFunction={handleAfterAddDeleteFridge}
                           />
                         ))}
                       <div className="actionBtn-wrap" onClick={handleAddFridgeClick}>
@@ -743,9 +749,10 @@ useEffect(() => {
                        {isAddFridge && !isSelectUserFridge ? (
                           <FridgeDetail
                             userId={userId}
-                            selectFridgeIDFromUser={selectUserFridgeID}
-                            selectFridgeID={selectFridgeID}
+                            selectUserFridgeID={selectUserFridgeID}
+                            selectFridgeID={selectedFridgeInfo?.userFridgeID}
                             selectedFridgeInfo={selectedFridgeInfo}
+                            handleAfterAddDeleteFridgeFunction={handleAfterAddDeleteFridge}
                           />
                         ) : !isAddFridge && isSelectUserFridge? (
                           <UserItemInFridge
@@ -759,7 +766,7 @@ useEffect(() => {
                             selectFridgeIDFromUser={selectedFridgeInfo?.fridgeID}
                             selectUserFridgeID={selectedFridgeInfo?.userFridgeID}
                             selectedFridgeInfo={selectedFridgeInfo}
-                            handleAfterAddDeleteFridgeFunction={handleAfterAddDeleteItem}
+                            handleAfterAddDeleteFridgeFunction={handleAfterAddDeleteFridge}
                           />
                         ) : (
                           <Empty />

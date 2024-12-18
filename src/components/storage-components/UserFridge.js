@@ -88,14 +88,14 @@ const handleArrowClick = (event) => {
 };
 
 const handleDeleteButton = () => {
-  if (window.confirm("이 Fridge 정말 지울거야?")) {  // 사용자 확인 대화상자
-    deleteFridge(selectFridgeID)
+  if (window.confirm("Do you want to delete this fridge?")) {  // 사용자 확인 대화상자
+    console.error("check FridgeID:", FridgeID);
+    deleteFridge(FridgeID)
       .then(() => {
-        alert("지우기 성공!");  // 성공 시 알림 메시지
+        alert("Success to delete Fridge");  // 성공 시 알림 메시지
       })
       .catch((error) => {
-        console.error("삭제 실패:", error);
-        alert("삭제 실패!");
+        console.error("error delete Fridge:", error);
       });
   }
 };
