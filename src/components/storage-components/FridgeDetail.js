@@ -19,15 +19,10 @@ import ClearIcon from '@mui/icons-material/Clear';
 import axios from 'axios';
 
 
-/**Date Range Picker */
-import dayjs from 'dayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 /**Components */
 import ActionButton from '../ActionButton';
+import LoadingProgress from '../../components/LoadingProgress';
 
 export default function FridgeDetail({ FridgeName,
   FridgeImageID,userId,selectFridgeIDFromUser,selectUserFridgeID,selectedFridgeInfo, handleAfterAddDeleteFridgeFunction}) {
@@ -45,31 +40,21 @@ export default function FridgeDetail({ FridgeName,
   const [errorSelectFridgeID, setErrorSelectFridgeID] = useState('');
   const [value, setValue] = useState([]);
   const [isLoading, setIsLoading] = useState(false);//State for Checking api calling 
+ 
+  const [imagesLoading, setImagesLoading] = useState({});
 
-
-useEffect(() => {
-    if (selectedFridgeInfo && images.length > 0) {
-      const selectedStorage = images.find(
-        (s) => s.user_fridge_id === images.UserFridgeID
-      );
-      if (selectedStorage) {
-        setValue(selectedStorage.fridge_name); // UserFridgeID에 해당하는 fridge_name을 value로 설정
-        setSelectFridgeID(selectedStorage.user_fridge_id); // user_fridge_id를 selectedFridgeID로 설정
+  useEffect(() => {
+      if (selectedFridgeInfo && images.length > 0) {
+        const selectedStorage = images.find(
+          (s) => s.user_fridge_id === images.UserFridgeID
+        );
+        if (selectedStorage) {
+          setValue(selectedStorage.fridge_name); // UserFridgeID에 해당하는 fridge_name을 value로 설정
+          setSelectFridgeID(selectedStorage.user_fridge_id); // user_fridge_id를 selectedFridgeID로 설정
+        }
       }
-    }
-  }, [selectedFridgeInfo, images]);
+    }, [selectedFridgeInfo, images]);
 
-
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-  /**Handling the list */
-  const [open, setOpen] = React.useState(true);
-
-  const handleClick = () => {
-    setOpen(!open);
-  };
 
 /**Handling the input data about item name and save the value to FridgeName state */
 const handleInputChange = (e) =>{
@@ -205,6 +190,9 @@ const fetchImages = async () => {
       ? response.data
       : JSON.parse(response.data);
   
+
+      setImagesLoading(false);
+
       setImages(respondFridgeImage); 
       handleAfterAddDeleteFridgeFunction(true);//Change the Fridge detail component
 
@@ -244,9 +232,11 @@ const handleImageClick = (imageId) => {
     }
   }, [selectedFridgeInfo]);
 
-useEffect(() => {
-    fetchImages();
-  }, []);
+  useEffect(() => {
+      fetchImages();
+    }, []);
+
+
 
   return (
     <Box sx={{ width: '70%', ml:12,mr:12,mt:1 }}>
@@ -324,11 +314,17 @@ useEffect(() => {
                             backgroundColor: selectedImage === img.FridgeImage ? 'lightgray' : 'transparent',
                             }}
                         >
-                            <img
-                            src={img.FridgeImage}
-                            alt={`Fridge ${index}`}
-                            style={{ width: '70%', height: '70%', objectFit: 'contain' }}
-                            />
+                            {imagesLoading[img.FridgeImageID] ? (
+                              <LoadingProgress />
+                            ) : (
+                              <img
+                              src={img.FridgeImage}
+                              alt={`Fridge ${index}`}
+                              style={{ width: '70%', height: '70%', objectFit: 'contain' }}
+                              onLoad={() => setImagesLoading(false)}
+                             
+                              />
+                            )}
                         </IconButton>
                         </Paper>
                     ))}

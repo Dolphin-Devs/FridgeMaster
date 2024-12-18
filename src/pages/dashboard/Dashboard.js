@@ -204,7 +204,6 @@ const signOut = (input) => {
     setIsSelectUserFridge(false);
     setSelectedListItemNavMenu(1);
     setUserFridgeList([]);
-    setSelectedFridgeInfo(null);
     alert("Sign-out Success");
     navigate('/login', {
       replace: true,
@@ -476,6 +475,9 @@ const getSelectItemID = (selected) =>{
       setIsEditFridge(false);
       setIsAboutUs(false);
       setIsAddItem(false);
+  
+      // 상태 초기화
+      setSelectedFridgeInfo(null);
       console.log("isAddFridge 상태:", isAddFridge);
     };
 
@@ -497,7 +499,6 @@ const handleEditFridgeFunction = (fridgeID, userFridgeID, fridgeName, fridgeImag
   console.log("handleEditFridgeFunction triggered for fridge ID:", fridgeID);
   setIsAddFridge(false);
   setIsSelectUserFridge(false);
-  setIsEditFridge(false);
   setIsAboutUs(false);
   setIsAddItem(false);
   setIsEditFridge(true); // Enable edit mode
@@ -538,6 +539,12 @@ useEffect(() => {
   }
 }, [shouldUpdate, userId]);
 
+useEffect(() => {
+  if (isAddFridge) {
+    // Add Fridge 모드일 때 초기화
+    setSelectedFridgeInfo(null);
+  }
+}, [isAddFridge]);
 
 /** Update userItemList when shouldUpdate changes */
 useEffect(() => {
@@ -746,7 +753,7 @@ useEffect(() => {
                     </>
                   ) : selectedListItemNavMenu === 2 ? (
                     <>
-                       {isAddFridge && !isSelectUserFridge ? (
+                       {isAddFridge && !isSelectUserFridge && !isEditFridge ? (
                           <FridgeDetail
                             userId={userId}
                             selectUserFridgeID={selectUserFridgeID}
@@ -754,7 +761,7 @@ useEffect(() => {
                             selectedFridgeInfo={selectedFridgeInfo}
                             handleAfterAddDeleteFridgeFunction={handleAfterAddDeleteFridge}
                           />
-                        ) : !isAddFridge && isSelectUserFridge? (
+                        ) : !isAddFridge && isSelectUserFridge && !isEditFridge? (
                           <UserItemInFridge
                             userId={userId}
                             UserFridgeID={selectUserFridgeID}
