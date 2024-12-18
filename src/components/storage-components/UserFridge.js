@@ -19,12 +19,14 @@ import { Alert } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 /**Components */
 import ActionButton from '../ActionButton';
+import LoadingProgress from '../../components/LoadingProgress';
 
 export default function MediaControlCard({UserItemID,ItemID, UserFridgeID,FridgeID ,FridgeName,FridgeImageID, ItemCount ,userId, getSelectUserItemIDFunction, getSelectUserFridgeIDFunction, getSelectFridgeIDFunction, handleAfterAddDeleteFridgeFunction, handleEditFridgeFunction}) {
   const [responseFridgeImage,setResponseFridgeImage] = useState();   
   const [responseFridgeName,setResponseFridgeName] = useState();
   const [arrowClick, setArrowClick] = useState(false);
   const [selectFridgeID,setSelectFridgeID] = useState();//*Final state for saving fridge ID
+  const [loading, setLoading] = useState(true);
 
 /**Function for Connecting the API can bring the CategoryImage used FridgeImageID */
 async function getFridgeImage(FridgeImageID){
@@ -88,11 +90,11 @@ const handleArrowClick = (event) => {
 };
 
 const handleDeleteButton = () => {
-  if (window.confirm("Do you want to delete this fridge?")) {  // 사용자 확인 대화상자
+  if (window.confirm("Do you want to delete this fridge?")) {  
     console.error("check FridgeID:", FridgeID);
     deleteFridge(FridgeID)
       .then(() => {
-        alert("Success to delete Fridge");  // 성공 시 알림 메시지
+        alert("Success to delete Fridge");  
       })
       .catch((error) => {
         console.error("error delete Fridge:", error);
@@ -114,11 +116,14 @@ const handleCardClick = () => {
 
   /** Calculate the D-day when the component starts rendering */
   useEffect(()=>{
-    getFridgeImage(FridgeImageID);
+    getFridgeImage(FridgeImageID).then(() => {
+      setLoading(false); 
+    });
     getFridgeName(UserFridgeID,userId);
     
 
   },[FridgeImageID, UserFridgeID, userId]);
+
 
   return (
     <Card sx={{ flexGrow:1, borderRadius: 5, mb:2 }}>
@@ -126,13 +131,21 @@ const handleCardClick = () => {
       <CardActionArea onClick={handleCardClick}>
         <Grid container spacing={1} sx={{ height: 131 }}>
           {/* Fridge Image */}
-          <Grid item xs={2} sx={{ alignItems: 'top', mt:4, ml:6 }}>
-            <CardMedia
-              component="img"
-              sx={{width: 40, height: 40, objectFit: 'contain' }}
-              image={responseFridgeImage}
-              alt="Fridge Image"
-            />
+          <Grid item xs={2} sx={{ alignItems: 'top', mt: 4, ml: 6 }}>
+            {loading ? ( 
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 40, width: 40 }}>
+                <LoadingProgress />
+                
+              </Box>
+            ) : (
+              <CardMedia
+                component="img"
+                sx={{ width: 40, height: 40, objectFit: 'contain' }}
+                image={responseFridgeImage}
+                alt="Fridge Image"
+                onLoad={() => setLoading(false)}
+              />
+            )}
           </Grid>
 
           {/* Fridge Name and Item Count */}
@@ -172,7 +185,7 @@ const handleCardClick = () => {
           <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 25,   mt: -1, 
                     mb: -2}}>
             <ActionButton onClick ={handleEditButton}  className="actionBtn" ActionName="Edit" />
-            <ActionButton  onClick={handleDeleteButton} className="actionBtn" ActionName="Delete" />
+            <ActionButton onClick={handleDeleteButton} className="actionBtn" ActionName="Delete" />
           </Box>
         </CardContent>
       </Collapse>
