@@ -13,14 +13,18 @@ import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
 import axios from 'axios';
 import Collapse  from '@mui/material/Collapse';
-
+import Divider from '@mui/material/Divider';
+import EditIcon from '@mui/icons-material/Edit';
 import { Alert } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+/**Components */
+import ActionButton from '../ActionButton';
 
-export default function MediaControlCard({UserFridgeID,FridgeID ,FridgeName,FridgeImageID, ItemCount ,userId}) {
-  const [responseFridgeImage,setResponseFridgeImage] = useState();
+export default function MediaControlCard({UserItemID,ItemID, UserFridgeID,FridgeID ,FridgeName,FridgeImageID, ItemCount ,userId, getSelectUserItemIDFunction, getSelectUserFridgeIDFunction, getSelectFridgeIDFunction, handleAfterAddDeleteFridgeFunction, handleEditFridgeFunction}) {
+  const [responseFridgeImage,setResponseFridgeImage] = useState();   
   const [responseFridgeName,setResponseFridgeName] = useState();
   const [arrowClick, setArrowClick] = useState(false);
+  const [selectFridgeID,setSelectFridgeID] = useState();//*Final state for saving fridge ID
 
 /**Function for Connecting the API can bring the CategoryImage used FridgeImageID */
 async function getFridgeImage(FridgeImageID){
@@ -38,6 +42,20 @@ async function getFridgeImage(FridgeImageID){
   }
 }
 
+/**Function for API about delete item */
+async function deleteFridge(inputID){
+  try {
+    await axios.delete('https://5182cy26fk.execute-api.ca-central-1.amazonaws.com/prod/fridge/deleteStorage', {
+      params: {
+        FridgeID: inputID  // Query parameters should be passed in the 'params' field
+      }
+    });
+    handleAfterAddDeleteFridgeFunction(true); 
+  } catch (error) {
+    console.log("Failed to deleteFridge api ", error);
+    throw error; 
+  }
+}
 
 /**Function for Connecting the API can bring the CategoryImage used FridgeImageID */
 async function getFridgeName(inputFridgeID, inputUserID){
@@ -55,17 +73,43 @@ async function getFridgeName(inputFridgeID, inputUserID){
   }
 }
 
-/**function sendSelectedUserFridgeID( inputFridgeID,inputID){
-  getSelectUserFridgeIDFunction(inputFridgeID);
-  getSelectFridgeIDFunction(inputID);
-}
- */
 
-const handleArrowClick = () => {
+
+/**Function for sending selected user item id to dashboard.js(Parent Component) */
+function sendSelectedUserFridge(inputItemID, inputUserFridgeID, inputFridgeID) {
+  getSelectUserItemIDFunction(inputItemID);
+  getSelectUserFridgeIDFunction(inputUserFridgeID);
+  getSelectFridgeIDFunction(inputFridgeID);
+}
+
+const handleArrowClick = (event) => {
+  event.stopPropagation(); // Prevent Card click event
   setArrowClick(!arrowClick);
 };
 
+const handleDeleteButton = () => {
+  if (window.confirm("Do you want to delete this fridge?")) {  // 사용자 확인 대화상자
+    console.error("check FridgeID:", FridgeID);
+    deleteFridge(FridgeID)
+      .then(() => {
+        alert("Success to delete Fridge");  // 성공 시 알림 메시지
+      })
+      .catch((error) => {
+        console.error("error delete Fridge:", error);
+      });
+  }
+};
 
+
+const handleEditButton = () => {
+  getSelectUserFridgeIDFunction(UserFridgeID); 
+  getSelectFridgeIDFunction(FridgeID);
+  handleEditFridgeFunction();
+};
+
+const handleCardClick = () => {
+  sendSelectedUserFridge(UserItemID, UserFridgeID, FridgeID);
+};
 /**Function for Connecting the API can bring the Storage name used UserFridgeID  */
 
   /** Calculate the D-day when the component starts rendering */
@@ -77,53 +121,61 @@ const handleArrowClick = () => {
   },[FridgeImageID, UserFridgeID, userId]);
 
   return (
-    <Card  sx={{ flexGrow:1, borderRadius: 5, mb:2  }}>
-      <CardActionArea>
-      <Grid container spacing={1} sx={{ height: 131 }} >
+    <Card sx={{ flexGrow:1, borderRadius: 5, mb:2 }}>
+      {/* CardActionArea for clickable card */}
+      <CardActionArea onClick={handleCardClick}>
+        <Grid container spacing={1} sx={{ height: 131 }}>
+          {/* Fridge Image */}
+          <Grid item xs={2} sx={{ alignItems: 'top', mt:4, ml:6 }}>
+            <CardMedia
+              component="img"
+              sx={{width: 40, height: 40, objectFit: 'contain' }}
+              image={responseFridgeImage}
+              alt="Fridge Image"
+            />
+          </Grid>
 
-        <Grid  item xs ={2} sx={{ alignItems: 'top', mt:4, ml:6}}>
-          {/*Fridge image*/} 
-          <CardMedia
-            component="img"
-            sx={{ width: 40, height: 40, objectFit: 'contain' }}
-            image={responseFridgeImage}
-            alt="Fridge Image"
-          />
-        </Grid>
-        <Grid item xs ={5}>
-            <CardContent sx={{  flex: '1 0 auto',   mt:0, ml: -5 }}>
-              <Typography  variant="subtitle1" sx={{}}>
-                <p>{responseFridgeName}</p>     
-              </Typography>     
-              <Typography
-                  variant="caption"
-                  sx={{ color: 'text.secondary' }}
-              >
-                  <p>Contains {ItemCount} items</p>        
-              </Typography>       
+          {/* Fridge Name and Item Count */}
+          <Grid item xs={5}>
+            <CardContent sx={{ flex: '1 0 auto',   mt:0, ml: -5 }}>
+              <Typography variant="subtitle1">{responseFridgeName}</Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                Contains {ItemCount} items
+              </Typography>
             </CardContent>
-        </Grid>
+          </Grid>
 
-        <Grid item xs={3} sx={{ display: 'flex',
+          {/* Arrow Button */}
+          <Grid item xs={3} sx={{ display: 'flex',
           justifyContent: 'center',
           alignItems: 'flex-end',
           height: '100%',
-          paddingBottom: '15px' }}>
-          <IconButton onClick={handleArrowClick} size="small" sx={{ padding: 0, margin: 0, width: 45, height: 45, transform: arrowClick ? 'rotate(180deg)' : 'rotate(0deg)', 
-              transition: 'transform 0.3s ease-in-out', }}>
-            <ExpandMoreIcon />
+          paddingBottom: '15px'  }}>
+            <IconButton
+              onClick={handleArrowClick}
+              size="small"
+              sx={{
+                padding: 0, margin: 0, width: 45, height: 45, transform: arrowClick ? 'rotate(180deg)' : 'rotate(0deg)', 
+                transition: 'transform 0.3s ease-in-out'
+              }}
+            >
+              <ExpandMoreIcon />
             </IconButton>
+          </Grid>
         </Grid>
+      </CardActionArea>
 
-   
-      </Grid>
+      {/* Collapse section for Edit/Delete */}
       <Collapse in={arrowClick} timeout="auto" unmountOnExit>
+        <Divider sx={{width: '95%', mx: 'auto', mb: -4, mt: -1 }} />
         <CardContent>
-          <Typography paragraph>To be continue...</Typography>
+          <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 25,   mt: -1, 
+                    mb: -2}}>
+            <ActionButton onClick ={handleEditButton}  className="actionBtn" ActionName="Edit" />
+            <ActionButton  onClick={handleDeleteButton} className="actionBtn" ActionName="Delete" />
+          </Box>
         </CardContent>
       </Collapse>
-      </CardActionArea>
-      
     </Card>
   );
 }
