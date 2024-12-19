@@ -1,6 +1,7 @@
 import * as React from 'react';
 import '../src/assets/App.css';
 import { BrowserRouter, Routes,Route } from 'react-router-dom';
+import Intro from './pages/Intro/Intro'
 import Login from './pages/Login/Login'; 
 import SignUp from './pages/SignUp/SignUp';
 import SignUpQustions from './pages/SignUp/SignUpQustions';
@@ -19,7 +20,7 @@ function App() {
       <BrowserRouter> 
         <Routes>
           {/*First page is the login page*/}
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Intro />} />
           <Route path="/termsConditions" element={<TermsConditions />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
