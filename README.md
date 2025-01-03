@@ -5,7 +5,7 @@
 
 
 [![Version](https://img.shields.io/badge/Version-1.0.0-blue)](https://github.com/DolphinDevs/FridgeMaster)
-[![Go report](https://img.shields.io/badge/Status-Stable-green)](https://github.com/DolphinDevs/FridgeMaster)<br\>
+[![Go report](https://img.shields.io/badge/Status-Stable-green)](https://github.com/DolphinDevs/FridgeMaster)<br>
 [![Contribute](https://img.shields.io/badge/Contribute-Welcome-yellow)](https://github.com/DolphinDevs/FridgeMaster#contributing)
 [![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red)](https://github.com/DolphinDevs/FridgeMaster#license)
 
