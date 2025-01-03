@@ -42,8 +42,8 @@ Manage your kitchen with **Fridge Master**, built with **frontend** (React, Java
 - **EmailJS**: v4.4.1 - Send emails from the browser.
 - **@react-three/fiber**: v8.17.10 - React renderer for 3D objects with Three.js.
 
-## ⚙️ Project Assistance
+## 🤝 Contribution & Feedback
 
-## ⚙️ Support the author
+## ❤️ Support the author
 
-## ⚙️ License
+## 📃 License
