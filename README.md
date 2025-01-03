@@ -9,7 +9,8 @@
 [![Contribute](https://img.shields.io/badge/Contribute-Welcome-yellow)](https://github.com/DolphinDevs/FridgeMaster#contributing)
 [![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red)](https://github.com/DolphinDevs/FridgeMaster#license)
 
-Easily manage your ingredients, reduce food waste, and discover recipes!  
-Focus on **using your food efficiently** and **saving time** while letting Fridge Master handle the rest.
+Easily manage your ingredients and discover recipes with **Fridge Master**!  
+Built with **React and JavaScript** on the frontend, **Python and AWS** on the backend, and **PostgreSQL** for the database, this app simplifies your kitchen management.  
+With just one click, track your fridge items, get AI-powered recipe suggestions, and reduce food waste.  
 
 </div>
