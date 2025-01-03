@@ -59,8 +59,13 @@ Provides efficient APIs using **Django** (v4.2) and **Python** (v3.12).
 - **GitHub Actions**: Configured a deployment pipeline. When changes are pushed to the frontend's main branch, the pipeline automatically triggers deployment, ensuring efficient and seamless updates.
 
 ## 🤝 Contribution & Feedback
+If you want to say **thank you** or/and support active development of Fridge Mater:
+- Add a [GitHub Star](https://github.com/eunyoungKim0728/FridgeMaster) to the project.
+- Leave a review on our **FridgeMaster** page.
 
 ## ❤️ Support the author
+You can support this project by contributing through Ko-fi. All proceeds will be used to enhance this project and inspire the creation of new tools and articles for the community.
+
 [![Buy Me a Coffee](https://cdn.ko-fi.com/cdn/kofi3.png?v=3)](https://ko-fi.com/eunyoungkim)
 
 
