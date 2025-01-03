@@ -19,20 +19,20 @@ Manage your kitchen with **Fridge Master**, built with **frontend** (React, Java
 - **JavaScript**
 
 #### Library
-- **React**: v18.3.1
-- **React DOM**: v18.3.1 - For rendering React components to the DOM.
+- **React**  
+- **React DOM** - For rendering React components to the DOM.
 
 #### Framework
 - **Material-UI**: 
-  - **@mui/material**: v5.16.7 - Template and UI components.
-  - **@mui/icons-material**: v5.16.7 - Icon library for Material-UI.
-- **Styled-Components**: v6.1.13 - Styling for React components.
+  - **@mui/material** - Template and UI components.
+  - **@mui/icons-material** - Icon library for Material-UI.
+- **Styled-Components** - Styling for React components.
 
 #### Package
-- **React Router DOM**: v6.26.2 - For page navigation.
-- **React Hook Form**: v7.53.0 - For form handling and validation.
-- **React Scroll**: v1.9.0 - For scrolling between sections.
-- **Axios**: v1.7.7 - For making HTTP requests.
-- **Day.js**: v1.11.13 - Manipulate date and time.
-- **EmailJS**: v4.4.1 - Send emails from the browser.
-- **@react-three/fiber**: v8.17.10 - React renderer for 3D objects with Three.js.
+- **React Router DOM** - For page navigation.  
+- **React Hook Form** - For form handling and validation.  
+- **React Scroll** - For scrolling between sections.  
+- **Axios** - For making HTTP requests.  
+- **Day.js** - Manipulate date and time.  
+- **EmailJS** - Send emails from the browser.  
+- **@react-three/fiber** - React renderer for 3D objects with Three.js.
