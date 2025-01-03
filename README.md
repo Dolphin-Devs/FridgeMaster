@@ -16,7 +16,7 @@ Manage your kitchen with **Fridge Master**, built with **frontend** (React, Java
 
 ## ⚡ Quick-Link
 
-## 🪂 Feature
+## 🪂 Features
 
 ## ⚙️ Tech-Stack
 ### Frontend
