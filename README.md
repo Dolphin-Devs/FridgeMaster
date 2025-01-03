@@ -1,3 +1,5 @@
+[![Fridge Master Logo](src/assets/logo_readme.png)](https://www.thefridgemaster.com/)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
