@@ -41,3 +41,9 @@ Manage your kitchen with **Fridge Master**, built with **frontend** (React, Java
 - **Day.js**: v1.11.13 - Manipulate date and time.
 - **EmailJS**: v4.4.1 - Send emails from the browser.
 - **@react-three/fiber**: v8.17.10 - React renderer for 3D objects with Three.js.
+
+## ⚙️ Project Assistance
+
+## ⚙️ Support the author
+
+## ⚙️ License
