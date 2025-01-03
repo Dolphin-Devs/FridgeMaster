@@ -13,7 +13,7 @@ Manage your kitchen with **Fridge Master**, built with **frontend** (React, Java
 
 </div>
 
-## 📝 Tech-Stack
+## 🧰 Tech-Stack
 ### Frontend
 #### Language
 - **JavaScript**
