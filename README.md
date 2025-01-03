@@ -63,7 +63,7 @@ Provides efficient APIs using **Django** (v4.2) and **Python** (v3.12).
 ## ❤️ Support the author
 
 ## 📃 License
-- Fridge Master is free for using, viewing and forking.
+- [Fridge Master](https://github.com/eunyoungKim0728/FridgeMaster) is free for using, viewing, and forking.
 - However, modification, redistribution, or commercial use is strictly prohibited without prior written consent from the project owner.
 - If you wish to modify, redistribute, or use this project commercially, please contact us at: devs.dolphin@gmail.com.
 
