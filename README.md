@@ -61,6 +61,8 @@ Provides efficient APIs using **Django** (v4.2) and **Python** (v3.12).
 ## 🤝 Contribution & Feedback
 
 ## ❤️ Support the author
+[![Buy Me a Coffee](https://cdn.ko-fi.com/cdn/kofi3.png?v=3)](https://ko-fi.com/eunyoungkim)
+
 
 ## 📃 License
 - [Fridge Master](https://github.com/eunyoungKim0728/FridgeMaster) is free for using, viewing, and forking.
