@@ -13,22 +13,22 @@ Manage your kitchen with **Fridge Master**, built with **frontend** (React, Java
 
 </div>
 
-# ⚙️ Tech-Stack
-## Frontend
-### Language
+## ⚙️ Tech-Stack
+### Frontend
+#### Language
 - **JavaScript**
 
-### Library
+#### Library
 - **React**  
 - **React DOM** - For rendering React components to the DOM.
 
-### Framework
+#### Framework
 - **Material-UI**: 
   - **@mui/material** - Template and UI components.
   - **@mui/icons-material** - Icon library for Material-UI.
 - **Styled-Components** - Styling for React components.
 
-### Package
+#### Package
 - **React Router DOM** - For page navigation.  
 - **React Hook Form** - For form handling and validation.  
 - **React Scroll** - For scrolling between sections.  
