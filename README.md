@@ -1,4 +1,6 @@
-[![Fridge Master Logo](src/assets/logo_readme.png)](https://www.thefridgemaster.com/)
+<p align="center">
+  [![Fridge Master Logo](src/assets/logo_readme.png)](https://www.thefridgemaster.com/)
+</p>
 
 # Getting Started with Create React App
 
