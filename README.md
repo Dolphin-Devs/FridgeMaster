@@ -42,6 +42,22 @@ Manage your kitchen with **Fridge Master**, built with **frontend** (React, Java
 - **EmailJS**: v4.4.1 - Send emails from the browser.
 - **@react-three/fiber**: v8.17.10 - React renderer for 3D objects with Three.js.
 
+
+### Backend
+Provides efficient APIs using **Django** (v4.2) and **Python** (v3.12).
+- **AWS Lambda**: Serverless functions for executing backend logic.
+- **AWS API Gateway**: Configured as a REST API that manages endpoints and enables seamless communication between the frontend and backend.
+
+#### Database
+- **AWS RDS(PostgreSQL)**: v16.3 - Integrated with Django for efficient data management.
+
+
+#### Deployment
+- **AWS S3**: For hosting static assets
+- **AWS Route 53**: Configured for domain management and routing.
+- **AWS Certificate Manager**: Ensures secure communication via HTTPS.
+- **GitHub Actions**: Configured a deployment pipeline. When changes are pushed to the frontend's main branch, the pipeline automatically triggers deployment, ensuring efficient and seamless updates.
+
 ## 🤝 Contribution & Feedback
 
 ## ❤️ Support the author
