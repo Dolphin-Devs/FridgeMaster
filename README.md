@@ -1,7 +1,7 @@
 <!-- Logo and website link -->
 <p align="center">
   <a href="https://www.thefridgemaster.com/">
-    <img src="src/assets/logo_readme.png" alt="Fridge Master Logo" width="300">
+    <img src="src/assets/logo_readme.png" alt="Fridge Master Logo">
   </a>
 </p>
 
