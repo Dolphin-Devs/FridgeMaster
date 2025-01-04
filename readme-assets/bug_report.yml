@@ -1,0 +1,28 @@
+name: Bug Report
+description: Report a bug or issue with the project.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report a bug! Please fill out the details below.
+  - type: input
+    id: title
+    attributes:
+      label: Bug title
+      placeholder: Describe the issue in one sentence.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the issue in detail.
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: What you expected to happen
+      description: Explain what you expected instead of the actual behavior.
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: List the steps to reproduce the issue.
