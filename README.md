@@ -80,9 +80,9 @@ Provides efficient APIs using **Django** (v4.2) and **Python** (v3.12).
 - **GitHub Actions**: Configured a deployment pipeline. When changes are pushed to the frontend's main branch, the pipeline automatically triggers deployment, ensuring efficient and seamless updates.
 
 ## 📐 Design & Methodology
-- Project timelines were managed using **Agile methodology**, with 2-week sprints tracked via **Azure DevOps Boards**. 
+- Project timelines managed using **Agile methodology**, with 2-week sprints tracked via **Azure DevOps Boards**.
 - **Use Case Diagrams** and **ERD Diagrams** were used to design and implement the database structure.  
-- Intuitive and user-friendly web layouts were designed using **Figma**, followed by implementation with **HTML, CSS, and JavaScript**.  
+- Intuitive, user-friendly web layouts were created with **Figma**, then implemented using **HTML, CSS, and JavaScript**.  
   
 ## 🤝 Contribution & Feedback
 If you want to say **thank you** or/and support active development of Fridge Mater:
