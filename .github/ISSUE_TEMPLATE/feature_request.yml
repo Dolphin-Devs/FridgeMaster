@@ -6,10 +6,10 @@ body:
   - type: textarea
     id: description
     attributes:
-      label: Feature Description
+      label: "Feature Description *"
       description: Provide details about your suggestion.
   - type: textarea
     id: use-case
     attributes:
-      label: Use Case
+      label: "Use Case *"
       description: Describe a scenario where this feature would be helpful.
