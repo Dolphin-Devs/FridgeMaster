@@ -14,7 +14,7 @@ Manage your kitchen with **Fridge Master**, built with **frontend** (React, Java
 </div>
 
 <p align="center">
-  <video src="readme-assets/full_demo_subtitle.mp4" width="100%" />
+  <video src="https://github.com/eunyoungKim0728/FridgeMaster/readme-assets/full_demo_subtitle.mp4" width="100%" />
 </p>
 
 ## ⚡ Quick-Link
