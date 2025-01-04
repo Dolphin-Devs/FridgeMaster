@@ -25,4 +25,3 @@ body:
           4. Enter item details (e.g., Name: Milk, Quantity: 2, Expiration: 2025-01-10).
           5. Click the "Save" button.
           6. Observe that the new item does not appear in the list.
-      required: true
