@@ -93,8 +93,8 @@ Provides efficient APIs using **Django** (v4.2) and **Python** (v3.12).
 ## 🤝 Contribution & Feedback
 If you want to say **thank you** or/and support active development of Fridge Mater:
 - Add a [GitHub Star](https://github.com/eunyoungKim0728/FridgeMaster) to the project.
-- **Bug Report**: Found a bug? Let us know by creating a [GitHub Issue](https://github.com/eunyoungKim0728/FridgeMaster/issues/new?template=bug_report.yml).
-- **Feature Request**: Have an idea to make FridgeMaster better? Submit your suggestions as a [Feature Request](https://github.com/eunyoungKim0728/FridgeMaster/issues/new?template=feature_request.yml). 
+- **Bug Report**: Found a bug? Let us know by creating a [GitHub Issue](https://github.com/eunyoungKim0728/FridgeMaster/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml&title=%F0%9F%90%9B+Bug+Report%3A+).
+- **Feature Request**: Have an idea to make FridgeMaster better? Submit your suggestions as a [Feature Request](https://github.com/eunyoungKim0728/FridgeMaster/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml&title=%F0%9F%92%A1+Feature+Request%3A+). 
 - Leave a review on our **FridgeMaster** page.
 
 ## ❤️ Support the author
