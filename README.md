@@ -79,7 +79,7 @@ Provides efficient APIs using **Django** (v4.2) and **Python** (v3.12).
 - **AWS Certificate Manager**: Ensures secure communication via HTTPS.
 - **GitHub Actions**: Configured a deployment pipeline. When changes are pushed to the frontend's main branch, the pipeline automatically triggers deployment, ensuring efficient and seamless updates.
 
-## 📘 Design & Methodology
+## 📐 Design & Methodology
 - Managed project timelines using **Agile methodology** with 2-week sprints, tracked via **Azure DevOps Boards**.  
 - Designed and implemented the database structure based on **Use Case Diagrams** and **ERD Diagrams**.  
 - Created intuitive and user-friendly web layouts using **Figma**, followed by implementation with HTML, CSS, and JavaScript.  
