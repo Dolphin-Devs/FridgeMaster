@@ -1,7 +1,6 @@
 <!-- Logo and website link -->
 <div align="center">
 
-Cick Me!
 [![Fridge Master Logo](src/assets/logo_readme.png)](https://www.thefridgemaster.com)
 
 #
