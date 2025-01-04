@@ -82,7 +82,7 @@ Provides efficient APIs using **Django** (v4.2) and **Python** (v3.12).
 ## 📐 Design & Methodology
 - Project timelines managed using **Agile methodology**, with 2-week sprints tracked via **Azure DevOps Boards**.
 - **Use Case Diagrams** and **ERD Diagrams** were used to design and implement the database structure.  
-- Intuitive, user-friendly web layouts were created with **Figma**, then implemented using **HTML, CSS, and JavaScript**.  
+- Designed web layouts using **Figma**, ensuring user-friendly interfaces aligned with the 3-click principle.
   
 ## 🤝 Contribution & Feedback
 If you want to say **thank you** or/and support active development of Fridge Mater:
