@@ -1,12 +1,8 @@
 name: Feature Request
 description: Suggest an idea or enhancement.
 labels: [enhancement]
+title: "💡 Feature Request: "
 body:
-  - type: input
-    id: title
-    attributes:
-      label: Feature Title
-      placeholder: Briefly describe your feature idea.
   - type: textarea
     id: description
     attributes:
