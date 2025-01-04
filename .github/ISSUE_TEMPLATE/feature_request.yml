@@ -1,0 +1,19 @@
+name: Feature Request
+description: Suggest an idea or enhancement.
+labels: [enhancement]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Feature Title
+      placeholder: Briefly describe your feature idea.
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Description
+      description: Provide details about your suggestion.
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: Describe a scenario where this feature would be helpful.
