@@ -4,7 +4,7 @@
 [![Fridge Master Logo](readme-assets/logo_readme.png)](https://www.thefridgemaster.com)
 
 #
-[![Version](https://img.shields.io/badge/Version-1.0.0-blue)](https://github.com/DolphinDevs/FridgeMaster)
+[![Version](https://img.shields.io/badge/Version-1.0.0-blue)](https://github.com/eunyoungKim0728/FridgeMaster/releases/tag/v1.0.0)
 [![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red)](readme-assets/license)
 
 
