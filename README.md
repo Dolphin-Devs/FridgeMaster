@@ -23,12 +23,12 @@ Manage your kitchen with **Fridge Master**, built with **frontend** (React, Java
 
 <table>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/7211c1a9-f62e-4823-a93b-b956b213c208" width="478"/></td>
-    <td><img src="https://github.com/user-attachments/assets/8ddae0d5-3bfa-4e17-9c57-ecc3a9494a43" width="478"/></td>
+    <td><img src="https://github.com/user-attachments/assets/7211c1a9-f62e-4823-a93b-b956b213c208" width="450"/></td>
+    <td><img src="https://github.com/user-attachments/assets/8ddae0d5-3bfa-4e17-9c57-ecc3a9494a43" width="450"/></td>
   </tr>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/8a343552-a4ab-4f7a-a4c5-3371407073e1" width="478"/></td>
-    <td><img src="https://github.com/user-attachments/assets/acc9cff5-85b7-4634-8b2e-b7bee84fc917" width="478"/></td>
+    <td><img src="https://github.com/user-attachments/assets/8a343552-a4ab-4f7a-a4c5-3371407073e1" width="450"/></td>
+    <td><img src="https://github.com/user-attachments/assets/acc9cff5-85b7-4634-8b2e-b7bee84fc917" width="450"/></td>
   </tr>
 </table>
 
