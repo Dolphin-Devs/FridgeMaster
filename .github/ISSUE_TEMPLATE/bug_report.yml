@@ -1,11 +1,12 @@
 name: Bug Report
 description: File a bug report to help us improve.
 labels: [bug]
+title: "🐛 Bug Report: "
 body:
   - type: input
     id: title
     attributes:
-      label: 🐛 Bug Report: 
+      label: Bug Title
       placeholder: Describe the issue in one sentence.
   - type: textarea
     id: what-happened
