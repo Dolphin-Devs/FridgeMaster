@@ -17,4 +17,11 @@ body:
     id: steps-to-reproduce
     attributes:
       label: Steps to Reproduce
-      description: List steps to reproduce the issue.
+      description: |
+        List the steps to reproduce the issue in detail. For example:
+          1. Open the application in Google Chrome (v116.0).
+          2. Navigate to the "List" page.
+          3. Click on the "Add Item" button.
+          4. Enter item details (e.g., Name: Milk, Quantity: 2, Expiration: 2025-01-10).
+          5. Click the "Save" button.
+          6. Observe that the new item does not appear in the list.
