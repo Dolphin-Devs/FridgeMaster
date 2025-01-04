@@ -6,17 +6,17 @@ body:
   - type: textarea
     id: what-happened
     attributes:
-      label: What happened?
+      label: "What happened? *"
       description: Provide details about the problem.
   - type: textarea
     id: expected-behavior
     attributes:
-      label: Expected Behavior
+      label: "What you expected to happen *"
       description: Explain what you expected instead.
   - type: textarea
     id: steps-to-reproduce
     attributes:
-      label: Steps to Reproduce
+      label: "How to reproduce *"
       description: |
         List the steps to reproduce the issue in detail. For example:
           1. Open the application in Google Chrome (v116.0).
