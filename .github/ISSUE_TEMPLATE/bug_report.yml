@@ -1,0 +1,24 @@
+name: Bug Report
+description: File a bug report to help us improve.
+labels: [bug]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Bug Title
+      placeholder: Describe the issue in one sentence.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Provide details about the problem.
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: Explain what you expected instead.
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: List steps to reproduce the issue.
