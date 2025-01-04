@@ -25,7 +25,7 @@ Access the live version of Fridge Master.
 💭 **[Share Your Feedback](#)**  
 Help us improve by sharing your experience!
 
-## 🪂 Features
+## ✨ Features
 
 <table>
   <tr>
