@@ -26,6 +26,11 @@ Access the live version of Fridge Master.
 💭 **[Share Your Feedback](#)**  
 Help us improve by sharing your experience!
 
+👆 **[Download v1.0.0](https://github.com/eunyoungKim0728/FridgeMaster/releases/tag/v1.0.0)**  
+The initial release of **Fridge Master**, featuring fridge management, expiration date tracking, and recipe suggestions.
+
+
+
 ## ✨ Features
 
 <table>
