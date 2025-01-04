@@ -5,7 +5,7 @@
 
 #
 [![Version](https://img.shields.io/badge/Version-1.0.0-blue)](https://github.com/DolphinDevs/FridgeMaster)
-[![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red)](src/assets/license)
+[![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red)](readme-assets/license)
 
 
 Manage your kitchen with **Fridge Master**, built with **frontend** (React, JavaScript), **backend** (Python, AWS Lambda), and **database** (PostgreSQL). Easily track your fridge items, get AI-powered recipe suggestions, and reduce food waste—all within an intuitive and user-friendly interface!
