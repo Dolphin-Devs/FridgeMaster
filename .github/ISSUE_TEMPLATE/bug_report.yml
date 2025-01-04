@@ -8,13 +8,11 @@ body:
     attributes:
       label: What happened?
       description: Provide details about the problem.
-      required: true
   - type: textarea
     id: expected-behavior
     attributes:
       label: Expected Behavior
       description: Explain what you expected instead.
-      required: true
   - type: textarea
     id: steps-to-reproduce
     attributes:
