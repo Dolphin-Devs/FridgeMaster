@@ -3,7 +3,7 @@
 
 [![Fridge Master Logo](src/assets/logo_readme.png)](https://www.thefridgemaster.com)
 
-
+#
 [![Version](https://img.shields.io/badge/Version-1.0.0-blue)](https://github.com/DolphinDevs/FridgeMaster)
 [![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red)](src/assets/license)
 
