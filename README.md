@@ -19,13 +19,13 @@ Manage your kitchen with **Fridge Master**, built with **frontend** (React, Java
 
 ## ⚡ Quick-Link
 
-📄 **[Website](#)**  
+🌐 **[Website](#)**  
 Access the live version of Fridge Master.
 
 📘 **[Technical Documents](#)**  
 Explore detailed technical documentation.
 
-📝 **[Share Your Feedback](#)**  
+💭 **[Share Your Feedback](#)**  
 Help us improve by sharing your experience!
 
 ## 🪂 Features
