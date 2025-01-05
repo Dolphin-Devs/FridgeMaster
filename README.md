@@ -23,7 +23,7 @@ Manage your kitchen with **Fridge Master**, built with **frontend** (React, Java
 🌐 **[Website](#)**  
 Access the live version of Fridge Master.
 
-💭 **[Share Your Feedback](#)**  
+💭 **[Share Your Feedback](https://docs.google.com/forms/d/e/1FAIpQLSfLQGK7IUaecTqFAJ5C7fbwYgTntyiopcf2uMj6LzWM1be-fg/viewform?usp=dialog)**  
 Help us improve by sharing your experience!
 
 👆 **[Download v1.0.0](https://github.com/eunyoungKim0728/FridgeMaster/releases/tag/v1.0.0)**  
