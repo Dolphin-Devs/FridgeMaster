@@ -18,6 +18,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { mainListItems} from './listItems';
 import InputBase from '@mui/material/InputBase';
 import { useLocation, useNavigate} from 'react-router-dom';
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 import axios from 'axios';
 /**Components in the Dashboard */
 import UserItem from '../../components/list-components/UserItem';
@@ -132,15 +134,23 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
+
+
+
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Dashboard() {
-  const [open, setOpen] = React.useState(true);
+  //----------------------------For Responsive Web --------------------------
+  const [open, setOpen] = React.useState(false); //Control for Drawer // Mobile: Drawer closed, Desktop: Drawer open
+  const theme = useTheme();//Control of mobile envrionment of the device
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); //Check for mobile environment of the device
+
   const location = useLocation();
   const navigate = useNavigate();
+
+  // ----------------------------For User Item List --------------------------
   const [userItemList, setUserItemList] = useState([]);
-  // State about user select item on the UserItem Component, and Display it to Item Detail Component.
   const [selectUserItemID, setSelectUserItemID] = useState(); // State for saving the user selected item id.
   const [selectUserFridgeID, setSelecUserFridgeID] = useState(); // State for saving the user selected FridgeID.
   
@@ -166,7 +176,7 @@ export default function Dashboard() {
 
 
 
-  //About Setting Page
+  // ----------------------------For Setting Page --------------------------
   const[isAboutUs, setIsAboutUs] = useState(false);//State for handling about user selects about us
   //The information from ex page
   const{email,username,userId} = location.state || {};
@@ -174,18 +184,25 @@ export default function Dashboard() {
 
 
 
-  //About Recipe Page
+  // ----------------------------For Recipe Page --------------------------
   const[firstRecipe,setFirstRecipe] = useState([]);
   const [selectedRecipeId, setSelectedRecipeId] = useState(null);//Send the information about selected recipe 
-  //For RecipeName Component
+  //---For RecipeName Component
   const[nearItems,setNearItems] = useState([]);
   const[itemNameList,setItemNameList] = useState([]);
-  //For RecipeDetail Component
+  //---For RecipeDetail Component
   const[recipeEmoji,setRecipeEmoji] = useState(false);
   const[recipeName,setRecipeName] = useState(false);
   const[recipeIngre,setRecipeIngre] = useState(false);
   const[recipeSteps,setRecipeSteps] = useState(false);
 
+
+  //For Responsive Web : Method for setting the drawer open and close
+  const toggleDrawer = () => {
+    setOpen(!open); 
+  };
+ 
+  
 /**Function for Sign out and go to the Login Page */
 const signOut = (input) => {
   if (input === true) {
@@ -264,9 +281,7 @@ useEffect(() => {
   }
 }, [location.state]);
 
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
+
 
   /**Check for the User data from the login page */
   useEffect(() => {
@@ -561,15 +576,17 @@ useEffect(() => {
         <CssBaseline />
         <AppBar position="absolute" open={open} sx={{ bgcolor: "white", color: "orange" }}>
           <Toolbar sx={{ pr: '24px' }}>
+            {/* 햄버거 버튼 및 ChevronLeftIcon */}
             <IconButton
               edge="start"
               color="inherit"
-              aria-label="open drawer"
+              aria-label={open ? "close drawer" : "open drawer"}
               onClick={toggleDrawer}
-              sx={{ marginRight: '36px', ...(open && { display: 'none' }) }}
+              sx={{ marginRight: "36px" }}
             >
-              <MenuIcon />
+              {open ? <ChevronLeftIcon /> : <MenuIcon />} {/* 상태에 따라 아이콘 전환 */}
             </IconButton>
+            {/* 로고 */}
             <Typography
               component="h1"
               variant="h6"
@@ -583,12 +600,24 @@ useEffect(() => {
           </Toolbar>
         </AppBar>
     
-        <Drawer variant="permanent" open={open}>
-          <Toolbar sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', px: [1], bgcolor: "orange" }}>
-            <IconButton onClick={toggleDrawer} sx={{ bgcolor: "orange", color: "white" }}>
-              <ChevronLeftIcon />
-            </IconButton>
+        <Drawer
+          variant='permanent' 
+          open={open}
+          onClose={toggleDrawer} 
+          isMobile={isMobile} 
+        >
+           {/* Drawer 내부 Toolbar */}
+          <Toolbar 
+            sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'flex-end', 
+              px: [1], 
+              bgcolor: "orange",
+               }}
+            >
           </Toolbar>
+          {/* Drawer 내부 메뉴 */}
           <List component="nav" sx={{ bgcolor: "orange", color: "white" }}>
             {mainListItems({ getSelectListItemFunction: getSelectListItem })}
           </List>
