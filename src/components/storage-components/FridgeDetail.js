@@ -82,9 +82,6 @@ const handleDeleteButton = () =>{
 //Validation about input and selection
 const handleSaveButton = () =>{
   const fridgeID = selectedFridgeInfo?.fridgeID;
-  const userFridgeID = selectUserFridgeID;
-  console.log("Fridge ID:", fridgeID);
-  console.log("UserFridgeID:", userFridgeID);
 
   let isError = false;
   //Validation aboout FridgeName
@@ -101,7 +98,8 @@ const handleSaveButton = () =>{
     try{ 
       //If the selectFridgeID is undefiend(User didn't click specific item on the list and add ), Call the addNewFridge api 
       if(!fridgeID){
-        addNewStorage(userId,selectFridgeImageID,selectFridgeID,fridgeName);
+        addNewStorage(userId,selectFridgeImageID,fridgeName);
+
       }else{
         console.log('Call updateStorage method');
         updateStorage(userId,fridgeID, selectFridgeImageID,selectUserFridgeID,fridgeName);
