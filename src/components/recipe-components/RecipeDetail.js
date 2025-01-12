@@ -5,11 +5,15 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import CloseButton from '../CloseButton';
 
-
-export default function RecipeDetail({recipeEmoji,recipeName,recipeIngre,recipeSteps}) {
+export default function RecipeDetail({recipeEmoji,recipeName,recipeIngre,recipeSteps, setIsVisible}) {
     const [ingre,setIngre] = useState([]);
     const [steps,setSteps] = useState([]);
+    
+    const handleClose = () => {
+      setIsVisible(false); 
+    };
 
   //Split out the data 
   useEffect(() => {
@@ -21,6 +25,7 @@ export default function RecipeDetail({recipeEmoji,recipeName,recipeIngre,recipeS
   }, [recipeIngre, recipeSteps]);
   return (
     <Card sx={{ml:1,mr:1}}>
+      <CloseButton onClick={handleClose} CloseName="other"/>
       <CardHeader 
         avatar={
           <Avatar sx={{  bgcolor: '#FFCC00' }} aria-label="recipe"  >

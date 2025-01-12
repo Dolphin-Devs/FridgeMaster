@@ -34,6 +34,7 @@ import Empty from '../../components/Empty';
 import ActionButton from '../../components/ActionButton';
 import Copyright from '../../components/Copyright';
 
+
 import UserFridge from '../../components/storage-components/UserFridge';
 import FridgeDetail from '../../components/storage-components/FridgeDetail';
 import Alert from '@mui/material/Alert';
@@ -173,7 +174,8 @@ export default function Dashboard() {
   const [selectedFridgeID, setSelectedFridgeID] = useState(null);
   const [isEditFridge, setIsEditFridge] = useState(false); // Track if edit mode is active
 
-
+  // for close button
+  const [isVisible, setIsVisible] = useState(true);
 
 
   // ----------------------------For Setting Page --------------------------
@@ -219,6 +221,7 @@ const signOut = (input) => {
     setIsEditFridge(false);
     setIsSelectUserItem(false);
     setIsSelectUserFridge(false);
+    setIsVisible(true);
     setSelectedListItemNavMenu(1);
     setUserFridgeList([]);
     alert("Sign-out Success");
@@ -238,6 +241,7 @@ const handleLogoClick = () =>{
   setIsAboutUs(false);
   setIsAddFridge(false);
   setIsEditFridge(false);
+  setIsVisible(true);
   setSelectedRecipeId(null);
 
 }
@@ -252,13 +256,14 @@ const sendIngreSteps = (recipeName,ingredients, steps, emoji) =>{
     setRecipeName(recipeName);
     setRecipeIngre(ingredients);
     setRecipeSteps(steps);
-
+    setIsVisible(true);
 }
 
 /**Function for check that user click the about us in the General Setting component */
 const handleAboutUs = (input) =>{
   if(input === true){
-    setIsAboutUs(!isAboutUs)
+    setIsAboutUs(true);
+    setIsVisible(true);
   }
 }
 /**Function when user check the terms and conditioins, 
@@ -267,6 +272,7 @@ const handleAboutUs = (input) =>{
 const handleTermsandConditions = (input) => {
   if (input === true) {
     setSelectedListItemNavMenu(3);
+    setIsVisible(true);
     setIsAboutUs(true);
     navigate('/termsAndConditions', {
       state: { isAboutUs: true }, // Convey the current state in "isAboutUs" page
@@ -342,6 +348,7 @@ const getSelectUserItemID = (selectedID) => {
   setIsSelectUserFridge(true);
   setIsAddFridge(false);
   setIsEditFridge(false);
+  setIsVisible(true);
   setIsAddItem(false);
 };
 
@@ -352,6 +359,7 @@ const getSelectUserFridgeID = (selected) => {
   setIsSelectUserItem(true);
   setIsAddFridge(false);
   setIsEditFridge(false);
+  setIsVisible(true);
   setIsAddItem(false);
 };
 
@@ -361,6 +369,7 @@ const getSelectFridgeID = (selected) => {
   setIsSelectUserFridge(true);
   setIsAddFridge(false);
   setIsEditFridge(false);
+  setIsVisible(true);
   setIsAddItem(false);
   setIsAboutUs(false);
 };
@@ -462,6 +471,7 @@ const getSelectItemID = (selected) =>{
   setIsAboutUs(false);
   setIsAddFridge(false);
   setIsEditFridge(false);
+  setIsVisible(true);
 }
 
 
@@ -480,6 +490,7 @@ const getSelectItemID = (selected) =>{
     setIsAboutUs(false);
     setIsAddFridge(false);
     setIsEditFridge(false);
+    setIsVisible(true);
   }
 
     /**Method that update the IsAddFridge when user click the add Fridge button */
@@ -488,15 +499,18 @@ const getSelectItemID = (selected) =>{
       setIsAddFridge(true);
       setIsSelectUserFridge(false);
       setIsEditFridge(false);
+      setIsVisible(true);
       setIsAboutUs(false);
       setIsAddItem(false);
   
       // 상태 초기화
       setSelectedFridgeInfo(null);
-      console.log("isAddFridge 상태:", isAddFridge);
+
     };
 
-
+    useEffect(() => {
+      console.log("selectedFridgeInfo 변경됨:", selectedFridgeInfo);
+    }, [selectedFridgeInfo]);
 
 /**Method that update isSelectUserItem and isAddItem after delete the item */
 const handleAfterAddDeleteItem=(input)=>{
@@ -516,6 +530,7 @@ const handleEditFridgeFunction = (fridgeID, userFridgeID, fridgeName, fridgeImag
   setIsSelectUserFridge(false);
   setIsAboutUs(false);
   setIsAddItem(false);
+  setIsVisible(true);
   setIsEditFridge(true); // Enable edit mode
   setSelectedFridgeInfo({
     fridgeID,
@@ -542,6 +557,8 @@ const handleAfterAddDeleteFridge=(input)=>{
     setShouldUpdate(false);
   }
 
+  
+
 } 
 
 
@@ -554,12 +571,7 @@ useEffect(() => {
   }
 }, [shouldUpdate, userId]);
 
-useEffect(() => {
-  if (isAddFridge) {
-    // Add Fridge 모드일 때 초기화
-    setSelectedFridgeInfo(null);
-  }
-}, [isAddFridge]);
+
 
 /** Update userItemList when shouldUpdate changes */
 useEffect(() => {
@@ -569,6 +581,14 @@ useEffect(() => {
 
   }
 }, [shouldUpdateFridge, userId]);
+
+
+
+  useEffect(() => {
+    console.log("isVisible state changed:", isVisible);
+  }, [isVisible]);
+
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -759,17 +779,18 @@ useEffect(() => {
                 >
                   {selectedListItemNavMenu === 1 ? (
                     <>
-                      {!isAddItem && !isSelectUserItem ? (
+                      {!isAddItem && !isSelectUserItem && !isVisible  ? (
                         <Empty />
-                      ) : isAddItem && !isSelectUserItem ? (
+                      ) : isAddItem && !isSelectUserItem && isVisible ? (
                         <ItemDetail
                           userId={userId}
                           selectFridgeIDFromUser={selectUserFridgeID}
                           selectItemID={selectItemID}
                           selectUserItemID={selectUserItemID}
                           handleAfterAddDeleteItemFunction={handleAfterAddDeleteItem}
+                          setIsVisible={setIsVisible} 
                         />
-                      ) : (
+                      ) : !isAddItem && isSelectUserItem && isVisible ?(
                         <ItemDetail
                           userId={userId}
                           selectFridgeIDFromUser={selectUserFridgeID}
@@ -777,50 +798,60 @@ useEffect(() => {
                           selectUserItemID={selectUserItemID}
                           selectedItemInfo={selectedItemInfo}
                           handleAfterAddDeleteItemFunction={handleAfterAddDeleteItem}
+                          setIsVisible={setIsVisible} 
                         />
-                      )}
+                      ): (
+                          <Empty />
+                        )}
                     </>
                   ) : selectedListItemNavMenu === 2 ? (
                     <>
-                       {isAddFridge && !isSelectUserFridge && !isEditFridge ? (
+                       {isAddFridge && !isSelectUserFridge && !isEditFridge && isVisible ? (
                           <FridgeDetail
                             userId={userId}
                             selectUserFridgeID={selectUserFridgeID}
                             selectFridgeID={selectedFridgeInfo?.userFridgeID}
                             selectedFridgeInfo={selectedFridgeInfo}
                             handleAfterAddDeleteFridgeFunction={handleAfterAddDeleteFridge}
+                            setIsVisible={setIsVisible} 
                           />
-                        ) : !isAddFridge && isSelectUserFridge && !isEditFridge? (
+                        ) : !isAddFridge && isSelectUserFridge && !isEditFridge && isVisible? (
                           <UserItemInFridge
                             userId={userId}
                             UserFridgeID={selectUserFridgeID}
                             FridgeID={selectFridgeID}
+                            setIsVisible={setIsVisible} 
                           />
-                        ) : isEditFridge && !isAddFridge && !isSelectUserFridge?(
+                        ) : isEditFridge && !isAddFridge && !isSelectUserFridge && isVisible?(
                           <FridgeDetail
                             userId={userId}
                             selectFridgeIDFromUser={selectedFridgeInfo?.fridgeID}
                             selectUserFridgeID={selectedFridgeInfo?.userFridgeID}
                             selectedFridgeInfo={selectedFridgeInfo}
                             handleAfterAddDeleteFridgeFunction={handleAfterAddDeleteFridge}
+                            setIsVisible={setIsVisible} 
                           />
                         ) : (
                           <Empty />
                         )}
                     </>
                   ) : selectedListItemNavMenu === 4 ? (
-                    selectedRecipeId !== null ? (
+                    (selectedRecipeId !== null) && isVisible ? (
                       <RecipeDetail
                         recipeEmoji={recipeEmoji}
                         recipeName={recipeName}
                         recipeIngre={recipeIngre}
                         recipeSteps={recipeSteps}
+                        setIsVisible={setIsVisible}
                       />
                     ) : (
                       <Empty />
                     )
-                  ) : isAboutUs ? (
-                    <AboutUs handleTermsandConditionsFunction={handleTermsandConditions} />
+                  ) : isAboutUs && isVisible? (
+                    <AboutUs 
+                      handleTermsandConditionsFunction={handleTermsandConditions}
+                      setIsVisible={setIsVisible}
+                    />
                   ) : (
                     <Empty />
                   )}

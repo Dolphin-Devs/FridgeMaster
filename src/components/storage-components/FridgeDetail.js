@@ -23,9 +23,10 @@ import axios from 'axios';
 /**Components */
 import ActionButton from '../ActionButton';
 import LoadingProgress from '../../components/LoadingProgress';
+import CloseButton from '../CloseButton';
 
 export default function FridgeDetail({ FridgeName,
-  FridgeImageID,userId,selectFridgeIDFromUser,selectUserFridgeID,selectedFridgeInfo, handleAfterAddDeleteFridgeFunction}) {
+  FridgeImageID,userId,selectFridgeIDFromUser,selectUserFridgeID,selectedFridgeInfo, handleAfterAddDeleteFridgeFunction, setIsVisible}) {
   const [expanded, setExpanded] = React.useState(false);
 
   //*Final state for using AddUpdate api 
@@ -42,6 +43,10 @@ export default function FridgeDetail({ FridgeName,
   const [isLoading, setIsLoading] = useState(false);//State for Checking api calling 
  
   const [imagesLoading, setImagesLoading] = useState({});
+
+  const handleClose = () => {
+    setIsVisible(false); 
+  };
 
   useEffect(() => {
       if (selectedFridgeInfo && images.length > 0) {
@@ -171,7 +176,8 @@ async function deleteFridge(inputID){
     });
   alert("Success to delete Fridge");
   handleAfterAddDeleteFridgeFunction(true);//Change the Fridge detail component
-
+  setIsVisible(false);
+  
   }catch(error){
     console.log(error);
     console.log("Failed to deleteFridge api ")
@@ -215,18 +221,24 @@ const handleImageClick = (imageId) => {
     setSelectedImage(imageId);
     getSelectFridgeImageID(imageId); 
     console.log("Selected FridgeImageID:", imageId);
-
+  
   };
 
   useEffect(() => {
-  
     if (selectedFridgeInfo) {
-      setFridgeName(selectedFridgeInfo.fridgeName || ''); 
+      // selectedFridgeInfo가 유효하면 상태를 업데이트
+      setFridgeName(selectedFridgeInfo.fridgeName || '');
       setSelectFridgeID(selectedFridgeInfo.fridgeID || null);
       setSelectFridgeImageID(selectedFridgeInfo.fridgeImageID || null);
-      setSelectedImage(selectedFridgeInfo.fridgeImageID || ''); 
-
-      console.log("selectedFridgeInfo의 id 확인:", selectedFridgeInfo.fridgeID);
+      setSelectedImage(selectedFridgeInfo.fridgeImageID || '');
+      console.log("selectedFridgeInfo 업데이트:", selectedFridgeInfo);
+    } else {
+      // selectedFridgeInfo가 null이면 초기 상태로 설정
+      setFridgeName('');
+      setSelectFridgeID(null);
+      setSelectFridgeImageID(null);
+      setSelectedImage('');
+      console.log("selectedFridgeInfo가 null로 초기화됨");
     }
   }, [selectedFridgeInfo]);
 
@@ -238,6 +250,7 @@ const handleImageClick = (imageId) => {
 
   return (
     <Box sx={{ width: '70%', ml:12,mr:12,mt:1 }}>
+      <CloseButton onClick={handleClose} CloseName="Normal"/>
         <Grid container direction="row" spacing={4} >
             <Grid item lg={12}>
                 <Paper
