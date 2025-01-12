@@ -11,15 +11,19 @@ import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
 import axios from 'axios';
 import { Alert } from '@mui/material';
+import CloseButton from '../CloseButton';
 
 export default function UserItemInFridge({ 
-  UserFridgeID, FridgeID, userId , selectedFridgeInfo  
+  UserFridgeID, FridgeID, userId , selectedFridgeInfo, setIsVisible  
 }) {
 
   const [userItemList, setUserItemList] = useState([]);
 
   const today = new Date();
 
+  const handleClose = () => {
+    setIsVisible(false); 
+  };
 
   const calculateDDay = (expirationDate) => {
     const diffTime = (expirationDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
@@ -74,6 +78,7 @@ export default function UserItemInFridge({
 
   return (
     <Box>
+       <CloseButton onClick={handleClose} CloseName="In Fridge" />
       {userItemList.length === 0 ? (
         <Alert severity="info" color="warning">
           No items found in this fridge.

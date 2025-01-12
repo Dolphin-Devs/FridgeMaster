@@ -9,8 +9,9 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
 import InfoIcon from '@mui/icons-material/Info';
+import CloseButton from '../CloseButton';
 
-export default function AboutUs({handleTermsandConditionsFunction}) {
+export default function AboutUs({handleTermsandConditionsFunction, setIsVisible}) {
 
   const navigate = useNavigate();
 
@@ -18,9 +19,13 @@ export default function AboutUs({handleTermsandConditionsFunction}) {
     navigate('/termsAndConditions');
     handleTermsandConditionsFunction(true);
   }
+  const handleClose = () => {
+    setIsVisible(false); 
+  };
 
   return (
     <Card sx={{ml:1,mr:1}}>
+      <CloseButton onClick={handleClose} CloseName="other"/>
       <CardHeader 
         avatar={
           <Avatar sx={{ border: 'solid 2px orange', width:80,height:80,  backgroundColor: 'transparent',fontSize:'40px',mr:2}}  >

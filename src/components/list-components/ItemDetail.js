@@ -29,11 +29,11 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
  import ActionButton from '../ActionButton';
  import CategoryDialog from './CategoryDialog';
  import StorageDialog from './StorageDialog';
+ import CloseButton from '../CloseButton';
 
 
 
-
-export default function ItemDetail({userId,selectUserItemID,selectItemID,selectedItemInfo,selectFridgeIDFromUser,handleAfterAddDeleteItemFunction}) {
+export default function ItemDetail({userId,selectUserItemID,selectItemID,selectedItemInfo,selectFridgeIDFromUser,handleAfterAddDeleteItemFunction, setIsVisible }) {
   const [expanded, setExpanded] = React.useState(false);
   const today = new Date();/**Variable for today date */
 
@@ -52,7 +52,13 @@ export default function ItemDetail({userId,selectUserItemID,selectItemID,selecte
 
   const [isLoading, setIsLoading] = useState(false);//State for Checking api calling 
 
+  const handleClose = () => {
+    setIsVisible(false); 
+  };
 
+ 
+
+  
 /**Check the selectFridgeIDFromUser is working */
 useEffect(()=>{
   if(selectFridgeIDFromUser){
@@ -260,8 +266,10 @@ const getSelectCategoryImageID = (UserSelectedCategoryImageID) =>{
 }
 
 
+
   return (
     <Box sx={{ width: '60%', ml:12,mr:12,mt:1 }}>
+        <CloseButton onClick={handleClose} CloseName="Normal" />
         <Grid container direction="row" spacing={4} >
             <Grid item lg={12}>
                 <Paper
