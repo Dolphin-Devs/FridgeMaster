@@ -11,7 +11,7 @@ import CardActionArea from '@mui/material/CardActionArea';
 import InfoIcon from '@mui/icons-material/Info';
 import CloseButton from '../CloseButton';
 
-export default function AboutUs({handleTermsandConditionsFunction, setIsVisible}) {
+export default function AboutUs({handleTermsandConditionsFunction, setIsVisible,handleClosePanel}) {
 
   const navigate = useNavigate();
 
@@ -21,10 +21,19 @@ export default function AboutUs({handleTermsandConditionsFunction, setIsVisible}
   }
   const handleClose = () => {
     setIsVisible(false); 
+    if (handleClosePanel) {
+      handleClosePanel(); // 부모 컴포넌트에서 전달받은 메서드 호출
+    }
   };
 
   return (
-    <Card sx={{ml:1,mr:1}}>
+    <Card
+        sx={{
+          ml: 1,
+          mr: 1,
+          overflowY: 'auto', //If the content is too much, Using Scroll bar
+        }}
+      >
       <CloseButton onClick={handleClose} CloseName="other"/>
       <CardHeader 
         avatar={
@@ -61,23 +70,6 @@ export default function AboutUs({handleTermsandConditionsFunction, setIsVisible}
       <CardContent>
 
       </CardContent>
-      {/**Edit Please, Add the terms and conditions */}
-      {/* <CardContent onClick={handleTermsAndCondition}>
-        <Card  sx={{  flexGrow: 1, borderRadius: 5, mb: 2, flexDirection: "column", justifyContent: "center" }}>
-        <CardActionArea>
-            <CardHeader 
-            avatar={
-            <Avatar sx={{  bgcolor: '#FFCC00' }} aria-label="recipe">
-                <InfoIcon/>
-            </Avatar>
-            }
-            titleTypographyProps={{variant:'subtitle2' }}
-            title="Terms and Condition"
-        />
-
-        </CardActionArea>
-        </Card>
-      </CardContent> */}
 
     </Card>
   );

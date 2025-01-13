@@ -14,7 +14,22 @@ import Grid from '@mui/material/Grid';
 import axios from 'axios';
 import { Alert } from '@mui/material';
 
-export default function MediaControlCard({UserItemID, ItemID,FridgeID, UserFridgeID, CategoryImageID, ItemName, Quantity,ExpiryDate,getSelectItemIDFunction,getSelectUserItemIDFunction,getSelectUserFridgeIDFunction,userId}) {
+export default function MediaControlCard({
+  UserItemID, 
+  ItemID,
+  FridgeID, 
+  UserFridgeID, 
+  CategoryImageID, 
+  ItemName, 
+  Quantity,
+  ExpiryDate,
+  getSelectItemIDFunction,
+  getSelectUserItemIDFunction,
+  getSelectUserFridgeIDFunction,
+  userId,
+  handleClick,
+}) 
+{
   const [responseCategoryImage,setResponseCategoryImage] = useState();
   const [responseFridgeName,setResponseFridgeName] = useState();
   const[expiredColorBGChange,setExpiredColorBGChange] = useState('orange');
@@ -73,12 +88,20 @@ async function getFridgeName(inputFridgeID, inputUserID){
 }
 
 
-
+//Method for click the one user item list and transfer for the dashboard.js
 /**Function for sending selected user item id to dashboard.js(Parent Component) */
 function sendSelectedUserItemIDandFridgeID(inputItemID, inputFridgeID,inputID){
   getSelectUserItemIDFunction(inputItemID);  
   getSelectUserFridgeIDFunction(inputFridgeID);
   getSelectItemIDFunction(inputID);
+  //For Mobile Screen, Sending signal of Right panel to Dashboard.js 
+  if (handleClick) {
+    handleClick({
+      UserItemID: inputItemID,
+      FridgeID: inputFridgeID,
+      ItemID: inputID,
+    });
+  }
 
 }
 

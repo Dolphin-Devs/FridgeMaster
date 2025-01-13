@@ -40,6 +40,7 @@ import FridgeDetail from '../../components/storage-components/FridgeDetail';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import UserItemInFridge from '../../components/storage-components/UserItemInFridge';
+import { red } from '@mui/material/colors';
 
 const drawerWidth = 160;
 
@@ -142,13 +143,32 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const defaultTheme = createTheme();
 
 export default function Dashboard() {
+  //----------------------------For Location & Screen transition --------------------------
+  const location = useLocation();
+  const navigate = useNavigate();
+  //-----The information from ex page
+  const{email,username,userId} = location.state || {};
+  //-----for close button of right panel
+  const [isVisible, setIsVisible] = useState(true);
+
   //----------------------------For Responsive Web --------------------------
   const [open, setOpen] = React.useState(false); //Control for Drawer // Mobile: Drawer closed, Desktop: Drawer open
   const theme = useTheme();//Control of mobile envrionment of the device
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); //Check for mobile environment of the device
-
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [activePanel, setActivePanel] = useState("left"); // 현재 활성화된 패널 상태
+  //----- 왼쪽 패널에서 아이템 클릭 시
+  const handleItemClick = () => {
+    setActivePanel("right"); // 오른쪽 패널 활성화
+  };
+  //----- 오른쪽 패널에서 X 버튼 클릭 시
+  const handleClosePanel = () => {
+    setActivePanel("left"); // 왼쪽 패널 활성화
+  };
+    //For Responsive Web : Method for setting the drawer open and close
+    const toggleDrawer = () => {
+      setOpen(!open); 
+    };
+   
 
   // ----------------------------For User Item List --------------------------
   const [userItemList, setUserItemList] = useState([]);
@@ -174,17 +194,11 @@ export default function Dashboard() {
   const [selectedFridgeID, setSelectedFridgeID] = useState(null);
   const [isEditFridge, setIsEditFridge] = useState(false); // Track if edit mode is active
 
-  // for close button
-  const [isVisible, setIsVisible] = useState(true);
+
 
 
   // ----------------------------For Setting Page --------------------------
   const[isAboutUs, setIsAboutUs] = useState(false);//State for handling about user selects about us
-  //The information from ex page
-  const{email,username,userId} = location.state || {};
-
-
-
 
   // ----------------------------For Recipe Page --------------------------
   const[firstRecipe,setFirstRecipe] = useState([]);
@@ -199,11 +213,7 @@ export default function Dashboard() {
   const[recipeSteps,setRecipeSteps] = useState(false);
 
 
-  //For Responsive Web : Method for setting the drawer open and close
-  const toggleDrawer = () => {
-    setOpen(!open); 
-  };
- 
+
   
 /**Function for Sign out and go to the Login Page */
 const signOut = (input) => {
@@ -249,6 +259,7 @@ const handleLogoClick = () =>{
 //Function for check that user click the RecipeName component 
 const handleRecipeClick = (recipeKey) => {
   setSelectedRecipeId(recipeKey);
+  setActivePanel("right"); // 오른쪽 패널 활성화
 };
 
 const sendIngreSteps = (recipeName,ingredients, steps, emoji) =>{
@@ -264,6 +275,7 @@ const handleAboutUs = (input) =>{
   if(input === true){
     setIsAboutUs(true);
     setIsVisible(true);
+    setActivePanel("right"); // 오른쪽 패널 활성화
   }
 }
 /**Function when user check the terms and conditioins, 
@@ -352,6 +364,7 @@ const getSelectUserItemID = (selectedID) => {
   setIsAddItem(false);
 };
 
+//Method for when user click the specific fridge in the userFridge component. 
 const getSelectUserFridgeID = (selected) => {
   console.log("Selected User Fridge ID:", selected);
   setSelecUserFridgeID(selected);
@@ -361,6 +374,7 @@ const getSelectUserFridgeID = (selected) => {
   setIsEditFridge(false);
   setIsVisible(true);
   setIsAddItem(false);
+  setActivePanel("right"); // 오른쪽 패널 활성화
 };
 
 const getSelectFridgeID = (selected) => {
@@ -491,11 +505,11 @@ const getSelectItemID = (selected) =>{
     setIsAddFridge(false);
     setIsEditFridge(false);
     setIsVisible(true);
+    setActivePanel("right");//For Mobile Screen, Active the right panel if the user click the add item button on the left panel. 
   }
 
     /**Method that update the IsAddFridge when user click the add Fridge button */
     const handleAddFridgeClick = () => {
-      console.log("Add Fridge 버튼 클릭됨");
       setIsAddFridge(true);
       setIsSelectUserFridge(false);
       setIsEditFridge(false);
@@ -503,13 +517,12 @@ const getSelectItemID = (selected) =>{
       setIsAboutUs(false);
       setIsAddItem(false);
   
-      // 상태 초기화
+      //Initialize of status of frige
       setSelectedFridgeInfo(null);
-
+      setActivePanel("right");//For Mobile Screen, Active the right panel if the user click the add item button on the left panel. 
     };
 
     useEffect(() => {
-      console.log("selectedFridgeInfo 변경됨:", selectedFridgeInfo);
     }, [selectedFridgeInfo]);
 
 /**Method that update isSelectUserItem and isAddItem after delete the item */
@@ -538,7 +551,7 @@ const handleEditFridgeFunction = (fridgeID, userFridgeID, fridgeName, fridgeImag
     fridgeName,
     fridgeImageID,
   });
-
+  setActivePanel("right");
   console.log("isEditFridge 상태:", true);
   console.log("selectedFridgeInfo 설정 완료:", {
     fridgeID,
@@ -596,7 +609,7 @@ useEffect(() => {
         <CssBaseline />
         <AppBar position="absolute" open={open} sx={{ bgcolor: "white", color: "orange" }}>
           <Toolbar sx={{ pr: '24px' }}>
-            {/* 햄버거 버튼 및 ChevronLeftIcon */}
+            {/* Hambuger and ChevronLeftIcon */}
             <IconButton
               edge="start"
               color="inherit"
@@ -604,9 +617,9 @@ useEffect(() => {
               onClick={toggleDrawer}
               sx={{ marginRight: "36px" }}
             >
-              {open ? <ChevronLeftIcon /> : <MenuIcon />} {/* 상태에 따라 아이콘 전환 */}
+              {open ? <ChevronLeftIcon /> : <MenuIcon />} {/* Transfer each icon depends on the status */}
             </IconButton>
-            {/* 로고 */}
+            {/* Logo of Fridge Master */}
             <Typography
               component="h1"
               variant="h6"
@@ -626,7 +639,7 @@ useEffect(() => {
           onClose={toggleDrawer} 
           isMobile={isMobile} 
         >
-           {/* Drawer 내부 Toolbar */}
+           {/* Toolbar in the Drawer */}
           <Toolbar 
             sx={{ 
               display: 'flex', 
@@ -637,7 +650,7 @@ useEffect(() => {
                }}
             >
           </Toolbar>
-          {/* Drawer 내부 메뉴 */}
+          {/* The menu in the Drawer*/}
           <List component="nav" sx={{ bgcolor: "orange", color: "white" }}>
             {mainListItems({ getSelectListItemFunction: getSelectListItem })}
           </List>
@@ -656,7 +669,14 @@ useEffect(() => {
           <Toolbar />
           <Container maxWidth="" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={2}>
-              <Grid item xs={6} md={6} lg={5}>
+               {/*-------------------------Left Panel---------------------------------*/}
+               <Grid
+                  item
+                  xs={activePanel === "left" && isMobile ? 12 : activePanel === "right" && isMobile ? 0 : 6} // For Mobile screen transition
+                  md={6}
+                  lg={5}
+                  sx={{ display: activePanel === "right" && isMobile ? "none" : "block" }} // In Mobile screen, Hide the right pannel. 
+                >
                 <Paper
                   sx={{
                     p: 2,
@@ -667,7 +687,7 @@ useEffect(() => {
                     overflow: 'auto',
                   }}
                 >
-                  
+                  {/*-------------------------Left Side: The List Item ---------------------------------*/}
                   {selectedListItemNavMenu === 1 ? (
                     <>
                       {userItemList.length === 0 ? (
@@ -694,6 +714,7 @@ useEffect(() => {
                                 getSelectUserFridgeIDFunction={getSelectUserFridgeID}
                                 getSelectItemIDFunction={getSelectItemID}
                                 userId={userId}
+                                handleClick={handleItemClick} // For moobile page, If User click the item, Active the right panel. 
                               />
                             ))}
                         </>
@@ -724,6 +745,7 @@ useEffect(() => {
                               handleEditFridgeFunction(el.fridge_id, el.user_fridge_id, el.fridge_name, el.fridge_image_id);
                             }}
                             handleAfterAddDeleteFridgeFunction={handleAfterAddDeleteFridge}
+                            handleClick={handleItemClick} // For moobile page, If User click the item, Active the right panel. 
                           />
                         ))}
                       <div className="actionBtn-wrap" onClick={handleAddFridgeClick}>
@@ -750,6 +772,7 @@ useEffect(() => {
                               firstRecipe={el}
                               handleRecipeClickFunction={handleRecipeClick}
                               sendIngreStepsFunction={sendIngreSteps}
+                              handleClick={handleItemClick} // For moobile page, If User click the item, Active the right panel. 
                             />
                           ))}
                         </>
@@ -761,13 +784,22 @@ useEffect(() => {
                         &nbsp;&nbsp;Hi, {username} 👋
                       </Typography>
                       <GeneralSetting signOutFunction={signOut} />
-                      <OtherSetting handleAboutUsFunction={handleAboutUs} />
+                      <OtherSetting 
+                        handleAboutUsFunction={handleAboutUs}
+                        handleClick={handleItemClick} // For moobile page, If User click the item, Active the right panel.  
+                      />
                     </>
                   )}
                 </Paper>
               </Grid>
-    
-              <Grid item xs={6} md={6} lg={7}>
+              {/*------------------------- Right Panel---------------------------------*/}
+              <Grid
+                item
+                xs={activePanel === "right" && isMobile ? 12 : activePanel === "left" && isMobile ? 0 : 6} // 모바일 전환
+                md={6}
+                lg={7}
+                sx={{ display: activePanel === "left" && isMobile ? "none" : "block" }} // 모바일에서 왼쪽 패널 활성화 시 숨김
+              >
                 <Paper
                   sx={{
                     p: 2,
@@ -789,6 +821,7 @@ useEffect(() => {
                           selectUserItemID={selectUserItemID}
                           handleAfterAddDeleteItemFunction={handleAfterAddDeleteItem}
                           setIsVisible={setIsVisible} 
+                          handleClosePanel={handleClosePanel} //Close 버튼 클릭 시 Panel 전환 메소드
                         />
                       ) : !isAddItem && isSelectUserItem && isVisible ?(
                         <ItemDetail
@@ -799,6 +832,7 @@ useEffect(() => {
                           selectedItemInfo={selectedItemInfo}
                           handleAfterAddDeleteItemFunction={handleAfterAddDeleteItem}
                           setIsVisible={setIsVisible} 
+                          handleClosePanel={handleClosePanel} //Close 버튼 클릭 시 Panel 전환 메소드
                         />
                       ): (
                           <Empty />
@@ -814,6 +848,7 @@ useEffect(() => {
                             selectedFridgeInfo={selectedFridgeInfo}
                             handleAfterAddDeleteFridgeFunction={handleAfterAddDeleteFridge}
                             setIsVisible={setIsVisible} 
+                            handleClosePanel={handleClosePanel} //Close 버튼 클릭 시 Panel 전환 메소드
                           />
                         ) : !isAddFridge && isSelectUserFridge && !isEditFridge && isVisible? (
                           <UserItemInFridge
@@ -821,6 +856,7 @@ useEffect(() => {
                             UserFridgeID={selectUserFridgeID}
                             FridgeID={selectFridgeID}
                             setIsVisible={setIsVisible} 
+                            handleClosePanel={handleClosePanel} //Close 버튼 클릭 시 Panel 전환 메소드
                           />
                         ) : isEditFridge && !isAddFridge && !isSelectUserFridge && isVisible?(
                           <FridgeDetail
@@ -830,6 +866,7 @@ useEffect(() => {
                             selectedFridgeInfo={selectedFridgeInfo}
                             handleAfterAddDeleteFridgeFunction={handleAfterAddDeleteFridge}
                             setIsVisible={setIsVisible} 
+                            handleClosePanel={handleClosePanel} //Close 버튼 클릭 시 Panel 전환 메소드
                           />
                         ) : (
                           <Empty />
@@ -843,6 +880,7 @@ useEffect(() => {
                         recipeIngre={recipeIngre}
                         recipeSteps={recipeSteps}
                         setIsVisible={setIsVisible}
+                        handleClosePanel={handleClosePanel} //Close 버튼 클릭 시 Panel 전환 메소드
                       />
                     ) : (
                       <Empty />
@@ -851,6 +889,7 @@ useEffect(() => {
                     <AboutUs 
                       handleTermsandConditionsFunction={handleTermsandConditions}
                       setIsVisible={setIsVisible}
+                      handleClosePanel={handleClosePanel} //Close 버튼 클릭 시 Panel 전환 메소드
                     />
                   ) : (
                     <Empty />

@@ -26,7 +26,7 @@ import LoadingProgress from '../../components/LoadingProgress';
 import CloseButton from '../CloseButton';
 
 export default function FridgeDetail({ FridgeName,
-  FridgeImageID,userId,selectFridgeIDFromUser,selectUserFridgeID,selectedFridgeInfo, handleAfterAddDeleteFridgeFunction, setIsVisible}) {
+  FridgeImageID,userId,selectFridgeIDFromUser,selectUserFridgeID,selectedFridgeInfo, handleAfterAddDeleteFridgeFunction, setIsVisible, handleClosePanel}) {
   const [expanded, setExpanded] = React.useState(false);
 
   //*Final state for using AddUpdate api 
@@ -46,6 +46,9 @@ export default function FridgeDetail({ FridgeName,
 
   const handleClose = () => {
     setIsVisible(false); 
+    if (handleClosePanel) {
+      handleClosePanel(); // 부모 컴포넌트에서 전달받은 메서드 호출
+    }
   };
 
   useEffect(() => {

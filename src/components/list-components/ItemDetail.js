@@ -29,11 +29,21 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
  import ActionButton from '../ActionButton';
  import CategoryDialog from './CategoryDialog';
  import StorageDialog from './StorageDialog';
- import CloseButton from '../CloseButton';
+ import CloseButton from '../CloseButton'; //Component for close button of the right panel. 
 
 
 
-export default function ItemDetail({userId,selectUserItemID,selectItemID,selectedItemInfo,selectFridgeIDFromUser,handleAfterAddDeleteItemFunction, setIsVisible }) {
+export default function ItemDetail({
+  userId,
+  selectUserItemID,
+  selectItemID,
+  selectedItemInfo,
+  selectFridgeIDFromUser,
+  handleAfterAddDeleteItemFunction, 
+  setIsVisible,
+  handleClosePanel
+
+}) {
   const [expanded, setExpanded] = React.useState(false);
   const today = new Date();/**Variable for today date */
 
@@ -52,8 +62,12 @@ export default function ItemDetail({userId,selectUserItemID,selectItemID,selecte
 
   const [isLoading, setIsLoading] = useState(false);//State for Checking api calling 
 
+  //Method for Click the Close button 
   const handleClose = () => {
     setIsVisible(false); 
+    if (handleClosePanel) {
+      handleClosePanel(); // 부모 컴포넌트에서 전달받은 메서드 호출
+    }
   };
 
  

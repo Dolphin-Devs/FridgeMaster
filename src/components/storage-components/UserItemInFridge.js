@@ -14,7 +14,7 @@ import { Alert } from '@mui/material';
 import CloseButton from '../CloseButton';
 
 export default function UserItemInFridge({ 
-  UserFridgeID, FridgeID, userId , selectedFridgeInfo, setIsVisible  
+  UserFridgeID, FridgeID, userId , selectedFridgeInfo, setIsVisible, handleClosePanel  
 }) {
 
   const [userItemList, setUserItemList] = useState([]);
@@ -23,6 +23,9 @@ export default function UserItemInFridge({
 
   const handleClose = () => {
     setIsVisible(false); 
+    if (handleClosePanel) {
+      handleClosePanel(); // 부모 컴포넌트에서 전달받은 메서드 호출
+    }
   };
 
   const calculateDDay = (expirationDate) => {
