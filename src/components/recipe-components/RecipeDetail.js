@@ -7,12 +7,15 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import CloseButton from '../CloseButton';
 
-export default function RecipeDetail({recipeEmoji,recipeName,recipeIngre,recipeSteps, setIsVisible}) {
+export default function RecipeDetail({recipeEmoji,recipeName,recipeIngre,recipeSteps, setIsVisible,  handleClosePanel}) {
     const [ingre,setIngre] = useState([]);
     const [steps,setSteps] = useState([]);
     
     const handleClose = () => {
       setIsVisible(false); 
+      if (handleClosePanel) {
+        handleClosePanel(); // 부모 컴포넌트에서 전달받은 메서드 호출
+      }
     };
 
   //Split out the data 
@@ -24,7 +27,7 @@ export default function RecipeDetail({recipeEmoji,recipeName,recipeIngre,recipeS
     setSteps(steps);
   }, [recipeIngre, recipeSteps]);
   return (
-    <Card sx={{ml:1,mr:1}}>
+    <Card sx={{ml:1,mr:1,overflowY: 'auto'}}>
       <CloseButton onClick={handleClose} CloseName="other"/>
       <CardHeader 
         avatar={
