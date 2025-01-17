@@ -85,6 +85,9 @@ Provides efficient APIs using **Django** (v4.2) and **Python** (v3.12).
 - **AWS Certificate Manager**: Ensures secure communication via HTTPS.
 - **GitHub Actions**: Configured a deployment pipeline. When changes are pushed to the frontend's main branch, the pipeline automatically triggers deployment, ensuring efficient and seamless updates.
 
+#### AI Integration
+- **OpenAI API**: Implemented AI-driven recipe recommendations by analyzing user-inputted food items nearing expiration and suggesting recipes to reduce food waste.
+
 ## 📐 Design & Methodology
 - Project timelines managed using **Agile methodology**, with 2-week sprints tracked via **Azure DevOps Boards**.
 - **Use Case Diagrams** and **ERD Diagrams** were used to design and implement the database structure.  
