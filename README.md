@@ -23,6 +23,9 @@ Manage your kitchen with **Fridge Master**, built with **frontend** (React, Java
 🌐 **[Website](https://www.thefridgemaster.com)**  
 Access the live version of Fridge Master.
 
+🎨 **[Figma Design](https://www.figma.com/design/8weGJeWZjXq5FLtLNyrAtg/Fridge-Master?node-id=16-2&t=MuIM5Gn8mNbYhAHL-1)**  
+View the UI/UX mockups and the brand guide for Fridge Master.
+
 💭 **[Share Your Feedback](https://docs.google.com/forms/d/e/1FAIpQLSfLQGK7IUaecTqFAJ5C7fbwYgTntyiopcf2uMj6LzWM1be-fg/viewform?usp=dialog)**  
 Help us improve by sharing your experience!
 
